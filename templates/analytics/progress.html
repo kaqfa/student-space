@@ -1,0 +1,159 @@
+{% extends 'layouts/base_dashboard.html' %}
+
+{% block title %}Progress Belajar - Bank Soal SD{% endblock %}
+
+{% block content %}
+<div class="p-4 sm:p-6 lg:p-8">
+    {% include 'components/page_header.html' with title="Progress Belajar" subtitle="Lihat perkembangan kemampuanmu dan identifikasi area yang perlu ditingkatkan." %}
+
+    <div class="space-y-6">
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-3">
+            <div class="bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 overflow-hidden shadow-lg rounded-xl">
+                <div class="p-5 flex items-center justify-between">
+                    <div>
+                        <div class="text-3xl font-bold text-white mb-1">{{ total_attempts|default:0 }}</div>
+                        <div class="text-blue-100 text-sm font-medium">Soal Dikerjakan</div>
+                    </div>
+                    <div class="p-3 bg-white/20 rounded-lg">
+                        <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-br from-green-500 to-green-600 dark:from-green-600 dark:to-green-700 overflow-hidden shadow-lg rounded-xl">
+                <div class="p-5 flex items-center justify-between">
+                    <div>
+                        <div class="text-3xl font-bold text-white mb-1">{{ accuracy|default:0 }}%</div>
+                        <div class="text-green-100 text-sm font-medium">Akurasi Rata-rata</div>
+                    </div>
+                    <div class="p-3 bg-white/20 rounded-lg">
+                        <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-br from-orange-500 to-orange-600 dark:from-orange-600 dark:to-orange-700 overflow-hidden shadow-lg rounded-xl">
+                <div class="p-5 flex items-center justify-between">
+                    <div>
+                        <div class="text-3xl font-bold text-white mb-1">{{ total_points|default:0 }}</div>
+                        <div class="text-orange-100 text-sm font-medium">Total XP</div>
+                    </div>
+                    <div class="p-3 bg-white/20 rounded-lg">
+                        <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Subject Performance -->
+            <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                <div class="px-4 py-3 border-b border-gray-200 rounded-t-lg dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Performa per Mata Pelajaran</h3>
+                </div>
+                <div class="p-5 space-y-5">
+                    {% for perf in subject_performance %}
+                    <div>
+                        <div class="flex justify-between items-end mb-1">
+                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ perf.subject.name }}</span>
+                            <span class="text-xs font-semibold text-gray-500 dark:text-gray-400">{{ perf.accuracy }}% ({{ perf.correct }}/{{ perf.total }})</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="h-2.5 rounded-full transition-all duration-500 {% if perf.accuracy >= 70 %}bg-green-500{% elif perf.accuracy >= 50 %}bg-yellow-500{% else %}bg-red-500{% endif %}" style="width: {{ perf.accuracy }}%"></div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="text-center py-6 text-gray-500 dark:text-gray-400">
+                        <p class="text-sm">Belum ada data. Yuk mulai kerjakan kuis!</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Quiz Stats -->
+            <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                <div class="px-4 py-3 border-b border-gray-200 rounded-t-lg dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Statistik Kuis</h3>
+                </div>
+                <div class="p-5">
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="text-center p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-100 dark:border-gray-700">
+                            <div class="text-3xl font-bold text-gray-900 dark:text-white mb-1">{{ quiz_stats.total_taken|default:0 }}</div>
+                            <div class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Kuis Dikerjakan</div>
+                        </div>
+                        <div class="text-center p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-100 dark:border-gray-700">
+                            <div class="text-3xl font-bold text-green-600 dark:text-green-500 mb-1">{{ quiz_stats.passed|default:0 }}</div>
+                            <div class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Kuis Lulus</div>
+                        </div>
+                    </div>
+                    {% if quiz_stats.avg_score %}
+                    <div class="text-center pt-4 border-t border-gray-100 dark:border-gray-700">
+                        <div class="text-sm text-gray-600 dark:text-gray-400">Rata-rata Skor Kuis</div>
+                        <div class="text-4xl font-extrabold text-indigo-600 dark:text-indigo-400 mt-1">{{ quiz_stats.avg_score|floatformat:1 }}</div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Strengths & Weaknesses -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Strengths -->
+            <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800 flex flex-col h-full border-t-4 border-t-green-500">
+                <div class="p-5">
+                    <h3 class="flex items-center text-lg font-bold text-green-700 dark:text-green-400 mb-4">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Topik yang Dikuasai
+                    </h3>
+                    {% if strengths %}
+                    <ul class="space-y-3">
+                        {% for s in strengths %}
+                        <li class="flex justify-between items-center bg-green-50 dark:bg-green-900/10 p-2 rounded-lg">
+                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300 truncate mr-2">{{ s.topic.name }}</span>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-bold bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300">
+                                {{ s.accuracy }}%
+                            </span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p class="text-gray-500 dark:text-gray-400 text-sm italic">Terus berlatih untuk menguasai topik!</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Weaknesses -->
+            <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800 flex flex-col h-full border-t-4 border-t-red-500">
+                <div class="p-5">
+                    <h3 class="flex items-center text-lg font-bold text-red-700 dark:text-red-400 mb-4">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                        Perlu Lebih Banyak Latihan
+                    </h3>
+                    {% if weaknesses %}
+                    <ul class="space-y-3">
+                        {% for w in weaknesses %}
+                        <li class="flex justify-between items-center bg-red-50 dark:bg-red-900/10 p-2 rounded-lg">
+                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300 truncate mr-2">{{ w.topic.name }}</span>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-bold bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300">
+                                {{ w.accuracy }}%
+                            </span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p class="text-gray-500 dark:text-gray-400 text-sm italic">Bagus! Tidak ada topik yang perlu ditingkatkan secara signifikan.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

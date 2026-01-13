@@ -1,0 +1,161 @@
+{% extends 'layouts/base_dashboard.html' %}
+
+{% block title %}Hasil Kuis - {{ quiz.title }}{% endblock %}
+
+{% block content %}
+<div class="p-4 sm:p-6 lg:p-8">
+    <div class="max-w-4xl mx-auto space-y-8">
+        
+        <!-- Proxy Mode Banner -->
+        {% if is_proxy %}
+        <div class="p-4 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <p class="text-sm font-medium text-purple-800 dark:text-purple-200">Mode Pendampingan</p>
+                    <p class="text-sm text-purple-600 dark:text-purple-300">
+                        Hasil kuis untuk: <strong>{{ student.get_full_name|default:student.username }}</strong> (Kelas {{ student.grade }})
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Summary Card -->
+        <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div class="px-6 py-8 text-center bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
+                <h2 class="text-3xl font-extrabold mb-2">
+                    {% if session.passed %}
+                        <span class="text-green-600 dark:text-green-500">
+                            {% if is_proxy %}{{ student.first_name }} Lulus!{% else %}Selamat! Kamu Lulus{% endif %}
+                        </span>
+                    {% else %}
+                        <span class="text-red-600 dark:text-red-500">
+                            {% if is_proxy %}{{ student.first_name }} Belum Lulus{% else %}Belum Lulus{% endif %}
+                        </span>
+                    {% endif %}
+                </h2>
+                <p class="text-gray-500 dark:text-gray-400 mb-6">
+                    {% if is_proxy %}
+                    {{ student.first_name }} telah menyelesaikan kuis <strong>{{ quiz.title }}</strong>.
+                    {% else %}
+                    Kamu telah menyelesaikan kuis <strong>{{ quiz.title }}</strong>.
+                    {% endif %}
+                </p>
+                
+                <div class="flex justify-center items-center space-x-12">
+                    <div class="text-center">
+                        <div class="text-5xl font-extrabold text-gray-900 dark:text-white mb-1">{{ session.score|floatformat:0 }}</div>
+                        <div class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Skor Akhir</div>
+                    </div>
+                    <div class="text-center hidden sm:block">
+                        <div class="h-12 w-px bg-gray-300 dark:bg-gray-600"></div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-5xl font-extrabold text-gray-500 dark:text-gray-400 mb-1">{{ quiz.passing_score }}</div>
+                        <div class="text-xs text-gray-500 uppercase tracking-wider font-semibold">KKM</div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 flex justify-center gap-4">
+                    {% if is_proxy %}
+                    <a href="{% url 'students:my_students' %}" class="inline-flex items-center px-5 py-2.5 border border-gray-300 shadow-sm text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-600">
+                        Kembali ke Siswa Saya
+                    </a>
+                    <a href="{% url 'quizzes:student-list' %}?student_id={{ student.pk }}&proxy=1" class="inline-flex items-center px-5 py-2.5 text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700">
+                        Kuis Lain untuk {{ student.first_name }}
+                    </a>
+                    {% else %}
+                    <a href="{% url 'quizzes:student-list' %}" class="inline-flex items-center px-5 py-2.5 border border-gray-300 shadow-sm text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-600">
+                        Kembali ke Daftar
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="bg-white dark:bg-gray-800 px-6 py-4 flex flex-col sm:flex-row justify-between text-sm text-gray-500 dark:text-gray-400 gap-2">
+                <div class="flex items-center">
+                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Dimulai: <span class="font-medium ml-1 text-gray-900 dark:text-white">{{ session.started_at|date:"d M Y H:i" }}</span>
+                </div>
+                <div class="flex items-center">
+                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    Selesai: <span class="font-medium ml-1 text-gray-900 dark:text-white">{{ session.completed_at|date:"d M Y H:i" }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Review -->
+        <div>
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                Review Jawaban
+            </h3>
+            <div class="space-y-6">
+                {% for attempt in attempts %}
+                <div class="relative bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+                    <div class="absolute left-0 top-0 bottom-0 w-1 {% if attempt.is_correct %}bg-green-500{% else %}bg-red-500{% endif %}"></div>
+                    <div class="p-6 pl-8">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1 mr-4">
+                                <div class="text-gray-900 dark:text-white font-medium mb-3 text-lg">
+                                    {{ attempt.question.question_text|striptags }}
+                                </div>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mb-4">
+                                    <div class="p-3 rounded-lg border {% if attempt.is_correct %}bg-green-50 border-green-200 dark:bg-green-900/10 dark:border-green-800{% else %}bg-red-50 border-red-200 dark:bg-red-900/10 dark:border-red-800{% endif %}">
+                                        <div class="text-xs font-semibold uppercase tracking-wide mb-1 opacity-75 {% if attempt.is_correct %}text-green-700 dark:text-green-400{% else %}text-red-700 dark:text-red-400{% endif %}">
+                                            {% if is_proxy %}Jawaban {{ student.first_name }}{% else %}Jawaban Kamu{% endif %}
+                                        </div>
+                                        <div class="font-bold text-base {% if attempt.is_correct %}text-green-800 dark:text-green-300{% else %}text-red-800 dark:text-red-300{% endif %}">
+                                            {{ attempt.answer_given }}
+                                        </div>
+                                    </div>
+                                    {% if not attempt.is_correct %}
+                                    <div class="p-3 rounded-lg bg-gray-50 border border-gray-200 dark:bg-gray-700/50 dark:border-gray-600">
+                                         <div class="text-xs font-semibold uppercase tracking-wide mb-1 opacity-75 text-gray-500 dark:text-gray-400">Kunci Jawaban</div>
+                                        <div class="font-bold text-base text-gray-800 dark:text-gray-200">
+                                            {{ attempt.question.answer_key }}
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                </div>
+
+                                {% if attempt.question.explanation %}
+                                <div class="bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300 text-sm p-4 rounded-lg flex items-start">
+                                    <svg class="w-5 h-5 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <div>
+                                        <span class="font-bold block mb-1">Pembahasan:</span>
+                                        {{ attempt.question.explanation|linebreaks }}
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="flex-shrink-0 flex flex-col items-end">
+                                {% if attempt.is_correct %}
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                        <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                        Benar
+                                    </span>
+                                {% else %}
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+                                        <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                        Salah
+                                    </span>
+                                {% endif %}
+                                <span class="mt-2 text-sm font-semibold text-gray-500 dark:text-gray-400">
+                                    {{ attempt.points_earned }}/{{ attempt.question.points }} Poin
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

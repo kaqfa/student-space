@@ -1,0 +1,46 @@
+{% extends 'layouts/base_dashboard.html' %}
+
+{% block title %}Daftar Kompetensi Dasar - Bank Soal SD{% endblock %}
+
+{% block content %}
+<div class="px-4 py-6 sm:px-0">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Daftar Kompetensi Dasar (KD)</h1>
+        <a href="{% url 'questions:kd-create' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+            Tambah KD
+        </a>
+    </div>
+
+    <div class="overflow-x-auto shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+        <table class="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
+             <thead class="bg-gray-50 dark:bg-gray-800">
+                <tr>
+                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-white sm:pl-6">Mata Pelajaran</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Kode</th>
+                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Deskripsi</th>
+                    <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                        <span class="sr-only">Edit</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900">
+                {% for kd in kds %}
+                <tr>
+                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-gray-500 dark:text-gray-300 sm:pl-6">{{ kd.subject.name }} (Kelas {{ kd.subject.grade }})</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900 dark:text-white">{{ kd.code }}</td>
+                    <td class="px-3 py-4 text-sm text-gray-500 dark:text-gray-300">{{ kd.description|truncatechars:100 }}</td>
+                    <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                        <a href="{% url 'questions:kd-update' kd.pk %}" class="text-indigo-600 hover:text-indigo-900 mr-2">Edit</a>
+                         <a href="{% url 'questions:kd-delete' kd.pk %}" class="text-red-600 hover:text-red-900">Hapus</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="px-6 py-4 text-center text-sm text-gray-500">Belum ada data kompetensi dasar.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

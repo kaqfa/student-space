@@ -1,0 +1,88 @@
+{% extends 'layouts/base_dashboard.html' %}
+
+{% block title %}Form Kuis - Bank Soal SD{% endblock %}
+
+{% block content %}
+<div class="p-4 sm:p-6 lg:p-8">
+    {% include 'components/page_header.html' with title="Form Kuis" subtitle="Buat atau edit kuis." %}
+
+    <div class="max-w-3xl">
+        <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800">
+            <div class="px-4 py-3 border-b border-gray-200 rounded-t-lg dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Informasi Kuis</h3>
+            </div>
+            
+            <div class="p-4 md:p-6">
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    {% if form.non_field_errors %}
+                    <div class="mb-4 p-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800" role="alert">
+                        {{ form.non_field_errors }}
+                    </div>
+                    {% endif %}
+
+                    <div class="space-y-6">
+                        <!-- Title & Description -->
+                        <div>
+                            <label for="{{ form.title.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.title.label }}</label>
+                            {{ form.title }}
+                            {% if form.title.errors %}<p class="mt-2 text-sm text-red-600">{{ form.title.errors.0 }}</p>{% endif %}
+                        </div>
+
+                        <div>
+                            <label for="{{ form.description.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.description.label }}</label>
+                            {{ form.description }}
+                            {% if form.description.errors %}<p class="mt-2 text-sm text-red-600">{{ form.description.errors.0 }}</p>{% endif %}
+                        </div>
+
+                        <!-- Grid for Meta -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="{{ form.subject.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.subject.label }}</label>
+                                {{ form.subject }}
+                                {% if form.subject.errors %}<p class="mt-2 text-sm text-red-600">{{ form.subject.errors.0 }}</p>{% endif %}
+                            </div>
+                            <div>
+                                <label for="{{ form.grade.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.grade.label }}</label>
+                                {{ form.grade }}
+                                {% if form.grade.errors %}<p class="mt-2 text-sm text-red-600">{{ form.grade.errors.0 }}</p>{% endif %}
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="{{ form.time_limit_minutes.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.time_limit_minutes.label }}</label>
+                                {{ form.time_limit_minutes }}
+                                <p class="mt-1 text-xs text-gray-500">Dalam menit (0 atau kosong untuk tidak terbatas).</p>
+                                {% if form.time_limit_minutes.errors %}<p class="mt-2 text-sm text-red-600">{{ form.time_limit_minutes.errors.0 }}</p>{% endif %}
+                            </div>
+                            <div>
+                                <label for="{{ form.passing_score.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ form.passing_score.label }}</label>
+                                {{ form.passing_score }}
+                                <p class="mt-1 text-xs text-gray-500">Nilai minimum untuk lulus (0-100).</p>
+                                {% if form.passing_score.errors %}<p class="mt-2 text-sm text-red-600">{{ form.passing_score.errors.0 }}</p>{% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Active Checkbox -->
+                        <div class="flex items-center">
+                            {{ form.is_active }}
+                            <label for="{{ form.is_active.id_for_label }}" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ form.is_active.label }}</label>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 flex items-center justify-end space-x-3">
+                        <a href="{% url 'quizzes:list' %}" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+                            Batal
+                        </a>
+                        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                            Simpan & Lanjut
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

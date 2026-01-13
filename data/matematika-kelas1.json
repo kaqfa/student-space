@@ -1,0 +1,63 @@
+[
+  {
+    "grade": 1,
+    "subject": "Matematika",
+    "topic": "Bilangan Cacah",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Berapakah hasil dari 2 + 3?",
+    "options": ["4", "5", "6", "7"],
+    "answer": "5",
+    "explanation": "2 ditambah 3 sama dengan 5.",
+    "points": 10,
+    "tags": ["penjumlahan", "dasar"]
+  },
+  {
+    "grade": 1,
+    "subject": "Matematika",
+    "topic": "Bilangan Cacah",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Angka sebelum 10 adalah...",
+    "options": ["8", "9", "11", "12"],
+    "answer": "9",
+    "explanation": "Urutan bilangan: 8, 9, 10. Jadi sebelum 10 adalah 9.",
+    "points": 10
+  },
+  {
+    "grade": 1,
+    "subject": "Matematika",
+    "topic": "Pengurangan",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Ibu membeli 5 apel. Dimakan adik 2 apel. Sisa apel ibu adalah...",
+    "options": ["2", "3", "4", "5"],
+    "answer": "3",
+    "explanation": "5 - 2 = 3.",
+    "points": 15
+  },
+  {
+    "grade": 1,
+    "subject": "Matematika",
+    "topic": "Bangun Datar",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Benda yang berbentuk lingkaran adalah...",
+    "options": ["Buku tulis", "Papan tulis", "Uang koin", "Penggaris segitiga"],
+    "answer": "Uang koin",
+    "explanation": "Uang koin umumnya berbentuk lingkaran.",
+    "points": 10
+  },
+  {
+    "grade": 1,
+    "subject": "Matematika",
+    "topic": "Bilangan Cacah",
+    "type": "pilgan",
+    "difficulty": "sulit",
+    "text": "15 + ... = 20. Angka yang tepat untuk mengisi titik-titik adalah...",
+    "options": ["4", "5", "6", "10"],
+    "answer": "5",
+    "explanation": "20 - 15 = 5.",
+    "points": 20
+  }
+]

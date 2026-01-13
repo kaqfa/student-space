@@ -1,0 +1,139 @@
+{% extends 'layouts/base_dashboard.html' %}
+{% load core_utils %}
+
+{% block title %}Mengerjakan Kuis - {{ quiz.title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-6 sm:px-6 lg:px-8">
+    
+    <!-- Proxy Mode Banner -->
+    {% if is_proxy %}
+    <div class="mb-6 p-4 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center">
+                <svg class="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+            </div>
+            <div class="flex-1">
+                <p class="text-sm font-medium text-purple-800 dark:text-purple-200">Mode Pendampingan</p>
+                <p class="text-sm text-purple-600 dark:text-purple-300">
+                    Mengerjakan kuis untuk: <strong>{{ student.get_full_name|default:student.username }}</strong> (Kelas {{ student.grade }})
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Sticky Header with Timer -->
+    <div class="sticky top-20 z-20 bg-white dark:bg-gray-800 shadow-md rounded-lg p-4 mb-6 flex justify-between items-center border border-gray-200 dark:border-gray-700">
+        <div>
+            <h1 class="text-lg font-bold text-gray-900 dark:text-white">{{ quiz.title }}</h1>
+            <p class="text-sm text-gray-500 dark:text-gray-400">{{ quiz.questions.count }} Soal</p>
+        </div>
+        <div class="text-right">
+             {% if remaining_seconds %}
+            <div class="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold">Sisa Waktu</div>
+            <div id="timer" class="text-2xl font-mono font-bold text-red-600 dark:text-red-400">--:--</div>
+            {% else %}
+            <div class="text-sm text-gray-500">Tidak ada batas waktu</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <form method="post" id="quiz-form">
+        {% csrf_token %}
+        
+        <!-- Hidden fields for proxy mode -->
+        {% if is_proxy %}
+        <input type="hidden" name="student_id" value="{{ student_id }}">
+        <input type="hidden" name="proxy" value="1">
+        {% endif %}
+        
+        <div class="space-y-6">
+            {% for question in quiz.questions.all %}
+            <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+                <div class="flex space-x-4">
+                    <div class="flex-shrink-0">
+                        <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-blue-100 text-blue-800 font-bold text-sm dark:bg-blue-900 dark:text-blue-300">
+                            {{ forloop.counter }}
+                        </span>
+                    </div>
+                    <div class="flex-1">
+                        <!-- Question Text -->
+                        <div class="prose dark:prose-invert max-w-none mb-4 text-gray-900 dark:text-white">
+                            {{ question.question_text|linebreaks }}
+                        </div>
+
+                        <!-- Image -->
+                        {% if question.image %}
+                        <div class="mb-4">
+                            <img src="{{ question.image.url }}" alt="Question Image" class="max-h-80 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+                        </div>
+                        {% endif %}
+
+                        <!-- Options -->
+                        {% if question.question_type == 'CHOICE' %}
+                        <div class="space-y-3">
+                            {% for option in question.options %}
+                            {% with option_key=forloop.counter0|to_char %}
+                            <label class="flex items-start p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600 transition-colors peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/20 peer-checked:border-blue-500">
+                                <div class="flex items-center h-5">
+                                    <input type="radio" name="question_{{ question.id }}" value="{{ option_key }}" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 dark:border-gray-500 dark:bg-gray-800">
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <span class="font-bold text-gray-900 dark:text-white mr-2">{{ option_key }}.</span>
+                                    <span class="text-gray-700 dark:text-gray-200">{{ option }}</span>
+                                </div>
+                            </label>
+                            {% endwith %}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="mt-8 flex justify-end pb-8">
+            <button type="submit" onclick="return confirm('Yakin ingin menyelesaikan kuis?');" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-full sm:w-auto justify-center transition-transform hover:-translate-y-0.5">
+                Selesaikan Kuis
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+    {% if remaining_seconds %}
+    let timeLeft = parseInt("{{ remaining_seconds|default:0 }}", 10); // seconds
+    const timerDisplay = document.getElementById('timer');
+    
+    function formatTime(seconds) {
+        if (seconds < 0) return "00:00";
+        const m = Math.floor(seconds / 60);
+        const s = Math.floor(seconds % 60);
+        return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    }
+
+    const timerInterval = setInterval(() => {
+        timeLeft--;
+        timerDisplay.textContent = formatTime(timeLeft);
+        
+        // Visual warning when time is low (e.g., < 1 min)
+        if (timeLeft < 60) {
+             timerDisplay.classList.add('animate-pulse');
+        }
+
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            alert("Waktu habis! Jawaban kamu akan disimpan otomatis.");
+            document.getElementById('quiz-form').submit();
+        }
+    }, 1000);
+    
+    // Initial call
+    timerDisplay.textContent = formatTime(timeLeft);
+    {% endif %}
+</script>
+{% endblock %}

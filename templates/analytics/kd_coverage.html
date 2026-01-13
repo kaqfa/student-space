@@ -1,0 +1,128 @@
+{% extends 'layouts/base_dashboard.html' %}
+
+{% block title %}KD Coverage - Bank Soal SD{% endblock %}
+
+{% block content %}
+<div class="p-4 sm:p-6 lg:p-8">
+    {% include 'components/page_header.html' with title="Cakupan Kompetensi Dasar" subtitle="Tingkat penguasaan KD siswa untuk memantau kelengkapan materi." actions='<a href="'|add:request.resolver_match.app_name|add:':dashboard" class="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white">&larr; Kembali</a>' %}
+
+    <div class="space-y-6">
+        <!-- Student Selector -->
+        <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800 p-4 sticky top-20 z-10 transition-shadow">
+            <form method="get" class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center space-x-3 w-full sm:w-auto">
+                    <label for="student" class="text-sm font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">Pilih Siswa:</label>
+                    <select name="student" id="student" onchange="this.form.submit()" class="block w-full sm:w-64 p-2 text-sm border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        {% for student in students %}
+                        <option value="{{ student.pk }}" {% if selected_student.pk == student.pk %}selected{% endif %}>
+                            {{ student.name }} (Kelas {{ student.grade }})
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </form>
+        </div>
+
+        {% if selected_student %}
+        <!-- Summary Cards -->
+        {% if kd_summary %}
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-4">
+            <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800 p-5 text-center">
+                <div class="text-3xl font-bold text-gray-900 dark:text-white">{{ kd_summary.total }}</div>
+                <div class="text-xs uppercase font-semibold text-gray-500">Total KD</div>
+            </div>
+            <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800 p-5 text-center border-b-4 border-b-green-500">
+                <div class="text-3xl font-bold text-green-600 dark:text-green-500">{{ kd_summary.mastered }}</div>
+                <div class="text-xs uppercase font-semibold text-gray-500">Dikuasai</div>
+            </div>
+            <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800 p-5 text-center border-b-4 border-b-yellow-400">
+                <div class="text-3xl font-bold text-yellow-600 dark:text-yellow-500">{{ kd_summary.developing }}</div>
+                <div class="text-xs uppercase font-semibold text-gray-500">Berkembang</div>
+            </div>
+            <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800 p-5 text-center border-b-4 border-b-gray-300">
+                <div class="text-3xl font-bold text-gray-400 dark:text-gray-500">{{ kd_summary.not_started }}</div>
+                <div class="text-xs uppercase font-semibold text-gray-500">Belum Mulai</div>
+            </div>
+        </div>
+
+        <!-- Coverage Progress -->
+        <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800 p-6">
+            <div class="flex justify-between items-center mb-2">
+                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Cakupan Keseluruhan</span>
+                <span class="text-sm font-bold text-blue-600 dark:text-blue-400">{{ kd_summary.coverage_percent }}%</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-4 dark:bg-gray-700">
+                <div class="h-4 rounded-full bg-blue-600 dark:bg-blue-500 transition-all duration-500" style="width: {{ kd_summary.coverage_percent }}%"></div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- KD by Subject -->
+        {% if kd_by_subject %}
+        <div class="space-y-6">
+            {% for subject_name, kds in kd_by_subject.items %}
+            <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800 overflow-hidden">
+                <div class="px-4 py-3 border-b border-gray-200 rounded-t-lg dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ subject_name }}</h3>
+                </div>
+                <div class="divide-y divide-gray-200 dark:divide-gray-700">
+                    {% for item in kds %}
+                    <div class="px-4 py-4 sm:px-6 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                            <div class="flex-1">
+                                <div class="flex items-start">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-bold bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300 mr-2 mt-0.5">
+                                        {{ item.kd.code }}
+                                    </span>
+                                    <div>
+                                        <div class="text-sm text-gray-900 dark:text-white font-medium">{{ item.kd.description }}</div>
+                                        <div class="mt-2 flex items-center">
+                                            <div class="w-24 sm:w-32 bg-gray-200 rounded-full h-2 mr-3 dark:bg-gray-600">
+                                                <div class="h-2 rounded-full 
+                                                    {% if item.mastery == 'mastered' %}bg-green-500
+                                                    {% elif item.mastery == 'developing' %}bg-yellow-500
+                                                    {% elif item.mastery == 'needs_work' %}bg-red-500
+                                                    {% else %}bg-gray-400{% endif %}" 
+                                                    style="width: {{ item.accuracy }}%"></div>
+                                            </div>
+                                            <span class="text-xs text-gray-500 dark:text-gray-400 font-mono">{{ item.correct }}/{{ item.total }} ({{ item.accuracy }}%)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-shrink-0">
+                                {% if item.mastery == 'mastered' %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">
+                                    ✓ Dikuasai
+                                </span>
+                                {% elif item.mastery == 'developing' %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300">
+                                    ↗ Berkembang
+                                </span>
+                                {% elif item.mastery == 'needs_work' %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300">
+                                    ! Perlu Latihan
+                                </span>
+                                {% else %}
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400">
+                                    — Belum Mulai
+                                </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+             {% include 'components/empty_state.html' with title="Tidak ada data KD" description="Tidak ada data Kompetensi Dasar untuk kelas ini." icon="document-text" %}
+        {% endif %}
+
+        {% else %}
+             {% include 'components/empty_state.html' with title="Pilih Siswa" description="Silakan pilih siswa dari dropdown di atas untuk melihat cakupan KD." icon="user" %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

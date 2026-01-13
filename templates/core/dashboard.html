@@ -1,0 +1,100 @@
+{% extends 'layouts/base_dashboard.html' %}
+
+{% block title %}Dashboard - Bank Soal SD{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <div class="px-4 py-6 sm:px-0">
+        <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">Dashboard</h1>
+        <p class="mt-2 text-gray-600 dark:text-gray-300">Selamat datang, {{ user.first_name|default:user.username }}!</p>
+        
+        <div class="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <!-- Card: Bank Soal -->
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-indigo-500 rounded-md p-3">
+                            <!-- Heroicon name: archive-box -->
+                            <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                            </svg>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate dark:text-gray-400">Bank Soal</dt>
+                                <dd>
+                                    <div class="text-lg font-medium text-gray-900 dark:text-white">Kelola Soal</div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-700 px-5 py-3">
+                    <div class="text-sm">
+                        <a href="{% url 'questions:list' %}" class="font-medium text-indigo-700 hover:text-indigo-900 dark:text-indigo-300 dark:hover:text-indigo-100">
+                            Lihat semua soal <span aria-hidden="true">&rarr;</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card: Profile -->
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-green-500 rounded-md p-3">
+                            <!-- Heroicon name: user -->
+                            <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate dark:text-gray-400">Akun Saya</dt>
+                                <dd>
+                                    <div class="text-lg font-medium text-gray-900 dark:text-white">Profile & Settings</div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-700 px-5 py-3">
+                    <div class="text-sm">
+                        <a href="{% url 'profile' %}" class="font-medium text-green-700 hover:text-green-900 dark:text-green-300 dark:hover:text-green-100">
+                            Edit Profil <span aria-hidden="true">&rarr;</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card: Import (Placeholder) -->
+             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg opacity-60">
+                <div class="p-5">
+                    <div class="flex items-center">
+                         <div class="flex-shrink-0 bg-yellow-500 rounded-md p-3">
+                            <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                            </svg>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate dark:text-gray-400">Import Data</dt>
+                                <dd>
+                                    <div class="text-lg font-medium text-gray-900 dark:text-white">Coming Soon</div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+               <div class="bg-gray-50 dark:bg-gray-700 px-5 py-3">
+                    <div class="text-sm">
+                        <span class="font-medium text-gray-500 cursor-not-allowed">
+                            Fitur Import <span aria-hidden="true">&rarr;</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

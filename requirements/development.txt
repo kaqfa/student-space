@@ -1,0 +1,11 @@
+-r base.txt
+
+# Development Tools
+pytest>=8.0.0
+pytest-django>=4.8.0
+pytest-cov>=4.1.0
+black>=24.1.1
+flake8>=7.0.0
+isort>=5.13.2
+django-debug-toolbar>=4.3.0
+django-extensions>=3.2.3

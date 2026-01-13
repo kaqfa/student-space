@@ -1,0 +1,19 @@
+{
+  "name": "bank-soal-django",
+  "version": "1.0.0",
+  "description": "Bank Soal SD",
+  "main": "index.js",
+  "scripts": {
+    "build": "tailwindcss -i ./static/css/input.css -o ./static/css/dist/styles.css --minify",
+    "watch": "tailwindcss -i ./static/css/input.css -o ./static/css/dist/styles.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^10.4.23",
+    "flowbite": "^2.5.2",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.19"
+  }
+}

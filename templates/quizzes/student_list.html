@@ -1,0 +1,78 @@
+{% extends 'layouts/base_dashboard.html' %}
+
+{% block title %}Kuis Tersedia - Bank Soal SD{% endblock %}
+
+{% block content %}
+<div class="p-4 sm:p-6 lg:p-8">
+    <!-- Proxy Mode Banner -->
+    {% if is_proxy %}
+    <div class="mb-6 p-4 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center">
+                <svg class="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+            </div>
+            <div class="flex-1">
+                <p class="text-sm font-medium text-purple-800 dark:text-purple-200">Mode Pendampingan</p>
+                <p class="text-sm text-purple-600 dark:text-purple-300">
+                    Mengerjakan kuis untuk: <strong>{{ student.get_full_name|default:student.username }}</strong> (Kelas {{ student.grade }})
+                </p>
+            </div>
+            <a href="{% url 'students:select_for_quiz' %}" class="text-sm text-purple-600 dark:text-purple-400 hover:underline">
+                Ganti Siswa
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
+    {% include 'components/page_header.html' with title="Kuis Tersedia" subtitle="Daftar kuis yang dapat dikerjakan saat ini." %}
+
+    {% if quizzes %}
+    <div class="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
+        {% for quiz in quizzes %}
+        <div class="flex flex-col bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300">
+            <div class="flex-grow p-5">
+                 <div class="flex items-center justify-between mb-4">
+                    {% include 'components/badge.html' with type="info" text=quiz.subject.name %}
+                    <span class="text-sm text-gray-500 dark:text-gray-400 flex items-center">
+                        <svg class="mr-1.5 h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+                        </svg>
+                        {{ quiz.time_limit_minutes }} Menit
+                    </span>
+                 </div>
+                 <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white mb-2">
+                    {{ quiz.title }}
+                </h3>
+                <p class="text-gray-600 dark:text-gray-400 text-sm line-clamp-3 mb-4">
+                    {{ quiz.description|default:"Tidak ada deskripsi." }}
+                </p>
+                <div class="flex items-center justify-between text-xs font-medium text-gray-500 dark:text-gray-400 border-t border-gray-100 dark:border-gray-700 pt-4">
+                    <span>{{ quiz.questions.count }} Soal</span>
+                    <span>Min. Nilai: {{ quiz.passing_score }}</span>
+                </div>
+            </div>
+            <div class="bg-gray-50 dark:bg-gray-700/50 px-5 py-4 border-t border-gray-100 dark:border-gray-700 rounded-b-lg">
+                <a href="{% url 'quizzes:take_quiz' quiz.pk %}?student_id={{ student_id }}{{ proxy_param }}" 
+                   class="w-full inline-flex justify-center items-center px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition-colors">
+                    {% if is_proxy %}Mulai untuk {{ student.first_name }}{% else %}Mulai Kerjakan{% endif %}
+                    <svg class="w-3.5 h-3.5 ml-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    <div class="mt-6">
+        {% include 'components/pagination.html' %}
+    </div>
+
+    {% else %}
+        {% include 'components/empty_state.html' with title="Tidak ada kuis tersedia" description="Belum ada kuis yang tersedia untuk kelas ini." %}
+    {% endif %}
+</div>
+{% endblock %}

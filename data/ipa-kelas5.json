@@ -1,0 +1,63 @@
+[
+  {
+    "grade": 5,
+    "subject": "IPA",
+    "topic": "Makhluk Hidup",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Alat pernapasan pada ikan adalah...",
+    "options": ["Paru-paru", "Insang", "Trakea", "Kulit"],
+    "answer": "Insang",
+    "explanation": "Ikan bernapas menggunakan insang untuk mengambil oksigen dalam air.",
+    "points": 10,
+    "tags": ["biologi", "hewan"]
+  },
+  {
+    "grade": 5,
+    "subject": "IPA",
+    "topic": "Tata Surya",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Planet terbesar dalam tata surya kita adalah...",
+    "options": ["Bumi", "Mars", "Saturnus", "Jupiter"],
+    "answer": "Jupiter",
+    "explanation": "Jupiter adalah planet terbesar di tata surya.",
+    "points": 10
+  },
+  {
+    "grade": 5,
+    "subject": "IPA",
+    "topic": "Ekosistem",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Hewan pemakan tumbuhan disebut...",
+    "options": ["Karnivora", "Herbivora", "Omnivora", "Insektivora"],
+    "answer": "Herbivora",
+    "explanation": "Herbivora adalah kelompok hewan yang sumber makanannya adalah tumbuhan.",
+    "points": 10
+  },
+  {
+    "grade": 5,
+    "subject": "IPA",
+    "topic": "Gaya dan Gerak",
+    "type": "pilgan",
+    "difficulty": "sulit",
+    "text": "Gaya yang menyebabkan benda jatuh ke bawah adalah gaya...",
+    "options": ["Gesek", "Pegas", "Gravitasi", "Magnet"],
+    "answer": "Gravitasi",
+    "explanation": "Gaya gravitasi bumi menarik semua benda ke arah pusat bumi (bawah).",
+    "points": 15
+  },
+  {
+    "grade": 5,
+    "subject": "IPA",
+    "topic": "Energi",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Sumber energi terbesar di bumi adalah...",
+    "options": ["Bulan", "Bintang", "Matahari", "Api"],
+    "answer": "Matahari",
+    "explanation": "Matahari merupakan sumber energi panas dan cahaya utama bagi bumi.",
+    "points": 10
+  }
+]

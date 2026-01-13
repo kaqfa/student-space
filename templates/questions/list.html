@@ -1,0 +1,127 @@
+{% extends 'layouts/base_dashboard.html' %}
+{% load static %}
+
+{% block title %}Bank Soal - Daftar Soal{% endblock %}
+
+{% block content %}
+<div class="p-4 sm:p-6 lg:p-8">
+    <div class="sm:flex sm:items-center sm:justify-between mb-6">
+        <div>
+            <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Bank Soal</h1>
+            <p class="mt-2 text-sm text-gray-700 dark:text-gray-400">
+                Daftar semua soal yang tersedia di database.
+            </p>
+        </div>
+        {% if user.is_authenticated %}
+        <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none space-x-2">
+            <a href="{% url 'questions:create' %}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                Tambah Soal
+            </a>
+            <a href="{% url 'questions:import' %}" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                Import JSON
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="flex flex-col lg:flex-row gap-6">
+        <!-- Filters Sidebar -->
+        <div class="w-full lg:w-64 flex-shrink-0">
+             <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800 sticky top-24">
+                <div class="px-4 py-3 border-b border-gray-200 rounded-t-lg dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Filter</h3>
+                </div>
+                <div class="p-4">
+                    <form method="get" class="space-y-4">
+                        <div>
+                            <label for="grade" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kelas</label>
+                            <select id="grade" name="grade" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option value="">Semua Kelas</option>
+                                {% for i in "123456"|make_list %}
+                                    <option value="{{ i }}" {% if request.GET.grade == i %}selected{% endif %}>Kelas {{ i }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <label for="difficulty" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kesulitan</label>
+                            <select id="difficulty" name="difficulty" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option value="">Semua</option>
+                                <option value="mudah" {% if request.GET.difficulty == 'mudah' %}selected{% endif %}>Mudah</option>
+                                <option value="sedang" {% if request.GET.difficulty == 'sedang' %}selected{% endif %}>Sedang</option>
+                                <option value="sulit" {% if request.GET.difficulty == 'sulit' %}selected{% endif %}>Sulit</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="subject" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Mata Pelajaran</label>
+                            <select id="subject" name="subject" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option value="">Semua Mapel</option>
+                                {% for subject in subjects %}
+                                    <option value="{{ subject.id }}" {% if request.GET.subject == subject.id|stringformat:"s" %}selected{% endif %}>{{ subject.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button type="submit" class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            Terapkan
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Questions List -->
+        <div class="flex-grow">
+            {% if questions %}
+                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Topik</th>
+                                <th scope="col" class="px-6 py-3">Soal</th>
+                                <th scope="col" class="px-6 py-3">Tipe/Poin</th>
+                                <th scope="col" class="px-6 py-3">Kesulitan</th>
+                                <th scope="col" class="px-6 py-3 text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for question in questions %}
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td class="px-6 py-4">
+                                     <div class="font-medium text-gray-900 dark:text-white">{{ question.topic.subject.name|default:"-" }}</div>
+                                     <div class="text-xs text-gray-500">{{ question.topic.name|default:"-" }}</div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="line-clamp-2">{{ question.question_text }}</div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex flex-col">
+                                        <span class="text-gray-900 dark:text-white">{{ question.question_type|title }}</span>
+                                        <span class="text-xs text-gray-500">{{ question.points }} Poin</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    {% if question.difficulty == 'mudah' %}
+                                        {% include 'components/badge.html' with type="success" text="Mudah" %}
+                                    {% elif question.difficulty == 'sedang' %}
+                                         {% include 'components/badge.html' with type="warning" text="Sedang" %}
+                                    {% else %}
+                                         {% include 'components/badge.html' with type="danger" text="Sulit" %}
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <a href="{% url 'questions:detail' question.id %}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                {% include 'components/pagination.html' %}
+
+            {% else %}
+                {% include 'components/empty_state.html' with title="Belum ada soal" description="Mulai dengan membuat soal baru atau import dari file JSON." action_url=request.path|add:"create" action_text="Tambah Soal" %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

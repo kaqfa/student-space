@@ -1,0 +1,152 @@
+{% extends 'layouts/base_dashboard.html' %}
+{% load static %}
+
+{% block title %}
+    {% if form.instance.pk %}Edit Soal{% else %}Tambah Soal Baru{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="p-4 sm:p-6 lg:p-8">
+    {% include 'components/page_header.html' with title="Editor Soal" subtitle="Buat atau edit soal untuk bank soal." %}
+
+    <div class="max-w-4xl mx-auto">
+        <form method="post" enctype="multipart/form-data" x-data="{ qType: '{{ form.question_type.value|default:'pilgan' }}' }">
+            {% csrf_token %}
+            
+            <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                <div class="px-4 py-3 border-b border-gray-200 rounded-t-lg dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Detail Soal</h3>
+                </div>
+                
+                <div class="p-4 md:p-6 space-y-6">
+                    {% if form.non_field_errors %}
+                        <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                            {{ form.non_field_errors }}
+                        </div>
+                    {% endif %}
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Topic -->
+                        <div class="col-span-1 md:col-span-2">
+                             <label for="{{ form.topic.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Topik</label>
+                             {{ form.topic }}
+                              {% if form.topic.errors %}
+                                <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ form.topic.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+
+                         <!-- Type -->
+                        <div class="col-span-1">
+                            <label for="{{ form.question_type.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipe Soal</label>
+                            <select name="question_type" id="id_question_type" x-model="qType" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                {% for x, y in form.fields.question_type.choices %}
+                                    <option value="{{ x }}" {% if form.question_type.value == x %}selected{% endif %}>{{ y }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                         
+                         <!-- Difficulty -->
+                        <div class="col-span-1">
+                             <label for="{{ form.difficulty.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kesulitan</label>
+                             {{ form.difficulty }}
+                        </div>
+                    </div>
+
+                    <!-- Question Text -->
+                    <div>
+                         <label for="{{ form.question_text.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pertanyaan</label>
+                         {{ form.question_text }}
+                         <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Support Markdown / LaTeX ($...$)</p>
+                         {% if form.question_text.errors %}
+                            <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ form.question_text.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Options (Pilgan Only) -->
+                    <div class="p-4 rounded-lg bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600" x-show="qType === 'pilgan'" x-transition>
+                        <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">Pilihan Jawaban</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block mb-1 text-xs font-medium text-gray-500 uppercase">Opsi A</label>
+                                {{ form.option_a }}
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-xs font-medium text-gray-500 uppercase">Opsi B</label>
+                                {{ form.option_b }}
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-xs font-medium text-gray-500 uppercase">Opsi C</label>
+                                {{ form.option_c }}
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-xs font-medium text-gray-500 uppercase">Opsi D</label>
+                                {{ form.option_d }}
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block mb-1 text-xs font-medium text-gray-500 uppercase">Opsi E (Opsional)</label>
+                                {{ form.option_e }}
+                            </div>
+                        </div>
+                    </div>
+
+                     <!-- Answer Key & Explanation -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                         <div class="md:col-span-2">
+                            <label for="{{ form.answer_key.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kunci Jawaban</label>
+                            {{ form.answer_key }}
+                            <p class="mt-1 text-xs text-gray-500">Untuk Pilgan, isi teks jawabannya persis (Contoh: "Jawaban Benar").</p>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label for="{{ form.explanation.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pembahasan</label>
+                            {{ form.explanation }}
+                        </div>
+                    </div>
+                     
+                     <!-- Meta: Points, Time, Image -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                         <div>
+                            <label for="{{ form.points.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Poin</label>
+                            {{ form.points }}
+                        </div>
+                         <div>
+                            <label for="{{ form.estimated_time.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Estimasi Waktu (detik)</label>
+                            {{ form.estimated_time }}
+                        </div>
+                         <div>
+                             <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Media</label>
+                             {{ form.image }}
+                             <div class="mt-2 flex items-center">
+                                 {{ form.has_math }}
+                                 <label for="{{ form.has_math.id_for_label }}" class="ml-2 text-sm text-gray-900 dark:text-gray-300">Ada Rumus (LaTeX)?</label>
+                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Tags & KD -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                        <div>
+                             <label for="{{ form.tags.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tags</label>
+                             {{ form.tags }}
+                             <p class="mt-1 text-xs text-gray-500">Hold Ctrl/Cmd to select multiple</p>
+                        </div>
+                        <div>
+                             <label for="{{ form.kompetensi_dasar.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kompetensi Dasar</label>
+                             {{ form.kompetensi_dasar }}
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="flex items-center justify-end px-4 py-3 border-t border-gray-200 rounded-b-lg dark:border-gray-700 bg-gray-50 dark:bg-gray-800 gap-3">
+                     <a href="{% url 'questions:list' %}" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                        Batal
+                    </a>
+                    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Simpan Soal
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

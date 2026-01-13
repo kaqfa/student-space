@@ -1,0 +1,89 @@
+{% extends 'layouts/base_dashboard.html' %}
+
+{% block title %}Pilih Siswa untuk Kuis - Bank Soal SD{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <!-- Page Header -->
+    <div class="mb-6">
+        <a href="{% url 'students:my_students' %}" class="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 mb-2">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+            Kembali
+        </a>
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Pilih Siswa untuk Kuis</h1>
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            Pilih siswa yang akan mengerjakan kuis. Anda akan memandu mereka dalam mode pendampingan.
+        </p>
+    </div>
+
+    <!-- Students List -->
+    {% if students %}
+    <div class="space-y-3">
+        {% for student in students %}
+        <a href="{% url 'quizzes:student-list' %}?student_id={{ student.pk }}&proxy=1" 
+           class="block bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 transition-all">
+            <div class="flex items-center gap-4">
+                {% if student.avatar %}
+                <img src="{{ student.avatar.url }}" alt="{{ student.get_full_name }}" 
+                     class="w-14 h-14 rounded-full object-cover">
+                {% else %}
+                <div class="w-14 h-14 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
+                    <span class="text-blue-600 dark:text-blue-300 font-bold text-xl">
+                        {{ student.first_name|slice:":1"|upper }}
+                    </span>
+                </div>
+                {% endif %}
+                
+                <div class="flex-1">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                        {{ student.get_full_name|default:student.username }}
+                    </h3>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                        Kelas {{ student.grade|default:"-" }}
+                    </p>
+                </div>
+                
+                <div class="text-blue-600 dark:text-blue-400">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <!-- Empty State -->
+    <div class="text-center py-12 bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700">
+        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+        </svg>
+        <h3 class="mt-4 text-lg font-semibold text-gray-900 dark:text-white">Belum ada siswa terhubung</h3>
+        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+            Hubungkan dengan siswa terlebih dahulu untuk menggunakan mode pendampingan.
+        </p>
+        <div class="mt-6">
+            <a href="{% url 'students:my_students' %}" 
+               class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700">
+                Kelola Siswa
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Info Box -->
+    <div class="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+        <div class="flex items-start">
+            <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <div class="text-sm text-blue-700 dark:text-blue-300">
+                <p class="font-medium mb-1">Mode Pendampingan</p>
+                <p>Dalam mode ini, Anda dapat mendampingi anak mengerjakan kuis. Hasil akan otomatis tersimpan di akun siswa.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

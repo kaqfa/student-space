@@ -1,0 +1,126 @@
+{% extends 'layouts/base_dashboard.html' %}
+
+{% block title %}Permintaan Penghubungan - Bank Soal SD{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Page Header -->
+    <div>
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Permintaan Orang Tua/Guru</h1>
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            Kelola permintaan dari orang tua atau guru yang ingin terhubung dengan akunmu
+        </p>
+    </div>
+
+    <!-- Pending Requests -->
+    {% if link_requests %}
+    <div class="space-y-4">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Menunggu Persetujuan</h2>
+        
+        {% for link in link_requests %}
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+            <div class="flex items-start justify-between gap-4">
+                <div class="flex items-start gap-4">
+                    {% if link.parent.avatar %}
+                    <img src="{{ link.parent.avatar.url }}" alt="{{ link.parent.get_full_name }}" 
+                         class="w-12 h-12 rounded-full object-cover">
+                    {% else %}
+                    <div class="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900 flex items-center justify-center">
+                        <span class="text-purple-600 dark:text-purple-300 font-bold text-lg">
+                            {{ link.parent.first_name|slice:":1"|upper|default:"P" }}
+                        </span>
+                    </div>
+                    {% endif %}
+                    
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                            {{ link.parent.get_full_name|default:link.parent.username }}
+                        </h3>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                            {{ link.parent.email }}
+                        </p>
+                        {% if link.notes %}
+                        <p class="mt-2 text-sm text-gray-600 dark:text-gray-300 italic">
+                            "{{ link.notes }}"
+                        </p>
+                        {% endif %}
+                        <p class="mt-2 text-xs text-gray-400">
+                            Dikirim {{ link.created_at|timesince }} yang lalu
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="flex gap-2">
+                    <form method="POST" action="{% url 'students:link_request_action' link.pk %}" class="inline">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="reject">
+                        <button type="submit" 
+                                class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600">
+                            Tolak
+                        </button>
+                    </form>
+                    <form method="POST" action="{% url 'students:link_request_action' link.pk %}" class="inline">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="approve">
+                        <button type="submit" 
+                                class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700">
+                            Setujui
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 text-center">
+        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+        </svg>
+        <h3 class="mt-4 text-lg font-semibold text-gray-900 dark:text-white">Tidak ada permintaan</h3>
+        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+            Anda tidak memiliki permintaan yang menunggu persetujuan.
+        </p>
+    </div>
+    {% endif %}
+
+    <!-- Approved Links -->
+    {% if approved_links %}
+    <div class="space-y-4 mt-8">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Sudah Terhubung</h2>
+        
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+            <ul class="divide-y divide-gray-200 dark:divide-gray-700">
+                {% for link in approved_links %}
+                <li class="p-4 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        {% if link.parent.avatar %}
+                        <img src="{{ link.parent.avatar.url }}" alt="{{ link.parent.get_full_name }}" 
+                             class="w-10 h-10 rounded-full object-cover">
+                        {% else %}
+                        <div class="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center">
+                            <span class="text-green-600 dark:text-green-300 font-bold">
+                                {{ link.parent.first_name|slice:":1"|upper|default:"P" }}
+                            </span>
+                        </div>
+                        {% endif %}
+                        <div>
+                            <p class="font-medium text-gray-900 dark:text-white">
+                                {{ link.parent.get_full_name|default:link.parent.username }}
+                            </p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                Terhubung sejak {{ link.verified_at|date:"d M Y" }}
+                            </p>
+                        </div>
+                    </div>
+                    <span class="px-2.5 py-1 text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 rounded-full">
+                        Terhubung
+                    </span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

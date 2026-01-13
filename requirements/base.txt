@@ -1,0 +1,5 @@
+Django>=5.0.1,<5.1
+django-environ>=0.11.2
+Pillow>=10.2.0
+psycopg2-binary>=2.9.9
+django-htmx>=1.17.0

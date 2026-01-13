@@ -1,0 +1,195 @@
+{% extends 'layouts/base_dashboard.html' %}
+
+{% block title %}{{ student.get_full_name }} - Bank Soal SD{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Page Header -->
+    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+        <div>
+            <a href="{% url 'students:my_students' %}" class="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 mb-2">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+                Kembali ke Daftar Siswa
+            </a>
+            <div class="flex items-center gap-4">
+                {% if student.avatar %}
+                <img src="{{ student.avatar.url }}" alt="{{ student.get_full_name }}" 
+                     class="w-16 h-16 rounded-full object-cover">
+                {% else %}
+                <div class="w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
+                    <span class="text-blue-600 dark:text-blue-300 font-bold text-xl">
+                        {{ student.first_name|slice:":1"|upper }}
+                    </span>
+                </div>
+                {% endif %}
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+                        {{ student.get_full_name|default:student.username }}
+                    </h1>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                        Kelas {{ student.grade|default:"-" }} • @{{ student.username }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="flex gap-2">
+            <a href="{% url 'students:parent_student_edit' student.pk %}" 
+               class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-lg text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                </svg>
+                Edit Profil
+            </a>
+            <a href="{% url 'students:select_for_quiz' %}?student_id={{ student.pk }}" 
+               class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-green-600 hover:bg-green-700">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                Mulai Kuis
+            </a>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-lg bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
+                    <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ total_attempts }}</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Soal Dikerjakan</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-lg bg-green-100 dark:bg-green-900 flex items-center justify-center">
+                    <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ accuracy }}%</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Akurasi</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-lg bg-yellow-100 dark:bg-yellow-900 flex items-center justify-center">
+                    <svg class="w-6 h-6 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ total_xp }}</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Total XP</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Two Column Layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Subject Performance -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Performa per Mata Pelajaran</h2>
+            {% if subject_performance %}
+            <div class="space-y-4">
+                {% for perf in subject_performance %}
+                <div>
+                    <div class="flex justify-between mb-1">
+                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ perf.subject.name }}</span>
+                        <span class="text-sm text-gray-500 dark:text-gray-400">{{ perf.accuracy }}%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                        <div class="h-2.5 rounded-full {% if perf.accuracy >= 80 %}bg-green-600{% elif perf.accuracy >= 60 %}bg-yellow-500{% else %}bg-red-500{% endif %}" 
+                             style="width: {{ perf.accuracy }}%"></div>
+                    </div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ perf.correct }}/{{ perf.total }} soal benar</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-sm text-gray-500 dark:text-gray-400">Belum ada data performa.</p>
+            {% endif %}
+        </div>
+
+        <!-- Strengths & Weaknesses -->
+        <div class="space-y-6">
+            <!-- Strengths -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                    <span class="text-green-600">💪</span> Kekuatan
+                </h2>
+                {% if strengths %}
+                <ul class="space-y-2">
+                    {% for s in strengths|slice:":5" %}
+                    <li class="flex items-center justify-between">
+                        <span class="text-sm text-gray-700 dark:text-gray-300">{{ s.topic.name }}</span>
+                        <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 rounded-full">
+                            {{ s.accuracy }}%
+                        </span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="text-sm text-gray-500 dark:text-gray-400">Belum cukup data.</p>
+                {% endif %}
+            </div>
+
+            <!-- Weaknesses -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                    <span class="text-red-600">📚</span> Perlu Ditingkatkan
+                </h2>
+                {% if weaknesses %}
+                <ul class="space-y-2">
+                    {% for w in weaknesses|slice:":5" %}
+                    <li class="flex items-center justify-between">
+                        <span class="text-sm text-gray-700 dark:text-gray-300">{{ w.topic.name }}</span>
+                        <span class="px-2 py-1 text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300 rounded-full">
+                            {{ w.accuracy }}%
+                        </span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="text-sm text-gray-500 dark:text-gray-400">Tidak ada topik yang perlu ditingkatkan.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    {% if recent_activity %}
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Aktivitas Terbaru (7 Hari)</h2>
+        <div class="grid grid-cols-7 gap-2">
+            {% for day in recent_activity %}
+            <div class="text-center">
+                <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">{{ day.date|date:"D" }}</div>
+                <div class="mx-auto w-8 h-8 rounded-lg flex items-center justify-center text-xs font-medium
+                     {% if day.count > 0 %}
+                         {% if day.correct == day.count %}bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300
+                         {% elif day.correct > day.count|divisibleby:2 %}bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300
+                         {% else %}bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300{% endif %}
+                     {% else %}bg-gray-100 text-gray-400 dark:bg-gray-700{% endif %}">
+                    {{ day.count }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends 'layouts/base_dashboard.html' %}
+
+{% block title %}Daftar Kuis - Bank Soal SD{% endblock %}
+
+{% block content %}
+<div class="p-4 sm:p-6 lg:p-8">
+    {% include 'components/page_header.html' with title="Daftar Kuis" subtitle="Kelola kuis dan tugas untuk siswa." actions='<a href="'|add:request.resolver_match.app_name|add:':create" class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Buat Kuis Baru</a>' %}
+
+    <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800">
+        <div class="px-4 py-3 border-b border-gray-200 rounded-t-lg dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Semua Kuis</h3>
+        </div>
+        
+        <div class="p-4 md:p-6">
+            {% if quizzes %}
+            <div class="relative overflow-x-auto">
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">Nama Kuis</th>
+                            <th scope="col" class="px-6 py-3">Mata Pelajaran</th>
+                            <th scope="col" class="px-6 py-3 text-center">Kelas</th>
+                            <th scope="col" class="px-6 py-3 text-center">Durasi</th>
+                            <th scope="col" class="px-6 py-3 text-center">Soal</th>
+                            <th scope="col" class="px-6 py-3 text-right">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for quiz in quizzes %}
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <td class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                <a href="{% url 'quizzes:detail' quiz.pk %}" class="hover:text-blue-600 hover:underline">
+                                    {{ quiz.title }}
+                                </a>
+                                {% if quiz.description %}
+                                <p class="text-xs text-gray-500 truncate max-w-xs mt-0.5">{{ quiz.description }}</p>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ quiz.subject.name|default:"-" }}
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                {% include 'components/badge.html' with type="info" text="Kelas "|add:quiz.grade %}
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                {% if quiz.time_limit_minutes %}
+                                    <span class="text-gray-900 dark:text-white">{{ quiz.time_limit_minutes }} Menit</span>
+                                {% else %}
+                                    <span class="text-gray-500 italic">Unlimited</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300 border border-gray-500">
+                                    {{ quiz.questions.count }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <a href="{% url 'quizzes:update' quiz.pk %}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            {% include 'components/pagination.html' %}
+
+            {% else %}
+                {% include 'components/empty_state.html' with title="Belum ada kuis" description="Mulai dengan membuat kuis baru untuk siswa." action_url=request.resolver_match.app_name|add:':create' action_text="Buat Kuis Baru" %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

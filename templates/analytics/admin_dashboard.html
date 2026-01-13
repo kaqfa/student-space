@@ -1,0 +1,182 @@
+{% extends 'layouts/base_dashboard.html' %}
+
+{% block title %}Analytics Dashboard - Bank Soal SD{% endblock %}
+
+{% block content %}
+<div class="p-4 sm:p-6 lg:p-8">
+    {% if selected_student %}
+        {% url 'analytics:export-student' selected_student.pk as export_url %}
+        {% with actions='<a href="'|add:export_url|add:'" class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">Export CSV</a>' %}
+            {% include 'components/page_header.html' with title="Analytics Dashboard" subtitle="Analisis performa siswa secara detail." actions=actions %}
+        {% endwith %}
+    {% else %}
+        {% include 'components/page_header.html' with title="Analytics Dashboard" subtitle="Analisis performa siswa secara detail." %}
+    {% endif %}
+
+    <div class="space-y-6">
+        <!-- Student Selector & Tools -->
+        <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800 p-4 sticky top-20 z-10">
+            <form method="get" class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center space-x-3 w-full sm:w-auto">
+                    <label for="student" class="text-sm font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">Pilih Siswa:</label>
+                    <select name="student" id="student" onchange="this.form.submit()" class="block w-full sm:w-64 p-2 text-sm border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        {% for student in students %}
+                        <option value="{{ student.pk }}" {% if selected_student.pk == student.pk %}selected{% endif %}>
+                            {{ student.name }} (Kelas {{ student.grade }})
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                {% if selected_student %}
+                <div class="flex space-x-2 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
+                    <a href="{% url 'analytics:tag-heatmap' %}?student={{ selected_student.pk }}" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-600 whitespace-nowrap">
+                        🏷️ Heatmap
+                    </a>
+                    <a href="{% url 'analytics:kd-coverage' %}?student={{ selected_student.pk }}" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-600 whitespace-nowrap">
+                        📋 KD Coverage
+                    </a>
+                    <a href="{% url 'analytics:student-history' selected_student.pk %}" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-xs font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-600 whitespace-nowrap">
+                        📜 Riwayat
+                    </a>
+                </div>
+                {% endif %}
+            </form>
+        </div>
+
+        {% if selected_student %}
+        <!-- Stats Overview Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+             <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800 p-4">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 bg-blue-100 dark:bg-blue-900/30 rounded-lg p-3">
+                        <svg class="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Total Soal</dt>
+                        <dd class="text-2xl font-semibold text-gray-900 dark:text-white">{{ total_attempts|default:0 }}</dd>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800 p-4">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 bg-green-100 dark:bg-green-900/30 rounded-lg p-3">
+                        <svg class="h-6 w-6 text-green-600 dark:text-green-400" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Akurasi</dt>
+                        <dd class="text-2xl font-semibold text-gray-900 dark:text-white">{{ accuracy|default:0 }}%</dd>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800 p-4">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 bg-orange-100 dark:bg-orange-900/30 rounded-lg p-3">
+                         <svg class="h-6 w-6 text-orange-600 dark:text-orange-400" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Total Poin</dt>
+                        <dd class="text-2xl font-semibold text-gray-900 dark:text-white">{{ total_points|default:0 }}</dd>
+                    </div>
+                </div>
+            </div>
+
+             <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800 p-4">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 bg-purple-100 dark:bg-purple-900/30 rounded-lg p-3">
+                        <svg class="h-6 w-6 text-purple-600 dark:text-purple-400" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <dt class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Kuis Lulus</dt>
+                        <dd class="text-2xl font-semibold text-gray-900 dark:text-white">{{ quiz_stats.passed|default:0 }} / {{ quiz_stats.total_taken|default:0 }}</dd>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Subject Performance -->
+            <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                <div class="px-4 py-3 border-b border-gray-200 rounded-t-lg dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Performa per Mata Pelajaran</h3>
+                </div>
+                <div class="p-4 md:p-6 space-y-4">
+                     {% for perf in subject_performance %}
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="font-medium text-gray-700 dark:text-gray-300">{{ perf.subject.name }}</span>
+                            <span class="text-gray-500 dark:text-gray-400 font-semibold">{{ perf.accuracy }}%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                            <div class="h-2.5 rounded-full {% if perf.accuracy >= 70 %}bg-green-500{% elif perf.accuracy >= 50 %}bg-yellow-500{% else %}bg-red-500{% endif %}" style="width: {{ perf.accuracy }}%"></div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    {% include 'components/empty_state.html' with title="Belum ada data" description="Siswa belum mengerjakan soal." icon="chart-bar" %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Strengths & Weaknesses -->
+            <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                <div class="px-4 py-3 border-b border-gray-200 rounded-t-lg dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Analisis Topik</h3>
+                </div>
+                <div class="p-4 md:p-6 space-y-6">
+                    <div>
+                        <h4 class="flex items-center text-sm font-bold text-green-600 dark:text-green-400 mb-3">
+                            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                            Kekuatan (>80%)
+                        </h4>
+                        {% if strengths %}
+                        <ul class="space-y-2">
+                            {% for s in strengths %}
+                            <li class="flex justify-between items-center text-sm bg-green-50 dark:bg-green-900/10 p-2 rounded">
+                                <span class="font-medium text-gray-700 dark:text-gray-300">{{ s.topic.name }}</span>
+                                <span class="font-bold text-green-600 dark:text-green-400">{{ s.accuracy }}%</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        <p class="text-sm text-gray-500 italic">Belum ada topik yang dikuasai dengan baik.</p>
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <h4 class="flex items-center text-sm font-bold text-red-600 dark:text-red-400 mb-3">
+                             <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path></svg>
+                            Perlu Peningkatan (<60%)
+                        </h4>
+                        {% if weaknesses %}
+                        <ul class="space-y-2">
+                            {% for w in weaknesses %}
+                            <li class="flex justify-between items-center text-sm bg-red-50 dark:bg-red-900/10 p-2 rounded">
+                                <span class="font-medium text-gray-700 dark:text-gray-300">{{ w.topic.name }}</span>
+                                <span class="font-bold text-red-600 dark:text-red-400">{{ w.accuracy }}%</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        <p class="text-sm text-gray-500 italic">Tidak ada topik yang perlu peningkatan mendesak.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% else %}
+         {% include 'components/empty_state.html' with title="Pilih Siswa" description="Silakan pilih siswa dari dropdown di atas untuk melihat analitik." icon="user" %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

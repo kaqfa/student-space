@@ -1,0 +1,126 @@
+{% extends 'layouts/base_dashboard.html' %}
+
+{% block title %}Detail Kuis - {{ quiz.title }}{% endblock %}
+
+{% block content %}
+<div class="p-4 sm:p-6 lg:p-8">
+    {% include 'components/page_header.html' with title=quiz.title subtitle="Detail kuis dan daftar soal." actions='<a href="'|add:request.resolver_match.app_name|add:':update" class="inline-flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 mr-2">Edit Detail</a><a href="'|add:request.resolver_match.app_name|add:':question-add" class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Tambah Soal</a>' %}
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Main Content: Questions List -->
+        <div class="lg:col-span-2 space-y-6">
+             <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                <div class="px-4 py-3 border-b border-gray-200 rounded-t-lg dark:border-gray-700 bg-gray-50 dark:bg-gray-800 flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Daftar Soal</h3>
+                    <span class="inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-blue-600 rounded-full">{{ quiz.questions.count }}</span>
+                </div>
+                
+                <div class="p-0">
+                    {% if quiz.questions.exists %}
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 w-12">#</th>
+                                    <th scope="col" class="px-6 py-3">Soal</th>
+                                    <th scope="col" class="px-6 py-3 text-center">Tipe</th>
+                                    <th scope="col" class="px-6 py-3 text-center">Poin</th>
+                                    <th scope="col" class="px-6 py-3 text-right">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for question in quiz.questions.all %}
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                                        {{ forloop.counter }}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="line-clamp-2 text-gray-900 dark:text-white mb-1">
+                                            {{ question.question_text|striptags }}
+                                        </div>
+                                        <a href="{% url 'questions:detail' question.pk %}" target="_blank" class="text-xs text-blue-600 dark:text-blue-400 hover:underline">
+                                            Lihat Detail <span class="sr-only">Soal #{{ question.pk }}</span>
+                                        </a>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                         {% if question.question_type == 'CHOICE' %}
+                                            <span class="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-purple-900 dark:text-purple-300">Pilgan</span>
+                                        {% else %}
+                                            <span class="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">Essay</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="px-6 py-4 text-center font-semibold text-gray-900 dark:text-white">
+                                        {{ question.points }}
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <form action="{% url 'quizzes:question-remove' quiz.pk question.pk %}" method="POST" onsubmit="return confirm('Hapus soal ini dari kuis?');" class="inline">
+                                            {% csrf_token %}
+                                            <button type="submit" class="font-medium text-red-600 dark:text-red-500 hover:underline">Hapus</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                        {% include 'components/empty_state.html' with title="Kuis Kosong" description="Belum ada soal ditambahkan ke kuis ini." action_url=request.resolver_match.app_name|add:':question-add' action_text="Tambah Soal" %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Info -->
+        <div class="lg:col-span-1 space-y-6">
+            <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800">
+                 <div class="px-4 py-3 border-b border-gray-200 rounded-t-lg dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Informasi Kuis</h3>
+                </div>
+                <div class="p-4 space-y-4">
+                     <div>
+                        <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Deskripsi</dt>
+                        <dd class="mt-1 text-sm text-gray-900 dark:text-white">{{ quiz.description|default:"-"|linebreaks }}</dd>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Kelas</dt>
+                            <dd class="mt-1 text-sm font-semibold text-gray-900 dark:text-white">Kelas {{ quiz.grade }}</dd>
+                        </div>
+                        <div>
+                             <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Mata Pelajaran</dt>
+                            <dd class="mt-1 text-sm font-semibold text-gray-900 dark:text-white">{{ quiz.subject.name|default:"-" }}</dd>
+                        </div>
+                         <div>
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Durasi</dt>
+                            <dd class="mt-1 text-sm font-semibold text-gray-900 dark:text-white">
+                                {% if quiz.time_limit_minutes %}
+                                    {{ quiz.time_limit_minutes }} Menit
+                                {% else %}
+                                    <span class="italic text-gray-500">Unlimited</span>
+                                {% endif %}
+                            </dd>
+                        </div>
+                        <div>
+                             <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Passing Score</dt>
+                            <dd class="mt-1 text-sm font-semibold text-gray-900 dark:text-white">{{ quiz.passing_score }}</dd>
+                        </div>
+                    </div>
+                     <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
+                         <div class="flex justify-between items-center">
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Poin</dt>
+                            <dd class="text-xl font-bold text-gray-900 dark:text-white">{{ quiz.total_points }}</dd>
+                        </div>
+                    </div>
+                    <div class="pt-2">
+                        {% if quiz.is_active %}
+                            {% include 'components/badge.html' with type="success" text="Status: Aktif" %}
+                        {% else %}
+                             {% include 'components/badge.html' with type="danger" text="Status: Nonaktif" %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

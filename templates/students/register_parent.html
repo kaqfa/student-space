@@ -1,0 +1,49 @@
+{% extends 'layouts/base_auth.html' %}
+
+{% block title %}Daftar Akun Orang Tua - Bank Soal SD{% endblock %}
+
+{% block content %}
+<h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+    Buat akun orang tua/guru
+</h1>
+<p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+    Dengan akun ini, Anda dapat mengelola dan memantau perkembangan anak-anak Anda.
+</p>
+<form class="space-y-4 md:space-y-6" method="POST">
+    {% csrf_token %}
+    
+    {% if form.non_field_errors %}
+    <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+        {% for error in form.non_field_errors %}
+            <p>{{ error }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    {% for field in form %}
+    <div>
+        <label for="{{ field.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+            {{ field.label }}{% if field.field.required %}<span class="text-red-500">*</span>{% endif %}
+        </label>
+        {{ field }}
+        {% if field.help_text %}
+            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ field.help_text }}</p>
+        {% endif %}
+        {% if field.errors %}
+            <p class="mt-2 text-sm text-red-600 dark:text-red-500">{{ field.errors.0 }}</p>
+        {% endif %}
+    </div>
+    {% endfor %}
+
+    <button type="submit" class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        Buat Akun Orang Tua
+    </button>
+    
+    <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+        Sudah punya akun? <a href="{% url 'login' %}" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Login disini</a>
+    </p>
+    <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+        Daftar sebagai siswa? <a href="{% url 'students:register' %}" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Daftar akun siswa</a>
+    </p>
+</form>
+{% endblock %}
