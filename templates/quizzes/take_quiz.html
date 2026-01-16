@@ -73,7 +73,7 @@
                         {% endif %}
 
                         <!-- Options -->
-                        {% if question.question_type == 'CHOICE' %}
+                        {% if question.question_type == 'pilgan' %}
                         <div class="space-y-3">
                             {% for option in question.options %}
                             {% with option_key=forloop.counter0|to_char %}

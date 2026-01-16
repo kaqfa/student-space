@@ -151,6 +151,9 @@ bank_soal_project/
 | [Product Requirements](docs/prd.md) | Product requirements document |
 | [Todo List](docs/todo.md) | Development checklist |
 | [AGENTS.md](AGENTS.md) | AI agent working guidelines |
+| [Testing Guidelines](.agent/TESTING_GUIDELINES.md) | Testing strategy and best practices |
+| [E2E Testing Guide](tests/e2e/README.md) | E2E testing with Playwright |
+| [Testing Summary](tests/E2E_TESTING_SUMMARY.md) | Quick testing reference |
 
 ---
 
@@ -180,6 +183,27 @@ bank_soal_project/
 
 ## 🧪 Testing
 
+### E2E Testing (Playwright)
+```bash
+# Setup test data
+python manage.py setup_test_data
+
+# Run all E2E tests
+pytest tests/e2e/ -v
+
+# Run specific test category
+pytest tests/e2e/ -m student -v    # Student flow tests
+pytest tests/e2e/ -m parent -v     # Parent flow tests
+pytest tests/e2e/ -m quiz -v       # Quiz-related tests
+
+# Run with visible browser (for debugging)
+pytest tests/e2e/ --headed -v
+
+# Run specific test
+pytest tests/e2e/test_student_flow.py::test_student_can_see_quiz_options -v
+```
+
+### Unit Testing
 ```bash
 # Run all tests
 pytest
@@ -190,6 +214,23 @@ pytest --cov=apps
 # Run specific app tests
 pytest apps/questions/tests/
 ```
+
+### Testing Guidelines
+
+**For functional testing** → Use Playwright E2E tests  
+**For visual/UI review** → Use Antigravity browser feature
+
+See [Testing Guidelines](.agent/TESTING_GUIDELINES.md) for detailed testing strategy.
+
+**Test Documentation:**
+- [E2E Testing Guide](tests/e2e/README.md)
+- [Testing Summary](tests/E2E_TESTING_SUMMARY.md)
+- [Testing Guidelines](.agent/TESTING_GUIDELINES.md)
+
+**Test Credentials:**
+- Parent: `orangtua` / `parent123`
+- Student (Grade 4): `siswa4` / `siswa123`
+- Admin: `admin` / `admin123`
 
 ---
 
