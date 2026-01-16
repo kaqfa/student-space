@@ -1,965 +1,420 @@
-{% extends 'base.html' %} {% load static %} {% block title %}Bank Soal SD -
-Platform Belajar Terbaik untuk Anak Anda{% endblock %} {% block extra_css %}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Bank Soal SD - Platform Belajar Terbaik untuk Anak Anda{% endblock %}
+
+{% block extra_css %}
 <style>
-  /* Hero Section Gradient - Python Green Theme */
-  .hero-gradient {
-    background: linear-gradient(135deg, #306998 0%, #2E7D32 50%, #4CAF50 100%);
-  }
+/* Hero Section - Full Width */
+.hero-gradient {
+    background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 50%, #43A047 100%);
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+}
 
-  /* Smooth scroll behavior */
-  html {
+html {
     scroll-behavior: smooth;
-  }
+}
 
-  /* Fade in animation */
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+/* Animations */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
-  .fade-in-up {
-    animation: fadeInUp 0.8s ease-out forwards;
-  }
+.fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
+.fade-in-up-delay-1 { animation-delay: 0.2s; opacity: 0; }
+.fade-in-up-delay-2 { animation-delay: 0.4s; opacity: 0; }
+.fade-in-up-delay-3 { animation-delay: 0.6s; opacity: 0; }
 
-  .fade-in-up-delay-1 {
-    animation-delay: 0.2s;
-    opacity: 0;
-  }
-  .fade-in-up-delay-2 {
-    animation-delay: 0.4s;
-    opacity: 0;
-  }
-  .fade-in-up-delay-3 {
-    animation-delay: 0.6s;
-    opacity: 0;
-  }
-  .fade-in-up-delay-4 {
-    animation-delay: 0.8s;
-    opacity: 0;
-  }
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+}
 
-  /* Floating animation */
-  @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0px);
-    }
-    50% {
-      transform: translateY(-20px);
-    }
-  }
+.float-animation {
+    animation: float 5s ease-in-out infinite;
+}
 
-  .float-animation {
-    animation: float 6s ease-in-out infinite;
-  }
-
-  /* Card hover effect - Green Theme */
-  .feature-card {
+/* Card hover */
+.feature-card {
     transition: all 0.3s ease;
-    border: 1px solid rgba(46, 125, 50, 0.1);
-  }
+}
 
-  .feature-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 25px 50px -12px rgba(46, 125, 50, 0.25);
-    border-color: rgba(46, 125, 50, 0.3);
-  }
+.feature-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px -12px rgba(0,0,0,0.15);
+}
 
-  /* Stat counter animation */
-  @keyframes countUp {
-    from {
-      opacity: 0;
-      transform: scale(0.5);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  .stat-number {
-    animation: countUp 1s ease-out forwards;
-  }
-
-  /* Testimonial card */
-  .testimonial-card {
-    background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
-  }
-
-  /* CTA button pulse - Green */
-  @keyframes pulse {
-    0%,
-    100% {
-      box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.7);
-    }
-    50% {
-      box-shadow: 0 0 0 15px rgba(46, 125, 50, 0);
-    }
-  }
-
-  .pulse-button:hover {
-    animation: pulse 1.5s infinite;
-  }
-
-  /* Gradient text - Green Theme */
-  .gradient-text {
-    background: linear-gradient(135deg, #2E7D32 0%, #4CAF50 50%, #8BC34A 100%);
+/* Gradient text */
+.gradient-text {
+    background: linear-gradient(135deg, #2E7D32 0%, #66BB6A 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-  }
-
-  /* Wave divider */
-  .wave-divider {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    overflow: hidden;
-    line-height: 0;
-  }
-
-  .wave-divider svg {
-    position: relative;
-    display: block;
-    width: calc(100% + 1.3px);
-    height: 80px;
-  }
-
-  .wave-divider .shape-fill {
-    fill: #ffffff;
-  }
-
-  /* Dark mode wave */
-  .dark .wave-divider .shape-fill {
-    fill: #1f2937;
-  }
+}
 </style>
-{% endblock %} {% block content %}
-<!-- Hero Section -->
-<section
-  class="relative hero-gradient min-h-screen flex items-center overflow-hidden"
->
-  <!-- Decorative elements -->
-  <div
-    class="absolute top-20 left-10 w-72 h-72 bg-white/10 rounded-full blur-3xl float-animation"
-  ></div>
-  <div
-    class="absolute bottom-20 right-10 w-96 h-96 bg-emerald-300/20 rounded-full blur-3xl float-animation"
-    style="animation-delay: 2s"
-  ></div>
+{% endblock %}
 
-  <div class="container mx-auto px-4 py-20 relative z-10">
-    <div class="flex flex-col lg:flex-row items-center justify-between gap-12">
-      <!-- Hero Text -->
-      <div class="lg:w-1/2 text-center lg:text-left">
-        <div class="fade-in-up">
-          <span
-            class="inline-block px-4 py-2 rounded-full bg-white/20 text-white text-sm font-medium mb-6"
-          >
-            🎓 Platform Belajar #1 untuk SD
-          </span>
-        </div>
-
-        <h1
-          class="fade-in-up fade-in-up-delay-1 text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6"
-        >
-          Wujudkan Masa Depan
-          <span class="text-yellow-300">Cerah</span>
-          Anak Anda
-        </h1>
-
-        <p
-          class="fade-in-up fade-in-up-delay-2 text-lg md:text-xl text-white/90 mb-8 max-w-xl mx-auto lg:mx-0"
-        >
-          Bank Soal SD membantu anak-anak belajar dengan cara yang menyenangkan,
-          terstruktur, dan sesuai kurikulum. Pantau perkembangan belajar mereka
-          secara real-time!
-        </p>
-
-        <div
-          class="fade-in-up fade-in-up-delay-3 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
-        >
-          {% if user.is_authenticated %}
-          <a
-            href="{% url 'core:dashboard' %}"
-            class="pulse-button inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-green-600 bg-white rounded-xl hover:bg-gray-100 transition-all shadow-lg hover:shadow-xl"
-          >
-            <svg
-              class="w-5 h-5 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-              />
-            </svg>
-            Masuk ke Dashboard
-          </a>
-          {% else %}
-          <a
-            href="{% url 'students:register' %}"
-            class="pulse-button inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-green-600 bg-white rounded-xl hover:bg-gray-100 transition-all shadow-lg hover:shadow-xl"
-          >
-            <svg
-              class="w-5 h-5 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-              />
-            </svg>
-            Daftar Gratis
-          </a>
-          <a
-            href="{% url 'login' %}"
-            class="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-white border-2 border-white/50 rounded-xl hover:bg-white/10 transition-all"
-          >
-            Sudah Punya Akun? Masuk
-          </a>
-          {% endif %}
-        </div>
-
-        <!-- Trust badges -->
-        <div
-          class="fade-in-up fade-in-up-delay-4 mt-10 flex items-center justify-center lg:justify-start gap-6 text-white/80"
-        >
-          <div class="flex items-center gap-2">
-            <svg
-              class="w-5 h-5 text-green-300"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                clip-rule="evenodd"
-              />
-            </svg>
-            <span class="text-sm">Gratis</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <svg
-              class="w-5 h-5 text-green-300"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                clip-rule="evenodd"
-              />
-            </svg>
-            <span class="text-sm">Tanpa Iklan</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <svg
-              class="w-5 h-5 text-green-300"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                clip-rule="evenodd"
-              />
-            </svg>
-            <span class="text-sm">Aman untuk Anak</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Hero Image/Illustration -->
-      <div class="lg:w-1/2 fade-in-up fade-in-up-delay-2">
-        <div class="relative">
-          <!-- Main card -->
-          <div class="bg-white rounded-3xl shadow-2xl p-6 float-animation">
-            <div class="flex items-center gap-4 mb-4">
-              <div
-                class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center"
-              >
-                <span class="text-white text-xl">👧</span>
-              </div>
-              <div>
-                <p class="font-bold text-gray-800">Putri Amelia</p>
-                <p class="text-sm text-gray-500">Kelas 3 SD</p>
-              </div>
-              <div class="ml-auto">
-                <span
-                  class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium"
-                  >⭐ 95 Poin</span
-                >
-              </div>
-            </div>
-            <div
-              class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-4"
-            >
-              <div class="flex justify-between items-center mb-3">
-                <span class="text-gray-600 font-medium"
-                  >Progress Minggu Ini</span
-                >
-                <span class="text-green-600 font-bold">85%</span>
-              </div>
-              <div class="w-full bg-gray-200 rounded-full h-3">
-                <div
-                  class="bg-gradient-to-r from-green-500 to-emerald-600 h-3 rounded-full"
-                  style="width: 85%"
-                ></div>
-              </div>
-              <div class="mt-4 grid grid-cols-3 gap-3 text-center">
-                <div class="bg-white rounded-xl p-3">
-                  <p class="text-2xl font-bold text-green-600">12</p>
-                  <p class="text-xs text-gray-500">Kuis Selesai</p>
+{% block content %}
+<!-- Hero Section - Full Width -->
+<section class="hero-gradient min-h-screen flex items-center relative overflow-hidden">
+    <!-- Decorative circles -->
+    <div class="absolute top-20 left-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-20 right-20 w-80 h-80 bg-green-300/10 rounded-full blur-3xl"></div>
+    
+    <div class="w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-16 py-24">
+        <div class="flex flex-col lg:flex-row items-center justify-between gap-16">
+            <!-- Hero Text -->
+            <div class="lg:w-1/2 text-center lg:text-left">
+                <div class="fade-in-up">
+                    <span class="inline-block px-5 py-2 rounded-full bg-white/20 text-white text-sm font-medium mb-8">
+                        ✨ Platform Belajar #1 untuk SD
+                    </span>
                 </div>
-                <div class="bg-white rounded-xl p-3">
-                  <p class="text-2xl font-bold text-green-600">94%</p>
-                  <p class="text-xs text-gray-500">Akurasi</p>
+                
+                <h1 class="fade-in-up fade-in-up-delay-1 text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-8">
+                    Wujudkan Masa Depan 
+                    <span class="text-yellow-300">Cerah</span> 
+                    Anak Anda
+                </h1>
+                
+                <p class="fade-in-up fade-in-up-delay-2 text-lg md:text-xl text-white/90 mb-10 max-w-lg mx-auto lg:mx-0 leading-relaxed">
+                    Bank Soal SD membantu anak-anak belajar dengan cara yang menyenangkan, terstruktur, dan sesuai kurikulum. Pantau perkembangan belajar mereka secara real-time!
+                </p>
+                
+                <div class="fade-in-up fade-in-up-delay-3 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'core:dashboard' %}" class="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-green-700 bg-white rounded-xl hover:bg-gray-100 transition-all shadow-lg">
+                        → Masuk ke Dashboard
+                    </a>
+                    {% else %}
+                    <a href="{% url 'students:register' %}" class="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-green-700 bg-white rounded-xl hover:bg-gray-100 transition-all shadow-lg">
+                        + Daftar Gratis
+                    </a>
+                    <a href="{% url 'login' %}" class="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-white border-2 border-white/40 rounded-xl hover:bg-white/10 transition-all">
+                        Sudah Punya Akun? Masuk
+                    </a>
+                    {% endif %}
                 </div>
-                <div class="bg-white rounded-xl p-3">
-                  <p class="text-2xl font-bold text-emerald-600">🏆</p>
-                  <p class="text-xs text-gray-500">Top 10</p>
+                
+                <!-- Trust badges -->
+                <div class="fade-in-up fade-in-up-delay-3 mt-12 flex items-center justify-center lg:justify-start gap-8 text-white/80 text-sm">
+                    <span>✓ Gratis</span>
+                    <span>✓ Tanpa Iklan</span>
+                    <span>✓ Aman untuk Anak</span>
                 </div>
-              </div>
             </div>
-          </div>
-
-          <!-- Floating notification -->
-          <div
-            class="absolute -top-4 -right-4 bg-white rounded-2xl shadow-xl p-4 float-animation"
-            style="animation-delay: 1s"
-          >
-            <div class="flex items-center gap-3">
-              <div
-                class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center"
-              >
-                <span class="text-green-600 text-xl">✓</span>
-              </div>
-              <div>
-                <p class="font-medium text-gray-800 text-sm">Kuis Selesai!</p>
-                <p class="text-xs text-gray-500">Matematika - 100%</p>
-              </div>
+            
+            <!-- Hero Card -->
+            <div class="lg:w-1/2 fade-in-up fade-in-up-delay-2">
+                <div class="bg-white rounded-3xl shadow-2xl p-8 float-animation max-w-md mx-auto">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-14 h-14 bg-green-500 rounded-full flex items-center justify-center text-2xl">
+                            👧
+                        </div>
+                        <div>
+                            <p class="font-bold text-gray-800 text-lg">Putri Amelia</p>
+                            <p class="text-gray-500">Kelas 3 SD</p>
+                        </div>
+                        <span class="ml-auto px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-medium">
+                            ⭐ 95 Poin
+                        </span>
+                    </div>
+                    <div class="bg-gray-50 rounded-2xl p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-gray-600 font-medium">Progress Minggu Ini</span>
+                            <span class="text-green-600 font-bold text-lg">85%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3 mb-6">
+                            <div class="bg-green-500 h-3 rounded-full" style="width: 85%"></div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-4 text-center">
+                            <div class="bg-white rounded-xl p-4 shadow-sm">
+                                <p class="text-2xl font-bold text-green-600">12</p>
+                                <p class="text-xs text-gray-500 mt-1">Kuis Selesai</p>
+                            </div>
+                            <div class="bg-white rounded-xl p-4 shadow-sm">
+                                <p class="text-2xl font-bold text-blue-600">94%</p>
+                                <p class="text-xs text-gray-500 mt-1">Akurasi</p>
+                            </div>
+                            <div class="bg-white rounded-xl p-4 shadow-sm">
+                                <p class="text-2xl font-bold text-orange-500">🏆</p>
+                                <p class="text-xs text-gray-500 mt-1">Top 10</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
-
-  <!-- Wave divider -->
-  <div class="wave-divider">
-    <svg
-      data-name="Layer 1"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 1200 120"
-      preserveAspectRatio="none"
-    >
-      <path
-        d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
-        class="shape-fill"
-      ></path>
-    </svg>
-  </div>
 </section>
 
 <!-- Stats Section -->
-<section class="py-16 bg-white dark:bg-gray-800">
-  <div class="container mx-auto px-4">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-      <div class="text-center">
-        <div
-          class="stat-number text-4xl md:text-5xl font-extrabold gradient-text mb-2"
-        >
-          500+
-        </div>
-        <p class="text-gray-600 dark:text-gray-400">Soal Berkualitas</p>
-      </div>
-      <div class="text-center">
-        <div
-          class="stat-number text-4xl md:text-5xl font-extrabold gradient-text mb-2"
-        >
-          6
-        </div>
-        <p class="text-gray-600 dark:text-gray-400">Kelas Tersedia</p>
-      </div>
-      <div class="text-center">
-        <div
-          class="stat-number text-4xl md:text-5xl font-extrabold gradient-text mb-2"
-        >
-          10+
-        </div>
-        <p class="text-gray-600 dark:text-gray-400">Mata Pelajaran</p>
-      </div>
-      <div class="text-center">
-        <div
-          class="stat-number text-4xl md:text-5xl font-extrabold gradient-text mb-2"
-        >
-          100%
-        </div>
-        <p class="text-gray-600 dark:text-gray-400">Sesuai Kurikulum</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Why Choose Us Section -->
-<section class="py-20 bg-gray-50 dark:bg-gray-900">
-  <div class="container mx-auto px-4">
-    <div class="text-center mb-16">
-      <span
-        class="inline-block px-4 py-2 rounded-full bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300 text-sm font-medium mb-4"
-      >
-        Mengapa Memilih Kami?
-      </span>
-      <h2
-        class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-4"
-      >
-        Fitur Unggulan untuk
-        <span class="gradient-text">Tumbuh Kembang</span> Anak
-      </h2>
-      <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-        Kami memahami kebutuhan orang tua modern. Platform kami dirancang khusus
-        untuk membantu anak belajar dengan efektif sambil Anda tetap dapat
-        memantau perkembangannya.
-      </p>
-    </div>
-
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <!-- Feature 1 -->
-      <div class="feature-card bg-white dark:bg-gray-800 rounded-2xl p-8">
-        <div
-          class="w-14 h-14 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-2xl flex items-center justify-center mb-6"
-        >
-          <svg
-            class="w-7 h-7 text-white"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
-            />
-          </svg>
-        </div>
-        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
-          Kuis Interaktif
-        </h3>
-        <p class="text-gray-600 dark:text-gray-400">
-          Soal-soal yang menarik dan interaktif membuat anak semangat belajar
-          tanpa merasa bosan.
-        </p>
-      </div>
-
-      <!-- Feature 2 -->
-      <div class="feature-card bg-white dark:bg-gray-800 rounded-2xl p-8">
-        <div
-          class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-pink-400 rounded-2xl flex items-center justify-center mb-6"
-        >
-          <svg
-            class="w-7 h-7 text-white"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-            />
-          </svg>
-        </div>
-        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
-          Analisis Progress
-        </h3>
-        <p class="text-gray-600 dark:text-gray-400">
-          Pantau perkembangan belajar anak secara real-time dengan grafik dan
-          statistik yang mudah dipahami.
-        </p>
-      </div>
-
-      <!-- Feature 3 -->
-      <div class="feature-card bg-white dark:bg-gray-800 rounded-2xl p-8">
-        <div
-          class="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-400 rounded-2xl flex items-center justify-center mb-6"
-        >
-          <svg
-            class="w-7 h-7 text-white"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-            />
-          </svg>
-        </div>
-        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
-          Sesuai Kurikulum
-        </h3>
-        <p class="text-gray-600 dark:text-gray-400">
-          Materi disusun berdasarkan Kurikulum Merdeka, memastikan anak belajar
-          sesuai standar pendidikan nasional.
-        </p>
-      </div>
-
-      <!-- Feature 4 -->
-      <div class="feature-card bg-white dark:bg-gray-800 rounded-2xl p-8">
-        <div
-          class="w-14 h-14 bg-gradient-to-br from-orange-500 to-yellow-400 rounded-2xl flex items-center justify-center mb-6"
-        >
-          <svg
-            class="w-7 h-7 text-white"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-            />
-          </svg>
-        </div>
-        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
-          Mode Orang Tua
-        </h3>
-        <p class="text-gray-600 dark:text-gray-400">
-          Orang tua dapat mendampingi anak mengerjakan kuis dan melihat area
-          yang perlu ditingkatkan.
-        </p>
-      </div>
-
-      <!-- Feature 5 -->
-      <div class="feature-card bg-white dark:bg-gray-800 rounded-2xl p-8">
-        <div
-          class="w-14 h-14 bg-gradient-to-br from-red-500 to-rose-400 rounded-2xl flex items-center justify-center mb-6"
-        >
-          <svg
-            class="w-7 h-7 text-white"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-            />
-          </svg>
-        </div>
-        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
-          Aman & Terpercaya
-        </h3>
-        <p class="text-gray-600 dark:text-gray-400">
-          Platform tanpa iklan dan konten aman untuk anak. Data pribadi dijaga
-          dengan keamanan tingkat tinggi.
-        </p>
-      </div>
-
-      <!-- Feature 6 -->
-      <div class="feature-card bg-white dark:bg-gray-800 rounded-2xl p-8">
-        <div
-          class="w-14 h-14 bg-gradient-to-br from-green-500 to-teal-400 rounded-2xl flex items-center justify-center mb-6"
-        >
-          <svg
-            class="w-7 h-7 text-white"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-        </div>
-        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
-          Belajar Kapan Saja
-        </h3>
-        <p class="text-gray-600 dark:text-gray-400">
-          Akses 24/7 dari mana saja. Belajar bisa dilakukan di rumah, di
-          perjalanan, atau di mana pun.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- How It Works Section -->
 <section class="py-20 bg-white dark:bg-gray-800">
-  <div class="container mx-auto px-4">
-    <div class="text-center mb-16">
-      <span
-        class="inline-block px-4 py-2 rounded-full bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300 text-sm font-medium mb-4"
-      >
-        Mudah Digunakan
-      </span>
-      <h2
-        class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-4"
-      >
-        Mulai dalam <span class="gradient-text">3 Langkah</span> Mudah
-      </h2>
+    <div class="max-w-6xl mx-auto px-6 md:px-12">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-10">
+            <div class="text-center">
+                <div class="text-4xl md:text-5xl font-bold gradient-text mb-3">500+</div>
+                <p class="text-gray-600 dark:text-gray-400">Soal Berkualitas</p>
+            </div>
+            <div class="text-center">
+                <div class="text-4xl md:text-5xl font-bold gradient-text mb-3">6</div>
+                <p class="text-gray-600 dark:text-gray-400">Kelas Tersedia</p>
+            </div>
+            <div class="text-center">
+                <div class="text-4xl md:text-5xl font-bold gradient-text mb-3">10+</div>
+                <p class="text-gray-600 dark:text-gray-400">Mata Pelajaran</p>
+            </div>
+            <div class="text-center">
+                <div class="text-4xl md:text-5xl font-bold gradient-text mb-3">100%</div>
+                <p class="text-gray-600 dark:text-gray-400">Sesuai Kurikulum</p>
+            </div>
+        </div>
     </div>
-
-    <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-      <!-- Step 1 -->
-      <div class="text-center">
-        <div
-          class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg"
-        >
-          1
-        </div>
-        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
-          Daftar Akun
-        </h3>
-        <p class="text-gray-600 dark:text-gray-400">
-          Buat akun gratis untuk anak atau orang tua. Proses cepat, hanya butuh
-          beberapa menit.
-        </p>
-      </div>
-
-      <!-- Arrow -->
-      <div class="hidden md:flex items-center justify-center">
-        <svg
-          class="w-12 h-12 text-gray-300"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M17 8l4 4m0 0l-4 4m4-4H3"
-          />
-        </svg>
-      </div>
-
-      <!-- Step 2 -->
-      <div class="text-center">
-        <div
-          class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg"
-        >
-          2
-        </div>
-        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
-          Pilih Kuis
-        </h3>
-        <p class="text-gray-600 dark:text-gray-400">
-          Pilih mata pelajaran dan tingkat kesulitan sesuai kemampuan anak.
-        </p>
-      </div>
-
-      <!-- Arrow -->
-      <div class="hidden md:flex items-center justify-center">
-        <svg
-          class="w-12 h-12 text-gray-300"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M17 8l4 4m0 0l-4 4m4-4H3"
-          />
-        </svg>
-      </div>
-
-      <!-- Step 3 -->
-      <div class="text-center">
-        <div
-          class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg"
-        >
-          3
-        </div>
-        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
-          Lihat Hasil
-        </h3>
-        <p class="text-gray-600 dark:text-gray-400">
-          Dapatkan hasil instan dan analisis detail untuk melihat perkembangan
-          belajar.
-        </p>
-      </div>
-    </div>
-  </div>
 </section>
 
-<!-- Testimonials Section -->
-<section
-  class="py-20 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-gray-900 dark:to-gray-800"
->
-  <div class="container mx-auto px-4">
-    <div class="text-center mb-16">
-      <span
-        class="inline-block px-4 py-2 rounded-full bg-purple-100 dark:bg-purple-900 text-emerald-600 dark:text-emerald-300 text-sm font-medium mb-4"
-      >
-        Testimoni
-      </span>
-      <h2
-        class="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-4"
-      >
-        Apa Kata <span class="gradient-text">Orang Tua</span> Kami?
-      </h2>
-    </div>
-
-    <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-      <!-- Testimonial 1 -->
-      <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg">
-        <div class="flex items-center gap-1 mb-4">
-          {% for i in "12345" %}
-          <svg
-            class="w-5 h-5 text-yellow-400"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path
-              d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-            />
-          </svg>
-          {% endfor %}
-        </div>
-        <p class="text-gray-600 dark:text-gray-400 mb-6 italic">
-          "Anak saya jadi lebih semangat belajar! Fitur analisisnya sangat
-          membantu saya memahami di mana dia perlu bimbingan lebih."
-        </p>
-        <div class="flex items-center gap-4">
-          <div
-            class="w-12 h-12 bg-gradient-to-br from-pink-400 to-rose-500 rounded-full flex items-center justify-center text-white font-bold"
-          >
-            SR
-          </div>
-          <div>
-            <p class="font-bold text-gray-900 dark:text-white">Siti Rahayu</p>
-            <p class="text-sm text-gray-500">Ibu dari 2 anak SD</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Testimonial 2 -->
-      <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg">
-        <div class="flex items-center gap-1 mb-4">
-          {% for i in "12345" %}
-          <svg
-            class="w-5 h-5 text-yellow-400"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path
-              d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-            />
-          </svg>
-          {% endfor %}
-        </div>
-        <p class="text-gray-600 dark:text-gray-400 mb-6 italic">
-          "Sangat praktis! Saya bisa memantau progress belajar anak dari kantor.
-          Soal-soalnya juga berkualitas dan sesuai kurikulum."
-        </p>
-        <div class="flex items-center gap-4">
-          <div
-            class="w-12 h-12 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold"
-          >
-            BP
-          </div>
-          <div>
-            <p class="font-bold text-gray-900 dark:text-white">Budi Pratama</p>
-            <p class="text-sm text-gray-500">Ayah dari anak kelas 4</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Testimonial 3 -->
-      <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg">
-        <div class="flex items-center gap-1 mb-4">
-          {% for i in "12345" %}
-          <svg
-            class="w-5 h-5 text-yellow-400"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path
-              d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-            />
-          </svg>
-          {% endfor %}
-        </div>
-        <p class="text-gray-600 dark:text-gray-400 mb-6 italic">
-          "Mode proxy untuk orang tua sangat berguna! Saya bisa mendampingi anak
-          belajar sambil melihat langsung kesulitannya."
-        </p>
-        <div class="flex items-center gap-4">
-          <div
-            class="w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center text-white font-bold"
-          >
-            AN
-          </div>
-          <div>
-            <p class="font-bold text-gray-900 dark:text-white">
-              Anita Nurhayati
+<!-- Features Section -->
+<section class="py-24 bg-gray-50 dark:bg-gray-900">
+    <div class="max-w-6xl mx-auto px-6 md:px-12">
+        <div class="text-center mb-16">
+            <span class="inline-block px-5 py-2 rounded-full bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-sm font-medium mb-6">
+                Mengapa Memilih Kami?
+            </span>
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
+                Fitur Unggulan untuk <span class="gradient-text">Tumbuh Kembang</span> Anak
+            </h2>
+            <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                Platform kami dirancang khusus untuk membantu anak belajar dengan efektif sambil Anda tetap dapat memantau perkembangannya.
             </p>
-            <p class="text-sm text-gray-500">Ibu rumah tangga</p>
-          </div>
         </div>
-      </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Feature Cards with Emoji Icons -->
+            <div class="feature-card bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700">
+                <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6 text-3xl">
+                    📝
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Kuis Interaktif</h3>
+                <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Soal-soal yang menarik dan interaktif membuat anak semangat belajar tanpa merasa bosan.</p>
+            </div>
+            
+            <div class="feature-card bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700">
+                <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mb-6 text-3xl">
+                    📊
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Analisis Progress</h3>
+                <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Pantau perkembangan belajar anak secara real-time dengan grafik dan statistik yang mudah dipahami.</p>
+            </div>
+            
+            <div class="feature-card bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700">
+                <div class="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mb-6 text-3xl">
+                    📚
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Sesuai Kurikulum</h3>
+                <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Materi disusun berdasarkan Kurikulum Merdeka, memastikan anak belajar sesuai standar nasional.</p>
+            </div>
+            
+            <div class="feature-card bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700">
+                <div class="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mb-6 text-3xl">
+                    👨‍👩‍👧
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Mode Orang Tua</h3>
+                <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Orang tua dapat mendampingi anak mengerjakan kuis dan melihat area yang perlu ditingkatkan.</p>
+            </div>
+            
+            <div class="feature-card bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700">
+                <div class="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mb-6 text-3xl">
+                    🔒
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Aman & Terpercaya</h3>
+                <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Platform tanpa iklan dan konten aman untuk anak. Data pribadi dijaga dengan keamanan tinggi.</p>
+            </div>
+            
+            <div class="feature-card bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700">
+                <div class="w-16 h-16 bg-cyan-100 rounded-2xl flex items-center justify-center mb-6 text-3xl">
+                    🕐
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Belajar Kapan Saja</h3>
+                <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Akses 24/7 dari mana saja. Belajar bisa dilakukan di rumah, di perjalanan, atau di mana pun.</p>
+            </div>
+        </div>
     </div>
-  </div>
+</section>
+
+<!-- How It Works -->
+<section class="py-24 bg-white dark:bg-gray-800">
+    <div class="max-w-5xl mx-auto px-6 md:px-12">
+        <div class="text-center mb-16">
+            <span class="inline-block px-5 py-2 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-sm font-medium mb-6">
+                Mudah Digunakan
+            </span>
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
+                Mulai dalam <span class="gradient-text">3 Langkah</span> Mudah
+            </h2>
+        </div>
+        
+        <div class="grid md:grid-cols-3 gap-12">
+            <div class="text-center">
+                <div class="w-20 h-20 mx-auto mb-8 bg-green-500 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg">
+                    1
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Daftar Akun</h3>
+                <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Buat akun gratis untuk anak atau orang tua. Proses cepat, hanya butuh beberapa menit.</p>
+            </div>
+            
+            <div class="text-center">
+                <div class="w-20 h-20 mx-auto mb-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg">
+                    2
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Pilih Kuis</h3>
+                <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Pilih mata pelajaran dan tingkat kesulitan sesuai kemampuan anak.</p>
+            </div>
+            
+            <div class="text-center">
+                <div class="w-20 h-20 mx-auto mb-8 bg-orange-500 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg">
+                    3
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Lihat Hasil</h3>
+                <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Dapatkan hasil instan dan analisis detail untuk melihat perkembangan belajar.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+<section class="py-24 bg-green-50 dark:bg-gray-900">
+    <div class="max-w-6xl mx-auto px-6 md:px-12">
+        <div class="text-center mb-16">
+            <span class="inline-block px-5 py-2 rounded-full bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-sm font-medium mb-6">
+                Testimoni
+            </span>
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
+                Apa Kata <span class="gradient-text">Orang Tua</span> Kami?
+            </h2>
+        </div>
+        
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm">
+                <div class="flex items-center gap-1 mb-6 text-yellow-400 text-xl">
+                    ★★★★★
+                </div>
+                <p class="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed italic">
+                    "Anak saya jadi lebih semangat belajar! Fitur analisisnya sangat membantu saya memahami di mana dia perlu bimbingan lebih."
+                </p>
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-pink-500 rounded-full flex items-center justify-center text-white font-bold">
+                        SR
+                    </div>
+                    <div>
+                        <p class="font-bold text-gray-900 dark:text-white">Siti Rahayu</p>
+                        <p class="text-sm text-gray-500">Ibu dari 2 anak SD</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm">
+                <div class="flex items-center gap-1 mb-6 text-yellow-400 text-xl">
+                    ★★★★★
+                </div>
+                <p class="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed italic">
+                    "Sangat praktis! Saya bisa memantau progress belajar anak dari kantor. Soal-soalnya juga berkualitas dan sesuai kurikulum."
+                </p>
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">
+                        BP
+                    </div>
+                    <div>
+                        <p class="font-bold text-gray-900 dark:text-white">Budi Pratama</p>
+                        <p class="text-sm text-gray-500">Ayah dari anak kelas 4</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm">
+                <div class="flex items-center gap-1 mb-6 text-yellow-400 text-xl">
+                    ★★★★★
+                </div>
+                <p class="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed italic">
+                    "Mode proxy untuk orang tua sangat berguna! Saya bisa mendampingi anak belajar sambil melihat langsung kesulitannya."
+                </p>
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">
+                        AN
+                    </div>
+                    <div>
+                        <p class="font-bold text-gray-900 dark:text-white">Anita Nurhayati</p>
+                        <p class="text-sm text-gray-500">Ibu rumah tangga</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 
 <!-- CTA Section -->
-<section class="py-20 hero-gradient relative overflow-hidden">
-  <div class="absolute top-0 left-0 w-full h-full opacity-10">
-    <div
-      class="absolute top-10 left-10 w-40 h-40 bg-white rounded-full blur-3xl"
-    ></div>
-    <div
-      class="absolute bottom-10 right-10 w-60 h-60 bg-white rounded-full blur-3xl"
-    ></div>
-  </div>
-
-  <div class="container mx-auto px-4 relative z-10">
-    <div class="max-w-3xl mx-auto text-center">
-      <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-6">
-        Siap Membantu Anak Anda Berprestasi?
-      </h2>
-      <p class="text-xl text-white/90 mb-10">
-        Bergabunglah sekarang dan berikan yang terbaik untuk masa depan
-        pendidikan anak Anda. Gratis selamanya!
-      </p>
-
-      {% if not user.is_authenticated %}
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a
-          href="{% url 'students:register' %}"
-          class="pulse-button inline-flex items-center justify-center px-10 py-5 text-xl font-bold text-green-600 bg-white rounded-xl hover:bg-gray-100 transition-all shadow-2xl hover:shadow-xl"
-        >
-          <svg
-            class="w-6 h-6 mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-            />
-          </svg>
-          Daftar Gratis Sekarang
+<section class="py-24 hero-gradient">
+    <div class="max-w-4xl mx-auto px-6 md:px-12 text-center">
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-8">
+            Siap Membantu Anak Anda Berprestasi?
+        </h2>
+        <p class="text-xl text-white/90 mb-12 max-w-2xl mx-auto leading-relaxed">
+            Bergabunglah sekarang dan berikan yang terbaik untuk masa depan pendidikan anak Anda. Gratis selamanya!
+        </p>
+        
+        {% if not user.is_authenticated %}
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{% url 'students:register' %}" class="inline-flex items-center justify-center px-10 py-5 text-xl font-bold text-green-700 bg-white rounded-xl hover:bg-gray-100 transition-all shadow-xl">
+                + Daftar Gratis Sekarang
+            </a>
+            <a href="{% url 'students:register_parent' %}" class="inline-flex items-center justify-center px-10 py-5 text-xl font-medium text-white border-2 border-white/40 rounded-xl hover:bg-white/10 transition-all">
+                Daftar sebagai Orang Tua
+            </a>
+        </div>
+        {% else %}
+        <a href="{% url 'core:dashboard' %}" class="inline-flex items-center justify-center px-10 py-5 text-xl font-bold text-green-700 bg-white rounded-xl hover:bg-gray-100 transition-all shadow-xl">
+            Masuk ke Dashboard →
         </a>
-        <a
-          href="{% url 'students:register_parent' %}"
-          class="inline-flex items-center justify-center px-10 py-5 text-xl font-medium text-white border-2 border-white/50 rounded-xl hover:bg-white/10 transition-all"
-        >
-          Daftar sebagai Orang Tua
-        </a>
-      </div>
-      {% else %}
-      <a
-        href="{% url 'core:dashboard' %}"
-        class="pulse-button inline-flex items-center justify-center px-10 py-5 text-xl font-bold text-green-600 bg-white rounded-xl hover:bg-gray-100 transition-all shadow-2xl hover:shadow-xl"
-      >
-        Masuk ke Dashboard
-        <svg
-          class="w-6 h-6 ml-2"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M17 8l4 4m0 0l-4 4m4-4H3"
-          />
-        </svg>
-      </a>
-      {% endif %}
+        {% endif %}
     </div>
-  </div>
 </section>
 
 <!-- Footer -->
-<footer class="bg-gray-900 text-white py-12">
-  <div class="container mx-auto px-4">
-    <div class="grid md:grid-cols-4 gap-8">
-      <div>
-        <h3 class="text-xl font-bold mb-4 gradient-text">Bank Soal SD</h3>
-        <p class="text-gray-400">
-          Platform belajar terbaik untuk anak SD Indonesia. Sesuai kurikulum,
-          aman, dan menyenangkan.
-        </p>
-      </div>
-      <div>
-        <h4 class="font-bold mb-4">Menu</h4>
-        <ul class="space-y-2 text-gray-400">
-          <li>
-            <a href="{% url 'login' %}" class="hover:text-white transition"
-              >Masuk</a
-            >
-          </li>
-          <li>
-            <a
-              href="{% url 'students:register' %}"
-              class="hover:text-white transition"
-              >Daftar Siswa</a
-            >
-          </li>
-          <li>
-            <a
-              href="{% url 'students:register_parent' %}"
-              class="hover:text-white transition"
-              >Daftar Orang Tua</a
-            >
-          </li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="font-bold mb-4">Fitur</h4>
-        <ul class="space-y-2 text-gray-400">
-          <li>Kuis Interaktif</li>
-          <li>Analisis Progress</li>
-          <li>Mode Orang Tua</li>
-          <li>Sesuai Kurikulum</li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="font-bold mb-4">Kontak</h4>
-        <ul class="space-y-2 text-gray-400">
-          <li>📧 info@banksoalsd.com</li>
-          <li>📱 +62 812 3456 7890</li>
-        </ul>
-      </div>
+<footer class="bg-gray-900 text-white py-16">
+    <div class="max-w-6xl mx-auto px-6 md:px-12">
+        <div class="grid md:grid-cols-4 gap-10">
+            <div>
+                <h3 class="text-xl font-bold mb-6 gradient-text">Bank Soal SD</h3>
+                <p class="text-gray-400 leading-relaxed">Platform belajar terbaik untuk anak SD Indonesia. Sesuai kurikulum, aman, dan menyenangkan.</p>
+            </div>
+            <div>
+                <h4 class="font-bold mb-6">Menu</h4>
+                <ul class="space-y-3 text-gray-400">
+                    <li><a href="{% url 'login' %}" class="hover:text-white transition">Masuk</a></li>
+                    <li><a href="{% url 'students:register' %}" class="hover:text-white transition">Daftar Siswa</a></li>
+                    <li><a href="{% url 'students:register_parent' %}" class="hover:text-white transition">Daftar Orang Tua</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-6">Fitur</h4>
+                <ul class="space-y-3 text-gray-400">
+                    <li>Kuis Interaktif</li>
+                    <li>Analisis Progress</li>
+                    <li>Mode Orang Tua</li>
+                    <li>Sesuai Kurikulum</li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-6">Kontak</h4>
+                <ul class="space-y-3 text-gray-400">
+                    <li>✉ info@banksoalsd.com</li>
+                    <li>📞 +62 812 3456 7890</li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-500">
+            <p>© 2026 Bank Soal SD. All rights reserved.</p>
+        </div>
     </div>
-    <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500">
-      <p>&copy; 2026 Bank Soal SD. All rights reserved.</p>
-    </div>
-  </div>
 </footer>
 {% endblock %}
