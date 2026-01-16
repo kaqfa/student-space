@@ -1,0 +1,386 @@
+[
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Penjumlahan dan Pengurangan",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "89 + 56 = ...",
+    "options": [
+      "145",
+      "135",
+      "155",
+      "125"
+    ],
+    "answer": "145",
+    "explanation": "89 + 56 = 145"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Penjumlahan dan Pengurangan",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "92 - 47 = ...",
+    "options": [
+      "45",
+      "55",
+      "35",
+      "65"
+    ],
+    "answer": "45",
+    "explanation": "92 - 47 = 45"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Penjumlahan dan Pengurangan",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "156 + 287 = ...",
+    "options": [
+      "443",
+      "433",
+      "453",
+      "423"
+    ],
+    "answer": "443",
+    "explanation": "156 + 287 = 443"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Penjumlahan dan Pengurangan",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "634 - 298 = ...",
+    "options": [
+      "336",
+      "346",
+      "326",
+      "356"
+    ],
+    "answer": "336",
+    "explanation": "634 - 298 = 336"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Perkalian dan Pembagian",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "8 × 9 = ...",
+    "options": [
+      "72",
+      "64",
+      "81",
+      "56"
+    ],
+    "answer": "72",
+    "explanation": "8 × 9 = 72"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Perkalian dan Pembagian",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "63 ÷ 7 = ...",
+    "options": [
+      "9",
+      "8",
+      "7",
+      "10"
+    ],
+    "answer": "9",
+    "explanation": "63 ÷ 7 = 9"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Perkalian dan Pembagian",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "16 × 4 = ...",
+    "options": [
+      "64",
+      "54",
+      "74",
+      "44"
+    ],
+    "answer": "64",
+    "explanation": "16 × 4 = 64"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Perkalian dan Pembagian",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "132 ÷ 11 = ...",
+    "options": [
+      "12",
+      "11",
+      "13",
+      "10"
+    ],
+    "answer": "12",
+    "explanation": "132 ÷ 11 = 12"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Pecahan Sederhana",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "3/4 + 1/4 = ...",
+    "options": [
+      "1",
+      "4/4",
+      "4/8",
+      "2/4"
+    ],
+    "answer": "1",
+    "explanation": "3/4 + 1/4 = 4/4 = 1"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Pecahan Sederhana",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "5/6 - 2/6 = ...",
+    "options": [
+      "3/6",
+      "1/2",
+      "7/6",
+      "3/12"
+    ],
+    "answer": "3/6",
+    "explanation": "5/6 - 2/6 = 3/6"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Bangun Datar",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Berapa jumlah sisi pada persegi panjang?",
+    "options": [
+      "4",
+      "3",
+      "5",
+      "6"
+    ],
+    "answer": "4",
+    "explanation": "Persegi panjang memiliki 4 sisi"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Bangun Datar",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Luas persegi panjang dengan panjang 9 cm dan lebar 4 cm adalah...",
+    "options": [
+      "36 cm²",
+      "26 cm²",
+      "46 cm²",
+      "32 cm²"
+    ],
+    "answer": "36 cm²",
+    "explanation": "Luas = panjang × lebar = 9 × 4 = 36 cm²"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Pengukuran",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "2 meter = ... cm",
+    "options": [
+      "200",
+      "20",
+      "2000",
+      "100"
+    ],
+    "answer": "200",
+    "explanation": "2 meter = 2 × 100 = 200 cm"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Pengukuran",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "3 jam = ... menit",
+    "options": [
+      "180",
+      "300",
+      "120",
+      "240"
+    ],
+    "answer": "180",
+    "explanation": "3 jam = 3 × 60 = 180 menit"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Penjumlahan dan Pengurangan",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Di pasar ada 125 jeruk dan 78 apel. Berapa jumlah buah di pasar?",
+    "options": [
+      "203",
+      "193",
+      "213",
+      "183"
+    ],
+    "answer": "203",
+    "explanation": "125 + 78 = 203 buah"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Penjumlahan dan Pengurangan",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Ibu mempunyai 250 butir telur. Dijual 135 butir. Sisa telur ibu adalah...",
+    "options": [
+      "115",
+      "125",
+      "105",
+      "135"
+    ],
+    "answer": "115",
+    "explanation": "250 - 135 = 115 butir"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Perkalian dan Pembagian",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Ada 8 kotak. Setiap kotak berisi 12 pensil. Berapa jumlah pensil seluruhnya?",
+    "options": [
+      "96",
+      "86",
+      "106",
+      "76"
+    ],
+    "answer": "96",
+    "explanation": "8 × 12 = 96 pensil"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Perkalian dan Pembagian",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "84 permen dibagikan kepada 7 anak sama banyak. Setiap anak mendapat... permen",
+    "options": [
+      "12",
+      "11",
+      "13",
+      "10"
+    ],
+    "answer": "12",
+    "explanation": "84 ÷ 7 = 12 permen"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Bangun Datar",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Keliling persegi dengan panjang sisi 9 cm adalah...",
+    "options": [
+      "36 cm",
+      "27 cm",
+      "45 cm",
+      "18 cm"
+    ],
+    "answer": "36 cm",
+    "explanation": "Keliling = 4 × sisi = 4 × 9 = 36 cm"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Bangun Datar",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Luas persegi dengan panjang sisi 8 cm adalah...",
+    "options": [
+      "64 cm²",
+      "32 cm²",
+      "56 cm²",
+      "72 cm²"
+    ],
+    "answer": "64 cm²",
+    "explanation": "Luas = sisi × sisi = 8 × 8 = 64 cm²"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Pengukuran",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "2 kg = ... gram",
+    "options": [
+      "2000",
+      "200",
+      "20",
+      "20000"
+    ],
+    "answer": "2000",
+    "explanation": "2 kg = 2 × 1000 = 2000 gram"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Pengukuran",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Pukul 14.00 dikurangi 3 jam menjadi pukul...",
+    "options": [
+      "11.00",
+      "12.00",
+      "10.00",
+      "13.00"
+    ],
+    "answer": "11.00",
+    "explanation": "14.00 - 3 jam = 11.00"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Pecahan Sederhana",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Ibu memotong semangka menjadi 10 bagian sama besar. Ayah makan 3 potong, kakak makan 2 potong. Berapa bagian yang sudah dimakan?",
+    "options": [
+      "5/10",
+      "3/10",
+      "2/10",
+      "7/10"
+    ],
+    "answer": "5/10",
+    "explanation": "3 + 2 = 5 potong dari 10 bagian = 5/10"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Pecahan Sederhana",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Pecahan 4/8 sama dengan...",
+    "options": [
+      "1/2",
+      "2/4",
+      "1/4",
+      "3/4"
+    ],
+    "answer": "1/2",
+    "explanation": "4/8 = 1/2 (disederhanakan)"
+  }
+]

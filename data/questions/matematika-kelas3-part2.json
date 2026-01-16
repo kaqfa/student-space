@@ -1,0 +1,514 @@
+[
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Penjumlahan dan Pengurangan",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "56 + 38 = ...",
+    "options": [
+      "94",
+      "84",
+      "104",
+      "74"
+    ],
+    "answer": "94",
+    "explanation": "56 + 38 = 94"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Penjumlahan dan Pengurangan",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "73 - 29 = ...",
+    "options": [
+      "44",
+      "54",
+      "34",
+      "64"
+    ],
+    "answer": "44",
+    "explanation": "73 - 29 = 44"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Penjumlahan dan Pengurangan",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Di kebun ada 42 pohon mangga dan 35 pohon rambutan. Berapa jumlah pohon di kebun?",
+    "options": [
+      "77",
+      "67",
+      "87",
+      "57"
+    ],
+    "answer": "77",
+    "explanation": "42 + 35 = 77 pohon"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Penjumlahan dan Pengurangan",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Ayah membeli 65 jeruk. Diberikan kepada tetangga 28 jeruk. Sisa jeruk ayah adalah...",
+    "options": [
+      "37",
+      "47",
+      "27",
+      "57"
+    ],
+    "answer": "37",
+    "explanation": "65 - 28 = 37 jeruk"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Penjumlahan dan Pengurangan",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "234 + 156 = ...",
+    "options": [
+      "390",
+      "380",
+      "400",
+      "370"
+    ],
+    "answer": "390",
+    "explanation": "234 + 156 = 390"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Penjumlahan dan Pengurangan",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "512 - 278 = ...",
+    "options": [
+      "234",
+      "244",
+      "224",
+      "254"
+    ],
+    "answer": "234",
+    "explanation": "512 - 278 = 234"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Penjumlahan dan Pengurangan",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "128 + 245 + 117 = ...",
+    "options": [
+      "490",
+      "480",
+      "500",
+      "470"
+    ],
+    "answer": "490",
+    "explanation": "128 + 245 + 117 = 490"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Penjumlahan dan Pengurangan",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "400 - 156 - 89 = ...",
+    "options": [
+      "155",
+      "165",
+      "145",
+      "175"
+    ],
+    "answer": "155",
+    "explanation": "400 - 156 - 89 = 155"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Perkalian dan Pembagian",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "3 × 9 = ...",
+    "options": [
+      "27",
+      "24",
+      "30",
+      "21"
+    ],
+    "answer": "27",
+    "explanation": "3 × 9 = 27"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Perkalian dan Pembagian",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "6 × 7 = ...",
+    "options": [
+      "42",
+      "48",
+      "36",
+      "54"
+    ],
+    "answer": "42",
+    "explanation": "6 × 7 = 42"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Perkalian dan Pembagian",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "32 ÷ 4 = ...",
+    "options": [
+      "8",
+      "7",
+      "9",
+      "6"
+    ],
+    "answer": "8",
+    "explanation": "32 ÷ 4 = 8"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Perkalian dan Pembagian",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "54 ÷ 6 = ...",
+    "options": [
+      "9",
+      "8",
+      "10",
+      "7"
+    ],
+    "answer": "9",
+    "explanation": "54 ÷ 6 = 9"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Perkalian dan Pembagian",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Seorang petani menanam 6 baris pohon. Setiap baris ada 15 pohon. Berapa jumlah pohon yang ditanam?",
+    "options": [
+      "90",
+      "80",
+      "100",
+      "85"
+    ],
+    "answer": "90",
+    "explanation": "6 × 15 = 90 pohon"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Perkalian dan Pembagian",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Ada 72 pensil akan dibagikan kepada 8 siswa sama rata. Berapa pensil yang diterima setiap siswa?",
+    "options": [
+      "9",
+      "8",
+      "10",
+      "7"
+    ],
+    "answer": "9",
+    "explanation": "72 ÷ 8 = 9 pensil"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Perkalian dan Pembagian",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "14 × 5 = ...",
+    "options": [
+      "70",
+      "60",
+      "80",
+      "65"
+    ],
+    "answer": "70",
+    "explanation": "14 × 5 = 70"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Perkalian dan Pembagian",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "108 ÷ 9 = ...",
+    "options": [
+      "12",
+      "11",
+      "13",
+      "10"
+    ],
+    "answer": "12",
+    "explanation": "108 ÷ 9 = 12"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Pecahan Sederhana",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Gambar dibagi menjadi 3 bagian sama besar. Satu bagian diwarnai. Pecahan yang tepat adalah...",
+    "options": [
+      "1/3",
+      "1/2",
+      "2/3",
+      "1/4"
+    ],
+    "answer": "1/3",
+    "explanation": "Satu dari tiga bagian = 1/3"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Pecahan Sederhana",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Gambar dibagi menjadi 6 bagian sama besar. Tiga bagian diwarnai. Pecahan yang tepat adalah...",
+    "options": [
+      "3/6",
+      "1/3",
+      "1/2",
+      "2/6"
+    ],
+    "answer": "3/6",
+    "explanation": "Tiga dari enam bagian = 3/6"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Pecahan Sederhana",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Ayah membeli pizza dipotong menjadi 8 bagian. Kakak makan 2 potong. Berapa bagian pizza yang dimakan kakak?",
+    "options": [
+      "2/8",
+      "1/4",
+      "3/8",
+      "1/8"
+    ],
+    "answer": "2/8",
+    "explanation": "Dua dari delapan bagian = 2/8"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Pecahan Sederhana",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Pecahan 2/4 sama dengan...",
+    "options": [
+      "1/2",
+      "1/4",
+      "3/4",
+      "2/3"
+    ],
+    "answer": "1/2",
+    "explanation": "2/4 = 1/2 (disederhanakan)"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Pecahan Sederhana",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Manakah pecahan yang paling kecil?",
+    "options": [
+      "1/4",
+      "1/2",
+      "3/4",
+      "2/4"
+    ],
+    "answer": "1/4",
+    "explanation": "1/4 adalah yang terkecil"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Pecahan Sederhana",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "1/4 + 1/4 = ...",
+    "options": [
+      "2/4",
+      "1/2",
+      "1/4",
+      "3/4"
+    ],
+    "answer": "2/4",
+    "explanation": "1/4 + 1/4 = 2/4"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Bangun Datar",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Bangun datar yang memiliki 3 sisi dan 3 sudut adalah...",
+    "options": [
+      "Segitiga",
+      "Persegi",
+      "Lingkaran",
+      "Persegi panjang"
+    ],
+    "answer": "Segitiga",
+    "explanation": "Segitiga memiliki 3 sisi dan 3 sudut"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Bangun Datar",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Bangun datar yang tidak memiliki sudut adalah...",
+    "options": [
+      "Lingkaran",
+      "Segitiga",
+      "Persegi",
+      "Persegi panjang"
+    ],
+    "answer": "Lingkaran",
+    "explanation": "Lingkaran tidak memiliki sudut"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Bangun Datar",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Keliling persegi dengan panjang sisi 7 cm adalah...",
+    "options": [
+      "28 cm",
+      "21 cm",
+      "35 cm",
+      "14 cm"
+    ],
+    "answer": "28 cm",
+    "explanation": "Keliling = 4 × sisi = 4 × 7 = 28 cm"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Bangun Datar",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Luas persegi dengan panjang sisi 6 cm adalah...",
+    "options": [
+      "36 cm²",
+      "24 cm²",
+      "30 cm²",
+      "42 cm²"
+    ],
+    "answer": "36 cm²",
+    "explanation": "Luas = sisi × sisi = 6 × 6 = 36 cm²"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Bangun Datar",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Keliling persegi panjang dengan panjang 10 cm dan lebar 6 cm adalah...",
+    "options": [
+      "32 cm",
+      "60 cm",
+      "16 cm",
+      "26 cm"
+    ],
+    "answer": "32 cm",
+    "explanation": "Keliling = 2 × (panjang + lebar) = 2 × (10 + 6) = 32 cm"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Pengukuran",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "1 km = ... meter",
+    "options": [
+      "1000",
+      "100",
+      "10",
+      "10000"
+    ],
+    "answer": "1000",
+    "explanation": "1 kilometer = 1000 meter"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Pengukuran",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "1 menit = ... detik",
+    "options": [
+      "60",
+      "100",
+      "30",
+      "120"
+    ],
+    "answer": "60",
+    "explanation": "1 menit = 60 detik"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Pengukuran",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Tinggi meja 80 cm. Tinggi kursi 40 cm. Selisih tinggi meja dan kursi adalah...",
+    "options": [
+      "40 cm",
+      "120 cm",
+      "50 cm",
+      "30 cm"
+    ],
+    "answer": "40 cm",
+    "explanation": "80 - 40 = 40 cm"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Pengukuran",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "500 gram + 500 gram = ... kg",
+    "options": [
+      "1",
+      "2",
+      "0.5",
+      "1.5"
+    ],
+    "answer": "1",
+    "explanation": "500 + 500 = 1000 gram = 1 kg"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Pengukuran",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Pukul 08.30 ditambah 2 jam menjadi pukul...",
+    "options": [
+      "10.30",
+      "10.00",
+      "11.30",
+      "09.30"
+    ],
+    "answer": "10.30",
+    "explanation": "08.30 + 2 jam = 10.30"
+  }
+]

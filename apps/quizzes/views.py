@@ -288,7 +288,7 @@ class QuizTakeView(LoginRequiredMixin, DetailView):
                 answer_given = post_data.get(answer_key, "").strip().upper()
                 
                 is_correct = False
-                if question.question_type == 'CHOICE':
+                if question.question_type == 'pilgan':
                     if answer_given == question.answer_key:
                         is_correct = True
                 
@@ -365,12 +365,15 @@ class QuizResultView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         student, is_proxy = self.get_student()
         
-        session = get_object_or_404(
-            QuizSession, 
+        # Get the most recent completed session (allows retakes)
+        session = QuizSession.objects.filter(
             quiz=self.object, 
             student=student, 
             completed_at__isnull=False
-        )
+        ).order_by('-completed_at').first()
+        
+        if not session:
+            raise Http404("Belum ada hasil kuis yang tersedia.")
         context['session'] = session
         context['attempts'] = session.attempts.select_related('question').all()
         context['student'] = student

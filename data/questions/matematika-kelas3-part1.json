@@ -1,0 +1,546 @@
+[
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Penjumlahan dan Pengurangan",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Berapa hasil dari 45 + 23?",
+    "options": [
+      "68",
+      "78",
+      "58",
+      "88"
+    ],
+    "answer": "68",
+    "explanation": "45 + 23 = 68"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Penjumlahan dan Pengurangan",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Ani mempunyai 35 kelereng. Kemudian dia mendapat 17 kelereng lagi dari temannya. Berapa jumlah kelereng Ani sekarang?",
+    "options": [
+      "42",
+      "52",
+      "62",
+      "72"
+    ],
+    "answer": "52",
+    "explanation": "35 + 17 = 52 kelereng"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Penjumlahan dan Pengurangan",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Berapa hasil dari 87 - 34?",
+    "options": [
+      "53",
+      "63",
+      "43",
+      "73"
+    ],
+    "answer": "53",
+    "explanation": "87 - 34 = 53"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Penjumlahan dan Pengurangan",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Di dalam kelas ada 28 siswa. Kemudian 5 siswa pulang lebih awal. Berapa siswa yang masih ada di kelas?",
+    "options": [
+      "23",
+      "33",
+      "13",
+      "43"
+    ],
+    "answer": "23",
+    "explanation": "28 - 5 = 23 siswa"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Penjumlahan dan Pengurangan",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "125 + 238 = ...",
+    "options": [
+      "363",
+      "353",
+      "373",
+      "343"
+    ],
+    "answer": "363",
+    "explanation": "125 + 238 = 363"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Penjumlahan dan Pengurangan",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "456 - 189 = ...",
+    "options": [
+      "267",
+      "277",
+      "257",
+      "287"
+    ],
+    "answer": "267",
+    "explanation": "456 - 189 = 267"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Penjumlahan dan Pengurangan",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Budi memiliki 145 stiker. Adiknya memiliki 78 stiker. Berapa jumlah stiker mereka berdua?",
+    "options": [
+      "223",
+      "213",
+      "233",
+      "203"
+    ],
+    "answer": "223",
+    "explanation": "145 + 78 = 223 stiker"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Penjumlahan dan Pengurangan",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Sebuah toko memiliki 350 buku. Terjual 127 buku. Berapa sisa buku di toko?",
+    "options": [
+      "223",
+      "213",
+      "233",
+      "203"
+    ],
+    "answer": "223",
+    "explanation": "350 - 127 = 223 buku"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Penjumlahan dan Pengurangan",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "45 + 67 + 23 = ...",
+    "options": [
+      "135",
+      "125",
+      "145",
+      "115"
+    ],
+    "answer": "135",
+    "explanation": "45 + 67 + 23 = 135"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Penjumlahan dan Pengurangan",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "200 - 75 - 48 = ...",
+    "options": [
+      "77",
+      "87",
+      "67",
+      "97"
+    ],
+    "answer": "77",
+    "explanation": "200 - 75 - 48 = 77"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Perkalian dan Pembagian",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "5 × 6 = ...",
+    "options": [
+      "30",
+      "35",
+      "25",
+      "40"
+    ],
+    "answer": "30",
+    "explanation": "5 × 6 = 30"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Perkalian dan Pembagian",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "7 × 8 = ...",
+    "options": [
+      "56",
+      "48",
+      "64",
+      "54"
+    ],
+    "answer": "56",
+    "explanation": "7 × 8 = 56"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Perkalian dan Pembagian",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "24 ÷ 6 = ...",
+    "options": [
+      "4",
+      "3",
+      "5",
+      "6"
+    ],
+    "answer": "4",
+    "explanation": "24 ÷ 6 = 4"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Perkalian dan Pembagian",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "36 ÷ 9 = ...",
+    "options": [
+      "4",
+      "3",
+      "5",
+      "6"
+    ],
+    "answer": "4",
+    "explanation": "36 ÷ 9 = 4"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Perkalian dan Pembagian",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Ibu membeli 4 kantong permen. Setiap kantong berisi 12 permen. Berapa jumlah permen yang dibeli ibu?",
+    "options": [
+      "48",
+      "36",
+      "52",
+      "44"
+    ],
+    "answer": "48",
+    "explanation": "4 × 12 = 48 permen"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Perkalian dan Pembagian",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Ada 45 kelereng akan dibagikan kepada 5 anak sama banyak. Berapa kelereng yang diterima setiap anak?",
+    "options": [
+      "9",
+      "8",
+      "10",
+      "7"
+    ],
+    "answer": "9",
+    "explanation": "45 ÷ 5 = 9 kelereng"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Perkalian dan Pembagian",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "12 × 7 = ...",
+    "options": [
+      "84",
+      "74",
+      "94",
+      "64"
+    ],
+    "answer": "84",
+    "explanation": "12 × 7 = 84"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Perkalian dan Pembagian",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "96 ÷ 8 = ...",
+    "options": [
+      "12",
+      "11",
+      "13",
+      "10"
+    ],
+    "answer": "12",
+    "explanation": "96 ÷ 8 = 12"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Perkalian dan Pembagian",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "15 × 6 = ...",
+    "options": [
+      "90",
+      "80",
+      "100",
+      "85"
+    ],
+    "answer": "90",
+    "explanation": "15 × 6 = 90"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Perkalian dan Pembagian",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "144 ÷ 12 = ...",
+    "options": [
+      "12",
+      "11",
+      "13",
+      "10"
+    ],
+    "answer": "12",
+    "explanation": "144 ÷ 12 = 12"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Pecahan Sederhana",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Gambar lingkaran dibagi menjadi 2 bagian sama besar. Satu bagian diwarnai. Pecahan yang tepat adalah...",
+    "options": [
+      "1/2",
+      "1/3",
+      "1/4",
+      "2/3"
+    ],
+    "answer": "1/2",
+    "explanation": "Satu dari dua bagian = 1/2"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Pecahan Sederhana",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Gambar persegi dibagi menjadi 4 bagian sama besar. Dua bagian diwarnai. Pecahan yang tepat adalah...",
+    "options": [
+      "2/4",
+      "1/4",
+      "3/4",
+      "1/2"
+    ],
+    "answer": "2/4",
+    "explanation": "Dua dari empat bagian = 2/4"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Pecahan Sederhana",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Ibu memotong kue menjadi 8 bagian sama besar. Adik makan 3 potong. Berapa bagian kue yang dimakan adik?",
+    "options": [
+      "3/8",
+      "3/4",
+      "5/8",
+      "1/8"
+    ],
+    "answer": "3/8",
+    "explanation": "Tiga dari delapan bagian = 3/8"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Pecahan Sederhana",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Manakah pecahan yang paling besar?",
+    "options": [
+      "3/4",
+      "1/2",
+      "1/4",
+      "2/4"
+    ],
+    "answer": "3/4",
+    "explanation": "3/4 adalah yang terbesar karena 3/4 > 2/4 = 1/2 > 1/4"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Pecahan Sederhana",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "1/2 + 1/2 = ...",
+    "options": [
+      "1",
+      "2/2",
+      "2/4",
+      "1/4"
+    ],
+    "answer": "1",
+    "explanation": "1/2 + 1/2 = 2/2 = 1"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Bangun Datar",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Bangun datar yang memiliki 4 sisi sama panjang dan 4 sudut siku-siku adalah...",
+    "options": [
+      "Persegi",
+      "Persegi panjang",
+      "Segitiga",
+      "Lingkaran"
+    ],
+    "answer": "Persegi",
+    "explanation": "Persegi memiliki 4 sisi sama panjang dan 4 sudut siku-siku"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Bangun Datar",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Berapa jumlah sudut pada segitiga?",
+    "options": [
+      "3",
+      "4",
+      "5",
+      "6"
+    ],
+    "answer": "3",
+    "explanation": "Segitiga memiliki 3 sudut"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Bangun Datar",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Keliling persegi dengan panjang sisi 5 cm adalah...",
+    "options": [
+      "20 cm",
+      "15 cm",
+      "25 cm",
+      "10 cm"
+    ],
+    "answer": "20 cm",
+    "explanation": "Keliling = 4 × sisi = 4 × 5 = 20 cm"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Bangun Datar",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Luas persegi panjang dengan panjang 8 cm dan lebar 5 cm adalah...",
+    "options": [
+      "40 cm²",
+      "30 cm²",
+      "50 cm²",
+      "35 cm²"
+    ],
+    "answer": "40 cm²",
+    "explanation": "Luas = panjang × lebar = 8 × 5 = 40 cm²"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Pengukuran",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "1 meter = ... cm",
+    "options": [
+      "100",
+      "10",
+      "1000",
+      "50"
+    ],
+    "answer": "100",
+    "explanation": "1 meter = 100 centimeter"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Pengukuran",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "1 jam = ... menit",
+    "options": [
+      "60",
+      "100",
+      "30",
+      "120"
+    ],
+    "answer": "60",
+    "explanation": "1 jam = 60 menit"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Pengukuran",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Panjang pensil 15 cm. Panjang penggaris 30 cm. Selisih panjang keduanya adalah...",
+    "options": [
+      "15 cm",
+      "45 cm",
+      "10 cm",
+      "20 cm"
+    ],
+    "answer": "15 cm",
+    "explanation": "30 - 15 = 15 cm"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Pengukuran",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Berat 1 kg = ... gram",
+    "options": [
+      "1000",
+      "100",
+      "10",
+      "500"
+    ],
+    "answer": "1000",
+    "explanation": "1 kilogram = 1000 gram"
+  },
+  {
+    "grade": 3,
+    "subject": "Matematika",
+    "topic": "Pengukuran",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Sekolah dimulai pukul 07.00 dan berakhir pukul 12.00. Lama belajar di sekolah adalah...",
+    "options": [
+      "5 jam",
+      "4 jam",
+      "6 jam",
+      "3 jam"
+    ],
+    "answer": "5 jam",
+    "explanation": "12.00 - 07.00 = 5 jam"
+  }
+]

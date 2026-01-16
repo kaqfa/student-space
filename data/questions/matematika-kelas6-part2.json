@@ -1,0 +1,482 @@
+[
+  {
+    "grade": 6,
+    "subject": "Matematika",
+    "topic": "Bilangan Bulat",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Suhu di pagi hari -3°C. Siang hari naik 12°C. Suhu siang hari adalah...",
+    "options": [
+      "9°C",
+      "-9°C",
+      "15°C",
+      "-15°C"
+    ],
+    "answer": "9°C",
+    "explanation": "-3 + 12 = 9°C"
+  },
+  {
+    "grade": 6,
+    "subject": "Matematika",
+    "topic": "Bilangan Bulat",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Kapal selam berada di kedalaman -50 meter. Naik 20 meter. Posisi kapal sekarang...",
+    "options": [
+      "-30 meter",
+      "30 meter",
+      "-70 meter",
+      "70 meter"
+    ],
+    "answer": "-30 meter",
+    "explanation": "-50 + 20 = -30 meter"
+  },
+  {
+    "grade": 6,
+    "subject": "Matematika",
+    "topic": "Bilangan Bulat",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "(-4) × 6 × (-2) = ...",
+    "options": [
+      "48",
+      "-48",
+      "12",
+      "-12"
+    ],
+    "answer": "48",
+    "explanation": "(-4) × 6 = -24, kemudian -24 × (-2) = 48"
+  },
+  {
+    "grade": 6,
+    "subject": "Matematika",
+    "topic": "Bilangan Bulat",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "48 ÷ (-6) × 2 = ...",
+    "options": [
+      "-16",
+      "16",
+      "-8",
+      "8"
+    ],
+    "answer": "-16",
+    "explanation": "48 ÷ (-6) = -8, kemudian -8 × 2 = -16"
+  },
+  {
+    "grade": 6,
+    "subject": "Matematika",
+    "topic": "Bilangan Bulat",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "-12 + 8 - 5 = ...",
+    "options": [
+      "-9",
+      "9",
+      "-1",
+      "1"
+    ],
+    "answer": "-9",
+    "explanation": "-12 + 8 = -4, kemudian -4 - 5 = -9"
+  },
+  {
+    "grade": 6,
+    "subject": "Matematika",
+    "topic": "Pecahan dan Desimal",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Pecahan 3/5 dalam bentuk desimal adalah...",
+    "options": [
+      "0.6",
+      "0.5",
+      "0.3",
+      "0.35"
+    ],
+    "answer": "0.6",
+    "explanation": "3 ÷ 5 = 0.6"
+  },
+  {
+    "grade": 6,
+    "subject": "Matematika",
+    "topic": "Pecahan dan Desimal",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Desimal 0.75 dalam bentuk pecahan paling sederhana adalah...",
+    "options": [
+      "3/4",
+      "75/100",
+      "15/20",
+      "6/8"
+    ],
+    "answer": "3/4",
+    "explanation": "0.75 = 75/100 = 3/4 (disederhanakan)"
+  },
+  {
+    "grade": 6,
+    "subject": "Matematika",
+    "topic": "Pecahan dan Desimal",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "1.5 + 2.75 = ...",
+    "options": [
+      "4.25",
+      "4.15",
+      "3.25",
+      "4.35"
+    ],
+    "answer": "4.25",
+    "explanation": "1.5 + 2.75 = 4.25"
+  },
+  {
+    "grade": 6,
+    "subject": "Matematika",
+    "topic": "Pecahan dan Desimal",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "3.6 - 1.85 = ...",
+    "options": [
+      "1.75",
+      "1.85",
+      "1.65",
+      "2.75"
+    ],
+    "answer": "1.75",
+    "explanation": "3.6 - 1.85 = 1.75"
+  },
+  {
+    "grade": 6,
+    "subject": "Matematika",
+    "topic": "Pecahan dan Desimal",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "1.2 × 0.5 = ...",
+    "options": [
+      "0.6",
+      "0.7",
+      "1.7",
+      "6.0"
+    ],
+    "answer": "0.6",
+    "explanation": "1.2 × 0.5 = 0.6"
+  },
+  {
+    "grade": 6,
+    "subject": "Matematika",
+    "topic": "Pecahan dan Desimal",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "2.4 ÷ 0.6 = ...",
+    "options": [
+      "4",
+      "3",
+      "5",
+      "2.4"
+    ],
+    "answer": "4",
+    "explanation": "2.4 ÷ 0.6 = 4"
+  },
+  {
+    "grade": 6,
+    "subject": "Matematika",
+    "topic": "Pecahan dan Desimal",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "2/3 + 1/6 + 1/2 = ...",
+    "options": [
+      "4/3",
+      "1",
+      "5/6",
+      "7/6"
+    ],
+    "answer": "4/3",
+    "explanation": "2/3 + 1/6 + 1/2 = 4/6 + 1/6 + 3/6 = 8/6 = 4/3"
+  },
+  {
+    "grade": 6,
+    "subject": "Matematika",
+    "topic": "Pecahan dan Desimal",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "5/8 - 1/4 - 1/8 = ...",
+    "options": [
+      "1/4",
+      "3/8",
+      "1/2",
+      "2/8"
+    ],
+    "answer": "1/4",
+    "explanation": "5/8 - 1/4 - 1/8 = 5/8 - 2/8 - 1/8 = 2/8 = 1/4"
+  },
+  {
+    "grade": 6,
+    "subject": "Matematika",
+    "topic": "Pecahan dan Desimal",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "1 1/2 × 2/3 = ...",
+    "options": [
+      "1",
+      "3/2",
+      "2/3",
+      "1 1/3"
+    ],
+    "answer": "1",
+    "explanation": "1 1/2 = 3/2, kemudian 3/2 × 2/3 = 6/6 = 1"
+  },
+  {
+    "grade": 6,
+    "subject": "Matematika",
+    "topic": "Pecahan dan Desimal",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "2 1/4 ÷ 3/4 = ...",
+    "options": [
+      "3",
+      "2",
+      "4",
+      "1 1/2"
+    ],
+    "answer": "3",
+    "explanation": "2 1/4 = 9/4, kemudian 9/4 ÷ 3/4 = 9/4 × 4/3 = 36/12 = 3"
+  },
+  {
+    "grade": 6,
+    "subject": "Matematika",
+    "topic": "Geometri",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Luas segitiga dengan alas 12 cm dan tinggi 8 cm adalah...",
+    "options": [
+      "48 cm²",
+      "96 cm²",
+      "24 cm²",
+      "60 cm²"
+    ],
+    "answer": "48 cm²",
+    "explanation": "Luas = 1/2 × alas × tinggi = 1/2 × 12 × 8 = 48 cm²"
+  },
+  {
+    "grade": 6,
+    "subject": "Matematika",
+    "topic": "Geometri",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Luas trapesium dengan sisi sejajar 10 cm dan 6 cm, tinggi 8 cm adalah...",
+    "options": [
+      "64 cm²",
+      "80 cm²",
+      "48 cm²",
+      "56 cm²"
+    ],
+    "answer": "64 cm²",
+    "explanation": "Luas = 1/2 × (a + b) × t = 1/2 × (10 + 6) × 8 = 64 cm²"
+  },
+  {
+    "grade": 6,
+    "subject": "Matematika",
+    "topic": "Geometri",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Diameter lingkaran 28 cm. Luas lingkaran tersebut adalah... (π = 22/7)",
+    "options": [
+      "616 cm²",
+      "606 cm²",
+      "626 cm²",
+      "596 cm²"
+    ],
+    "answer": "616 cm²",
+    "explanation": "r = 28/2 = 14 cm. Luas = π × r² = 22/7 × 14 × 14 = 616 cm²"
+  },
+  {
+    "grade": 6,
+    "subject": "Matematika",
+    "topic": "Geometri",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Volume tabung dengan jari-jari 7 cm dan tinggi 10 cm adalah... (π = 22/7)",
+    "options": [
+      "1540 cm³",
+      "1440 cm³",
+      "1640 cm³",
+      "1340 cm³"
+    ],
+    "answer": "1540 cm³",
+    "explanation": "Volume = π × r² × t = 22/7 × 7 × 7 × 10 = 1540 cm³"
+  },
+  {
+    "grade": 6,
+    "subject": "Matematika",
+    "topic": "Geometri",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Luas permukaan balok dengan p=10 cm, l=6 cm, t=4 cm adalah...",
+    "options": [
+      "248 cm²",
+      "240 cm²",
+      "256 cm²",
+      "232 cm²"
+    ],
+    "answer": "248 cm²",
+    "explanation": "LP = 2(pl + pt + lt) = 2(60 + 40 + 24) = 2(124) = 248 cm²"
+  },
+  {
+    "grade": 6,
+    "subject": "Matematika",
+    "topic": "Statistika Sederhana",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Nilai: 60, 70, 80, 90, 100. Rata-ratanya adalah...",
+    "options": [
+      "80",
+      "75",
+      "85",
+      "70"
+    ],
+    "answer": "80",
+    "explanation": "(60+70+80+90+100) ÷ 5 = 400 ÷ 5 = 80"
+  },
+  {
+    "grade": 6,
+    "subject": "Matematika",
+    "topic": "Statistika Sederhana",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Data: 12, 15, 12, 18, 12, 20. Modus data tersebut adalah...",
+    "options": [
+      "12",
+      "15",
+      "18",
+      "20"
+    ],
+    "answer": "12",
+    "explanation": "12 muncul paling sering (3 kali)"
+  },
+  {
+    "grade": 6,
+    "subject": "Matematika",
+    "topic": "Statistika Sederhana",
+    "type": "pilgan",
+    "difficulty": "mudah",
+    "text": "Data: 4, 6, 8, 10, 12. Median data tersebut adalah...",
+    "options": [
+      "8",
+      "6",
+      "10",
+      "7"
+    ],
+    "answer": "8",
+    "explanation": "Nilai tengah dari data yang sudah terurut adalah 8"
+  },
+  {
+    "grade": 6,
+    "subject": "Matematika",
+    "topic": "Statistika Sederhana",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Nilai: 70, 80, 90, 85, 75, 80. Modus dan median data tersebut adalah...",
+    "options": [
+      "80 dan 80",
+      "80 dan 75",
+      "85 dan 80",
+      "70 dan 90"
+    ],
+    "answer": "80 dan 80",
+    "explanation": "Modus = 80 (muncul 2 kali). Urut: 70,75,80,80,85,90. Median = (80+80)/2 = 80"
+  },
+  {
+    "grade": 6,
+    "subject": "Matematika",
+    "topic": "Statistika Sederhana",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Rata-rata 5 bilangan adalah 80. Jika ditambah 1 bilangan lagi yaitu 92, rata-rata menjadi...",
+    "options": [
+      "82",
+      "80",
+      "84",
+      "86"
+    ],
+    "answer": "82",
+    "explanation": "Jumlah 5 bilangan = 80×5 = 400. Jumlah 6 bilangan = 400+92 = 492. Rata-rata = 492÷6 = 82"
+  },
+  {
+    "grade": 6,
+    "subject": "Matematika",
+    "topic": "Soal Cerita",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Harga sepatu Rp 200.000 naik 15%. Harga sepatu sekarang adalah...",
+    "options": [
+      "Rp 230.000",
+      "Rp 215.000",
+      "Rp 220.000",
+      "Rp 240.000"
+    ],
+    "answer": "Rp 230.000",
+    "explanation": "Kenaikan = 15% × 200.000 = 30.000. Harga baru = 200.000 + 30.000 = 230.000"
+  },
+  {
+    "grade": 6,
+    "subject": "Matematika",
+    "topic": "Soal Cerita",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Modal Rp 500.000 mendapat untung 20%. Besar keuntungan adalah...",
+    "options": [
+      "Rp 100.000",
+      "Rp 120.000",
+      "Rp 80.000",
+      "Rp 150.000"
+    ],
+    "answer": "Rp 100.000",
+    "explanation": "Untung = 20% × 500.000 = 100.000"
+  },
+  {
+    "grade": 6,
+    "subject": "Matematika",
+    "topic": "Soal Cerita",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Sebuah tangki berisi 240 liter air. Digunakan 3/8 bagian. Sisa air di tangki adalah...",
+    "options": [
+      "150 liter",
+      "140 liter",
+      "160 liter",
+      "130 liter"
+    ],
+    "answer": "150 liter",
+    "explanation": "Digunakan = 3/8 × 240 = 90 liter. Sisa = 240 - 90 = 150 liter"
+  },
+  {
+    "grade": 6,
+    "subject": "Matematika",
+    "topic": "Soal Cerita",
+    "type": "pilgan",
+    "difficulty": "sedang",
+    "text": "Perbandingan uang Ani dan Budi adalah 3:5. Jika uang Ani Rp 60.000, uang Budi adalah...",
+    "options": [
+      "Rp 100.000",
+      "Rp 90.000",
+      "Rp 110.000",
+      "Rp 80.000"
+    ],
+    "answer": "Rp 100.000",
+    "explanation": "3 bagian = 60.000, maka 1 bagian = 20.000. Uang Budi = 5 × 20.000 = 100.000"
+  },
+  {
+    "grade": 6,
+    "subject": "Matematika",
+    "topic": "Soal Cerita",
+    "type": "pilgan",
+    "difficulty": "sulit",
+    "text": "Sebuah pekerjaan dapat diselesaikan 12 orang dalam 8 hari. Jika dikerjakan 6 orang, waktu yang diperlukan adalah...",
+    "options": [
+      "16 hari",
+      "12 hari",
+      "14 hari",
+      "18 hari"
+    ],
+    "answer": "16 hari",
+    "explanation": "12 × 8 = 6 × x, maka x = 96 ÷ 6 = 16 hari"
+  }
+]
