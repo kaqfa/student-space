@@ -1,9 +1,9 @@
 {% extends 'base.html' %} {% load static %} {% block title %}Bank Soal SD -
 Platform Belajar Terbaik untuk Anak Anda{% endblock %} {% block extra_css %}
 <style>
-  /* Hero Section Gradient */
+  /* Hero Section Gradient - Python Green Theme */
   .hero-gradient {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #306998 0%, #2E7D32 50%, #4CAF50 100%);
   }
 
   /* Smooth scroll behavior */
@@ -59,16 +59,16 @@ Platform Belajar Terbaik untuk Anak Anda{% endblock %} {% block extra_css %}
     animation: float 6s ease-in-out infinite;
   }
 
-  /* Card hover effect */
+  /* Card hover effect - Green Theme */
   .feature-card {
     transition: all 0.3s ease;
-    border: 1px solid rgba(102, 126, 234, 0.1);
+    border: 1px solid rgba(46, 125, 50, 0.1);
   }
 
   .feature-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 25px 50px -12px rgba(102, 126, 234, 0.25);
-    border-color: rgba(102, 126, 234, 0.3);
+    box-shadow: 0 25px 50px -12px rgba(46, 125, 50, 0.25);
+    border-color: rgba(46, 125, 50, 0.3);
   }
 
   /* Stat counter animation */
@@ -89,17 +89,17 @@ Platform Belajar Terbaik untuk Anak Anda{% endblock %} {% block extra_css %}
 
   /* Testimonial card */
   .testimonial-card {
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
   }
 
-  /* CTA button pulse */
+  /* CTA button pulse - Green */
   @keyframes pulse {
     0%,
     100% {
-      box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
+      box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.7);
     }
     50% {
-      box-shadow: 0 0 0 15px rgba(102, 126, 234, 0);
+      box-shadow: 0 0 0 15px rgba(46, 125, 50, 0);
     }
   }
 
@@ -107,9 +107,9 @@ Platform Belajar Terbaik untuk Anak Anda{% endblock %} {% block extra_css %}
     animation: pulse 1.5s infinite;
   }
 
-  /* Gradient text */
+  /* Gradient text - Green Theme */
   .gradient-text {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #2E7D32 0%, #4CAF50 50%, #8BC34A 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -151,7 +151,7 @@ Platform Belajar Terbaik untuk Anak Anda{% endblock %} {% block extra_css %}
     class="absolute top-20 left-10 w-72 h-72 bg-white/10 rounded-full blur-3xl float-animation"
   ></div>
   <div
-    class="absolute bottom-20 right-10 w-96 h-96 bg-purple-300/20 rounded-full blur-3xl float-animation"
+    class="absolute bottom-20 right-10 w-96 h-96 bg-emerald-300/20 rounded-full blur-3xl float-animation"
     style="animation-delay: 2s"
   ></div>
 
@@ -189,7 +189,7 @@ Platform Belajar Terbaik untuk Anak Anda{% endblock %} {% block extra_css %}
           {% if user.is_authenticated %}
           <a
             href="{% url 'core:dashboard' %}"
-            class="pulse-button inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-indigo-600 bg-white rounded-xl hover:bg-gray-100 transition-all shadow-lg hover:shadow-xl"
+            class="pulse-button inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-green-600 bg-white rounded-xl hover:bg-gray-100 transition-all shadow-lg hover:shadow-xl"
           >
             <svg
               class="w-5 h-5 mr-2"
@@ -209,7 +209,7 @@ Platform Belajar Terbaik untuk Anak Anda{% endblock %} {% block extra_css %}
           {% else %}
           <a
             href="{% url 'students:register' %}"
-            class="pulse-button inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-indigo-600 bg-white rounded-xl hover:bg-gray-100 transition-all shadow-lg hover:shadow-xl"
+            class="pulse-button inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-green-600 bg-white rounded-xl hover:bg-gray-100 transition-all shadow-lg hover:shadow-xl"
           >
             <svg
               class="w-5 h-5 mr-2"
@@ -291,7 +291,7 @@ Platform Belajar Terbaik untuk Anak Anda{% endblock %} {% block extra_css %}
           <div class="bg-white rounded-3xl shadow-2xl p-6 float-animation">
             <div class="flex items-center gap-4 mb-4">
               <div
-                class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center"
+                class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center"
               >
                 <span class="text-white text-xl">👧</span>
               </div>
@@ -307,23 +307,23 @@ Platform Belajar Terbaik untuk Anak Anda{% endblock %} {% block extra_css %}
               </div>
             </div>
             <div
-              class="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl p-4"
+              class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-4"
             >
               <div class="flex justify-between items-center mb-3">
                 <span class="text-gray-600 font-medium"
                   >Progress Minggu Ini</span
                 >
-                <span class="text-indigo-600 font-bold">85%</span>
+                <span class="text-green-600 font-bold">85%</span>
               </div>
               <div class="w-full bg-gray-200 rounded-full h-3">
                 <div
-                  class="bg-gradient-to-r from-indigo-500 to-purple-600 h-3 rounded-full"
+                  class="bg-gradient-to-r from-green-500 to-emerald-600 h-3 rounded-full"
                   style="width: 85%"
                 ></div>
               </div>
               <div class="mt-4 grid grid-cols-3 gap-3 text-center">
                 <div class="bg-white rounded-xl p-3">
-                  <p class="text-2xl font-bold text-indigo-600">12</p>
+                  <p class="text-2xl font-bold text-green-600">12</p>
                   <p class="text-xs text-gray-500">Kuis Selesai</p>
                 </div>
                 <div class="bg-white rounded-xl p-3">
@@ -331,7 +331,7 @@ Platform Belajar Terbaik untuk Anak Anda{% endblock %} {% block extra_css %}
                   <p class="text-xs text-gray-500">Akurasi</p>
                 </div>
                 <div class="bg-white rounded-xl p-3">
-                  <p class="text-2xl font-bold text-purple-600">🏆</p>
+                  <p class="text-2xl font-bold text-emerald-600">🏆</p>
                   <p class="text-xs text-gray-500">Top 10</p>
                 </div>
               </div>
@@ -421,7 +421,7 @@ Platform Belajar Terbaik untuk Anak Anda{% endblock %} {% block extra_css %}
   <div class="container mx-auto px-4">
     <div class="text-center mb-16">
       <span
-        class="inline-block px-4 py-2 rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-300 text-sm font-medium mb-4"
+        class="inline-block px-4 py-2 rounded-full bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300 text-sm font-medium mb-4"
       >
         Mengapa Memilih Kami?
       </span>
@@ -470,7 +470,7 @@ Platform Belajar Terbaik untuk Anak Anda{% endblock %} {% block extra_css %}
       <!-- Feature 2 -->
       <div class="feature-card bg-white dark:bg-gray-800 rounded-2xl p-8">
         <div
-          class="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-400 rounded-2xl flex items-center justify-center mb-6"
+          class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-pink-400 rounded-2xl flex items-center justify-center mb-6"
         >
           <svg
             class="w-7 h-7 text-white"
@@ -582,7 +582,7 @@ Platform Belajar Terbaik untuk Anak Anda{% endblock %} {% block extra_css %}
       <!-- Feature 6 -->
       <div class="feature-card bg-white dark:bg-gray-800 rounded-2xl p-8">
         <div
-          class="w-14 h-14 bg-gradient-to-br from-indigo-500 to-violet-400 rounded-2xl flex items-center justify-center mb-6"
+          class="w-14 h-14 bg-gradient-to-br from-green-500 to-teal-400 rounded-2xl flex items-center justify-center mb-6"
         >
           <svg
             class="w-7 h-7 text-white"
@@ -630,7 +630,7 @@ Platform Belajar Terbaik untuk Anak Anda{% endblock %} {% block extra_css %}
       <!-- Step 1 -->
       <div class="text-center">
         <div
-          class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg"
+          class="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg"
         >
           1
         </div>
@@ -713,12 +713,12 @@ Platform Belajar Terbaik untuk Anak Anda{% endblock %} {% block extra_css %}
 
 <!-- Testimonials Section -->
 <section
-  class="py-20 bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-gray-900 dark:to-gray-800"
+  class="py-20 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-gray-900 dark:to-gray-800"
 >
   <div class="container mx-auto px-4">
     <div class="text-center mb-16">
       <span
-        class="inline-block px-4 py-2 rounded-full bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 text-sm font-medium mb-4"
+        class="inline-block px-4 py-2 rounded-full bg-purple-100 dark:bg-purple-900 text-emerald-600 dark:text-emerald-300 text-sm font-medium mb-4"
       >
         Testimoni
       </span>
@@ -856,7 +856,7 @@ Platform Belajar Terbaik untuk Anak Anda{% endblock %} {% block extra_css %}
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <a
           href="{% url 'students:register' %}"
-          class="pulse-button inline-flex items-center justify-center px-10 py-5 text-xl font-bold text-indigo-600 bg-white rounded-xl hover:bg-gray-100 transition-all shadow-2xl hover:shadow-xl"
+          class="pulse-button inline-flex items-center justify-center px-10 py-5 text-xl font-bold text-green-600 bg-white rounded-xl hover:bg-gray-100 transition-all shadow-2xl hover:shadow-xl"
         >
           <svg
             class="w-6 h-6 mr-2"
@@ -883,7 +883,7 @@ Platform Belajar Terbaik untuk Anak Anda{% endblock %} {% block extra_css %}
       {% else %}
       <a
         href="{% url 'core:dashboard' %}"
-        class="pulse-button inline-flex items-center justify-center px-10 py-5 text-xl font-bold text-indigo-600 bg-white rounded-xl hover:bg-gray-100 transition-all shadow-2xl hover:shadow-xl"
+        class="pulse-button inline-flex items-center justify-center px-10 py-5 text-xl font-bold text-green-600 bg-white rounded-xl hover:bg-gray-100 transition-all shadow-2xl hover:shadow-xl"
       >
         Masuk ke Dashboard
         <svg
