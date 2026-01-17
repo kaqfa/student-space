@@ -19,6 +19,7 @@ from .views import (
     SubjectQuizCreateView,
     CustomQuizCreateView,
 )
+from .views_ajax import SaveAnswerView
 
 app_name = "quizzes"
 
@@ -48,6 +49,9 @@ urlpatterns = [
     
     # Take a quiz (supports ?student_id=X&proxy=1 for parent proxy mode)
     path("<int:pk>/take/", QuizTakeView.as_view(), name="take_quiz"),
+    
+    # AJAX: Save individual answer (auto-save)
+    path("save-answer/", SaveAnswerView.as_view(), name="save_answer"),
     
     # View quiz result (supports ?student_id=X&proxy=1 for parent proxy mode)
     path("<int:pk>/result/", QuizResultView.as_view(), name="result"),

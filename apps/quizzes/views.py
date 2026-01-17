@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.utils import timezone
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect, JsonResponse
 
 from apps.analytics.models import Attempt
 from apps.accounts.mixins import ParentOrAdminMixin, StudentRequiredMixin, ParentRequiredMixin
@@ -264,6 +264,15 @@ class QuizTakeView(LoginRequiredMixin, DetailView):
         context['student'] = student
         context['is_proxy'] = is_proxy
         context['student_id'] = student.pk
+        
+        # Load saved answers from attempts
+        saved_answers = {}
+        attempts = Attempt.objects.filter(quiz_session=session).select_related('question')
+        for attempt in attempts:
+            if attempt.answer_given:
+                saved_answers[attempt.question.id] = attempt.answer_given
+        context['saved_answers'] = saved_answers
+        
         return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):

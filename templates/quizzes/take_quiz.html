@@ -79,7 +79,15 @@
                             {% with option_key=forloop.counter0|to_char %}
                             <label class="flex items-start p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-600 transition-colors peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/20 peer-checked:border-blue-500">
                                 <div class="flex items-center h-5">
-                                    <input type="radio" name="question_{{ question.id }}" value="{{ option_key }}" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 dark:border-gray-500 dark:bg-gray-800">
+                                    <input 
+                                        type="radio" 
+                                        name="question_{{ question.id }}" 
+                                        value="{{ option_key }}" 
+                                        data-session-id="{{ session.id }}"
+                                        data-question-id="{{ question.id }}"
+                                        class="quiz-answer focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 dark:border-gray-500 dark:bg-gray-800"
+                                        onchange="saveAnswer(this)"
+                                        {% if saved_answers|get_item:question.id|default_if_none:"" == option_key %}checked{% endif %}>
                                 </div>
                                 <div class="ml-3 text-sm">
                                     <span class="font-bold text-gray-900 dark:text-white mr-2">{{ option_key }}.</span>
@@ -96,7 +104,10 @@
             {% endfor %}
         </div>
 
-        <div class="mt-8 flex justify-end pb-8">
+        <div class="mt-8 flex justify-between items-center pb-8">
+            <!-- Save Status Indicator -->
+            <div id="save-status" class="text-sm text-gray-500 dark:text-gray-400"></div>
+            
             <button type="button" id="submit-quiz-btn" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-full sm:w-auto justify-center transition-transform hover:-translate-y-0.5">
                 Selesaikan Kuis
             </button>
@@ -105,9 +116,64 @@
 </div>
 
 <script>
+    // Get CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+
+    // Auto-save answer function
+    function saveAnswer(radioButton) {
+        const sessionId = radioButton.dataset.sessionId;
+        const questionId = radioButton.dataset.questionId;
+        const answer = radioButton.value;
+        const statusDiv = document.getElementById('save-status');
+        
+        // Show saving status
+        statusDiv.innerHTML = '<span class="text-blue-600 dark:text-blue-400">💾 Menyimpan...</span>';
+        
+        // Send AJAX request
+        fetch('{% url "quizzes:save_answer" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': csrftoken
+            },
+            body: new URLSearchParams({
+                'session_id': sessionId,
+                'question_id': questionId,
+                'answer': answer
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                statusDiv.innerHTML = '<span class="text-green-600 dark:text-green-400">✓ Jawaban tersimpan</span>';
+                setTimeout(() => statusDiv.innerHTML = '', 2000);
+            } else {
+                statusDiv.innerHTML = '<span class="text-red-600 dark:text-red-400">✗ Gagal menyimpan</span>';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            statusDiv.innerHTML = '<span class="text-red-600 dark:text-red-400">✗ Error</span>';
+        });
+    }
+
     // Submit quiz with confirmation
     document.getElementById('submit-quiz-btn').addEventListener('click', function(e) {
-        if (confirm('Yakin ingin menyelesaikan kuis?')) {
+        if (confirm('Yakin ingin menyelesaikan kuis? Semua jawaban sudah tersimpan otomatis.')) {
             document.getElementById('quiz-form').submit();
         }
     });
