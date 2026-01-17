@@ -173,10 +173,17 @@
 
     // Submit quiz with confirmation
     document.getElementById('submit-quiz-btn').addEventListener('click', function(e) {
-        if (confirm('Yakin ingin menyelesaikan kuis? Semua jawaban sudah tersimpan otomatis.')) {
-            document.getElementById('quiz-form').submit();
-        }
-    });
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Use setTimeout to ensure event is fully processed
+        setTimeout(function() {
+            const confirmed = confirm('Yakin ingin menyelesaikan kuis?\n\nSemua jawaban sudah tersimpan otomatis.');
+            if (confirmed) {
+                document.getElementById('quiz-form').submit();
+            }
+        }, 100);
+    }, true);
 
     {% if remaining_seconds %}
     let timeLeft = parseInt("{{ remaining_seconds|default:0 }}", 10); // seconds
