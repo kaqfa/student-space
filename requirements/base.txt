@@ -1,5 +1,25 @@
+# Core Django
 Django>=5.0.1,<5.1
 django-environ>=0.11.2
-Pillow>=10.2.0
+
+# Database
 psycopg2-binary>=2.9.9
+dj-database-url>=2.1.0
+
+# Image handling
+Pillow>=10.2.0
+
+# HTMX for dynamic interactions
 django-htmx>=1.17.0
+
+# Security & Authentication
+django-allauth>=0.57.0
+
+# API (if needed)
+djangorestframework>=3.14.0
+
+# Admin enhancements
+django-import-export>=3.3.0
+
+# Utilities
+python-dateutil>=2.8.2
