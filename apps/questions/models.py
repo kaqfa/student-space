@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils.translation import gettext_lazy as _
+from django.core.exceptions import ValidationError
 
 from apps.subjects.models import Subject, Topic
 
@@ -116,6 +117,29 @@ class Question(models.Model):
             models.Index(fields=["question_type"]),
             models.Index(fields=["created_at"]),
         ]
+
+    def clean(self):
+        """Validate question data."""
+        
+        # Validate pilgan answer_key is A, B, C, or D
+        if self.question_type == self.Type.PILGAN:
+            if not self.answer_key or self.answer_key.upper() not in ['A', 'B', 'C', 'D']:
+                raise ValidationError({
+                    'answer_key': _('Untuk soal pilihan ganda, kunci jawaban harus A, B, C, atau D.')
+                })
+            # Ensure answer_key is uppercase
+            self.answer_key = self.answer_key.upper()
+            
+            # Validate options exist
+            if not self.options or len(self.options) < 2:
+                raise ValidationError({
+                    'options': _('Soal pilihan ganda harus memiliki minimal 2 pilihan jawaban.')
+                })
+
+    def save(self, *args, **kwargs):
+        # Run validation before save
+        self.clean()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.topic.name} - {self.question_text[:50]}"
