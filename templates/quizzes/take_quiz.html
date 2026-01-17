@@ -115,6 +115,26 @@
     </form>
 </div>
 
+<!-- Custom Confirmation Modal -->
+<div id="confirm-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            Selesaikan Kuis?
+        </h3>
+        <p class="text-gray-600 dark:text-gray-400 mb-6">
+            Yakin ingin menyelesaikan kuis? Semua jawaban sudah tersimpan otomatis.
+        </p>
+        <div class="flex gap-3 justify-end">
+            <button id="cancel-btn" type="button" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                Batal
+            </button>
+            <button id="confirm-btn" type="button" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                Ya, Selesaikan
+            </button>
+        </div>
+    </div>
+</div>
+
 <script>
     // Get CSRF token
     function getCookie(name) {
@@ -171,19 +191,33 @@
         });
     }
 
-    // Submit quiz with confirmation
-    document.getElementById('submit-quiz-btn').addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        // Use setTimeout to ensure event is fully processed
-        setTimeout(function() {
-            const confirmed = confirm('Yakin ingin menyelesaikan kuis?\n\nSemua jawaban sudah tersimpan otomatis.');
-            if (confirmed) {
-                document.getElementById('quiz-form').submit();
-            }
-        }, 100);
-    }, true);
+    // Custom modal confirmation dialog
+    const modal = document.getElementById('confirm-modal');
+    const submitBtn = document.getElementById('submit-quiz-btn');
+    const confirmBtn = document.getElementById('confirm-btn');
+    const cancelBtn = document.getElementById('cancel-btn');
+
+    // Show modal
+    submitBtn.addEventListener('click', function() {
+        modal.classList.remove('hidden');
+    });
+
+    // Hide modal on cancel
+    cancelBtn.addEventListener('click', function() {
+        modal.classList.add('hidden');
+    });
+
+    // Submit form on confirm
+    confirmBtn.addEventListener('click', function() {
+        document.getElementById('quiz-form').submit();
+    });
+
+    // Close modal on backdrop click
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            modal.classList.add('hidden');
+        }
+    });
 
     {% if remaining_seconds %}
     let timeLeft = parseInt("{{ remaining_seconds|default:0 }}", 10); // seconds
