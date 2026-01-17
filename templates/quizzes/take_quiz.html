@@ -97,7 +97,7 @@
         </div>
 
         <div class="mt-8 flex justify-end pb-8">
-            <button type="submit" onclick="return confirm('Yakin ingin menyelesaikan kuis?');" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-full sm:w-auto justify-center transition-transform hover:-translate-y-0.5">
+            <button type="button" id="submit-quiz-btn" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-full sm:w-auto justify-center transition-transform hover:-translate-y-0.5">
                 Selesaikan Kuis
             </button>
         </div>
@@ -105,6 +105,13 @@
 </div>
 
 <script>
+    // Submit quiz with confirmation
+    document.getElementById('submit-quiz-btn').addEventListener('click', function(e) {
+        if (confirm('Yakin ingin menyelesaikan kuis?')) {
+            document.getElementById('quiz-form').submit();
+        }
+    });
+
     {% if remaining_seconds %}
     let timeLeft = parseInt("{{ remaining_seconds|default:0 }}", 10); // seconds
     const timerDisplay = document.getElementById('timer');
