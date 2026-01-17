@@ -6,11 +6,19 @@
     "type": "pilgan",
     "difficulty": "mudah",
     "text": "Alat pernapasan pada ikan adalah...",
-    "options": ["Paru-paru", "Insang", "Trakea", "Kulit"],
-    "answer": "Insang",
+    "options": [
+      "Paru-paru",
+      "Insang",
+      "Trakea",
+      "Kulit"
+    ],
+    "answer": "B",
     "explanation": "Ikan bernapas menggunakan insang untuk mengambil oksigen dalam air.",
     "points": 10,
-    "tags": ["biologi", "hewan"]
+    "tags": [
+      "biologi",
+      "hewan"
+    ]
   },
   {
     "grade": 5,
@@ -19,8 +27,13 @@
     "type": "pilgan",
     "difficulty": "sedang",
     "text": "Planet terbesar dalam tata surya kita adalah...",
-    "options": ["Bumi", "Mars", "Saturnus", "Jupiter"],
-    "answer": "Jupiter",
+    "options": [
+      "Bumi",
+      "Mars",
+      "Saturnus",
+      "Jupiter"
+    ],
+    "answer": "D",
     "explanation": "Jupiter adalah planet terbesar di tata surya.",
     "points": 10
   },
@@ -31,8 +44,13 @@
     "type": "pilgan",
     "difficulty": "sedang",
     "text": "Hewan pemakan tumbuhan disebut...",
-    "options": ["Karnivora", "Herbivora", "Omnivora", "Insektivora"],
-    "answer": "Herbivora",
+    "options": [
+      "Karnivora",
+      "Herbivora",
+      "Omnivora",
+      "Insektivora"
+    ],
+    "answer": "B",
     "explanation": "Herbivora adalah kelompok hewan yang sumber makanannya adalah tumbuhan.",
     "points": 10
   },
@@ -43,8 +61,13 @@
     "type": "pilgan",
     "difficulty": "sulit",
     "text": "Gaya yang menyebabkan benda jatuh ke bawah adalah gaya...",
-    "options": ["Gesek", "Pegas", "Gravitasi", "Magnet"],
-    "answer": "Gravitasi",
+    "options": [
+      "Gesek",
+      "Pegas",
+      "Gravitasi",
+      "Magnet"
+    ],
+    "answer": "C",
     "explanation": "Gaya gravitasi bumi menarik semua benda ke arah pusat bumi (bawah).",
     "points": 15
   },
@@ -55,8 +78,13 @@
     "type": "pilgan",
     "difficulty": "sedang",
     "text": "Sumber energi terbesar di bumi adalah...",
-    "options": ["Bulan", "Bintang", "Matahari", "Api"],
-    "answer": "Matahari",
+    "options": [
+      "Bulan",
+      "Bintang",
+      "Matahari",
+      "Api"
+    ],
+    "answer": "C",
     "explanation": "Matahari merupakan sumber energi panas dan cahaya utama bagi bumi.",
     "points": 10
   }

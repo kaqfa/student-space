@@ -12,7 +12,7 @@
       "155",
       "125"
     ],
-    "answer": "145",
+    "answer": "A",
     "explanation": "89 + 56 = 145"
   },
   {
@@ -28,7 +28,7 @@
       "35",
       "65"
     ],
-    "answer": "45",
+    "answer": "A",
     "explanation": "92 - 47 = 45"
   },
   {
@@ -44,7 +44,7 @@
       "453",
       "423"
     ],
-    "answer": "443",
+    "answer": "A",
     "explanation": "156 + 287 = 443"
   },
   {
@@ -60,7 +60,7 @@
       "326",
       "356"
     ],
-    "answer": "336",
+    "answer": "A",
     "explanation": "634 - 298 = 336"
   },
   {
@@ -76,7 +76,7 @@
       "81",
       "56"
     ],
-    "answer": "72",
+    "answer": "A",
     "explanation": "8 × 9 = 72"
   },
   {
@@ -92,7 +92,7 @@
       "7",
       "10"
     ],
-    "answer": "9",
+    "answer": "A",
     "explanation": "63 ÷ 7 = 9"
   },
   {
@@ -108,7 +108,7 @@
       "74",
       "44"
     ],
-    "answer": "64",
+    "answer": "A",
     "explanation": "16 × 4 = 64"
   },
   {
@@ -124,7 +124,7 @@
       "13",
       "10"
     ],
-    "answer": "12",
+    "answer": "A",
     "explanation": "132 ÷ 11 = 12"
   },
   {
@@ -140,7 +140,7 @@
       "4/8",
       "2/4"
     ],
-    "answer": "1",
+    "answer": "A",
     "explanation": "3/4 + 1/4 = 4/4 = 1"
   },
   {
@@ -156,7 +156,7 @@
       "7/6",
       "3/12"
     ],
-    "answer": "3/6",
+    "answer": "A",
     "explanation": "5/6 - 2/6 = 3/6"
   },
   {
@@ -172,7 +172,7 @@
       "5",
       "6"
     ],
-    "answer": "4",
+    "answer": "A",
     "explanation": "Persegi panjang memiliki 4 sisi"
   },
   {
@@ -188,7 +188,7 @@
       "46 cm²",
       "32 cm²"
     ],
-    "answer": "36 cm²",
+    "answer": "A",
     "explanation": "Luas = panjang × lebar = 9 × 4 = 36 cm²"
   },
   {
@@ -204,7 +204,7 @@
       "2000",
       "100"
     ],
-    "answer": "200",
+    "answer": "A",
     "explanation": "2 meter = 2 × 100 = 200 cm"
   },
   {
@@ -220,7 +220,7 @@
       "120",
       "240"
     ],
-    "answer": "180",
+    "answer": "A",
     "explanation": "3 jam = 3 × 60 = 180 menit"
   },
   {
@@ -236,7 +236,7 @@
       "213",
       "183"
     ],
-    "answer": "203",
+    "answer": "A",
     "explanation": "125 + 78 = 203 buah"
   },
   {
@@ -252,7 +252,7 @@
       "105",
       "135"
     ],
-    "answer": "115",
+    "answer": "A",
     "explanation": "250 - 135 = 115 butir"
   },
   {
@@ -268,7 +268,7 @@
       "106",
       "76"
     ],
-    "answer": "96",
+    "answer": "A",
     "explanation": "8 × 12 = 96 pensil"
   },
   {
@@ -284,7 +284,7 @@
       "13",
       "10"
     ],
-    "answer": "12",
+    "answer": "A",
     "explanation": "84 ÷ 7 = 12 permen"
   },
   {
@@ -300,7 +300,7 @@
       "45 cm",
       "18 cm"
     ],
-    "answer": "36 cm",
+    "answer": "A",
     "explanation": "Keliling = 4 × sisi = 4 × 9 = 36 cm"
   },
   {
@@ -316,7 +316,7 @@
       "56 cm²",
       "72 cm²"
     ],
-    "answer": "64 cm²",
+    "answer": "A",
     "explanation": "Luas = sisi × sisi = 8 × 8 = 64 cm²"
   },
   {
@@ -332,7 +332,7 @@
       "20",
       "20000"
     ],
-    "answer": "2000",
+    "answer": "A",
     "explanation": "2 kg = 2 × 1000 = 2000 gram"
   },
   {
@@ -348,7 +348,7 @@
       "10.00",
       "13.00"
     ],
-    "answer": "11.00",
+    "answer": "A",
     "explanation": "14.00 - 3 jam = 11.00"
   },
   {
@@ -364,7 +364,7 @@
       "2/10",
       "7/10"
     ],
-    "answer": "5/10",
+    "answer": "A",
     "explanation": "3 + 2 = 5 potong dari 10 bagian = 5/10"
   },
   {
@@ -380,7 +380,7 @@
       "1/4",
       "3/4"
     ],
-    "answer": "1/2",
+    "answer": "A",
     "explanation": "4/8 = 1/2 (disederhanakan)"
   }
 ]

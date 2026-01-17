@@ -12,7 +12,7 @@
       "15°C",
       "-15°C"
     ],
-    "answer": "9°C",
+    "answer": "A",
     "explanation": "-3 + 12 = 9°C"
   },
   {
@@ -28,7 +28,7 @@
       "-70 meter",
       "70 meter"
     ],
-    "answer": "-30 meter",
+    "answer": "A",
     "explanation": "-50 + 20 = -30 meter"
   },
   {
@@ -44,7 +44,7 @@
       "12",
       "-12"
     ],
-    "answer": "48",
+    "answer": "A",
     "explanation": "(-4) × 6 = -24, kemudian -24 × (-2) = 48"
   },
   {
@@ -60,7 +60,7 @@
       "-8",
       "8"
     ],
-    "answer": "-16",
+    "answer": "A",
     "explanation": "48 ÷ (-6) = -8, kemudian -8 × 2 = -16"
   },
   {
@@ -76,7 +76,7 @@
       "-1",
       "1"
     ],
-    "answer": "-9",
+    "answer": "A",
     "explanation": "-12 + 8 = -4, kemudian -4 - 5 = -9"
   },
   {
@@ -92,7 +92,7 @@
       "0.3",
       "0.35"
     ],
-    "answer": "0.6",
+    "answer": "A",
     "explanation": "3 ÷ 5 = 0.6"
   },
   {
@@ -108,7 +108,7 @@
       "15/20",
       "6/8"
     ],
-    "answer": "3/4",
+    "answer": "A",
     "explanation": "0.75 = 75/100 = 3/4 (disederhanakan)"
   },
   {
@@ -124,7 +124,7 @@
       "3.25",
       "4.35"
     ],
-    "answer": "4.25",
+    "answer": "A",
     "explanation": "1.5 + 2.75 = 4.25"
   },
   {
@@ -140,7 +140,7 @@
       "1.65",
       "2.75"
     ],
-    "answer": "1.75",
+    "answer": "A",
     "explanation": "3.6 - 1.85 = 1.75"
   },
   {
@@ -156,7 +156,7 @@
       "1.7",
       "6.0"
     ],
-    "answer": "0.6",
+    "answer": "A",
     "explanation": "1.2 × 0.5 = 0.6"
   },
   {
@@ -172,7 +172,7 @@
       "5",
       "2.4"
     ],
-    "answer": "4",
+    "answer": "A",
     "explanation": "2.4 ÷ 0.6 = 4"
   },
   {
@@ -188,7 +188,7 @@
       "5/6",
       "7/6"
     ],
-    "answer": "4/3",
+    "answer": "A",
     "explanation": "2/3 + 1/6 + 1/2 = 4/6 + 1/6 + 3/6 = 8/6 = 4/3"
   },
   {
@@ -204,7 +204,7 @@
       "1/2",
       "2/8"
     ],
-    "answer": "1/4",
+    "answer": "A",
     "explanation": "5/8 - 1/4 - 1/8 = 5/8 - 2/8 - 1/8 = 2/8 = 1/4"
   },
   {
@@ -220,7 +220,7 @@
       "2/3",
       "1 1/3"
     ],
-    "answer": "1",
+    "answer": "A",
     "explanation": "1 1/2 = 3/2, kemudian 3/2 × 2/3 = 6/6 = 1"
   },
   {
@@ -236,7 +236,7 @@
       "4",
       "1 1/2"
     ],
-    "answer": "3",
+    "answer": "A",
     "explanation": "2 1/4 = 9/4, kemudian 9/4 ÷ 3/4 = 9/4 × 4/3 = 36/12 = 3"
   },
   {
@@ -252,7 +252,7 @@
       "24 cm²",
       "60 cm²"
     ],
-    "answer": "48 cm²",
+    "answer": "A",
     "explanation": "Luas = 1/2 × alas × tinggi = 1/2 × 12 × 8 = 48 cm²"
   },
   {
@@ -268,7 +268,7 @@
       "48 cm²",
       "56 cm²"
     ],
-    "answer": "64 cm²",
+    "answer": "A",
     "explanation": "Luas = 1/2 × (a + b) × t = 1/2 × (10 + 6) × 8 = 64 cm²"
   },
   {
@@ -284,7 +284,7 @@
       "626 cm²",
       "596 cm²"
     ],
-    "answer": "616 cm²",
+    "answer": "A",
     "explanation": "r = 28/2 = 14 cm. Luas = π × r² = 22/7 × 14 × 14 = 616 cm²"
   },
   {
@@ -300,7 +300,7 @@
       "1640 cm³",
       "1340 cm³"
     ],
-    "answer": "1540 cm³",
+    "answer": "A",
     "explanation": "Volume = π × r² × t = 22/7 × 7 × 7 × 10 = 1540 cm³"
   },
   {
@@ -316,7 +316,7 @@
       "256 cm²",
       "232 cm²"
     ],
-    "answer": "248 cm²",
+    "answer": "A",
     "explanation": "LP = 2(pl + pt + lt) = 2(60 + 40 + 24) = 2(124) = 248 cm²"
   },
   {
@@ -332,7 +332,7 @@
       "85",
       "70"
     ],
-    "answer": "80",
+    "answer": "A",
     "explanation": "(60+70+80+90+100) ÷ 5 = 400 ÷ 5 = 80"
   },
   {
@@ -348,7 +348,7 @@
       "18",
       "20"
     ],
-    "answer": "12",
+    "answer": "A",
     "explanation": "12 muncul paling sering (3 kali)"
   },
   {
@@ -364,7 +364,7 @@
       "10",
       "7"
     ],
-    "answer": "8",
+    "answer": "A",
     "explanation": "Nilai tengah dari data yang sudah terurut adalah 8"
   },
   {
@@ -380,7 +380,7 @@
       "85 dan 80",
       "70 dan 90"
     ],
-    "answer": "80 dan 80",
+    "answer": "A",
     "explanation": "Modus = 80 (muncul 2 kali). Urut: 70,75,80,80,85,90. Median = (80+80)/2 = 80"
   },
   {
@@ -396,7 +396,7 @@
       "84",
       "86"
     ],
-    "answer": "82",
+    "answer": "A",
     "explanation": "Jumlah 5 bilangan = 80×5 = 400. Jumlah 6 bilangan = 400+92 = 492. Rata-rata = 492÷6 = 82"
   },
   {
@@ -412,7 +412,7 @@
       "Rp 220.000",
       "Rp 240.000"
     ],
-    "answer": "Rp 230.000",
+    "answer": "A",
     "explanation": "Kenaikan = 15% × 200.000 = 30.000. Harga baru = 200.000 + 30.000 = 230.000"
   },
   {
@@ -428,7 +428,7 @@
       "Rp 80.000",
       "Rp 150.000"
     ],
-    "answer": "Rp 100.000",
+    "answer": "A",
     "explanation": "Untung = 20% × 500.000 = 100.000"
   },
   {
@@ -444,7 +444,7 @@
       "160 liter",
       "130 liter"
     ],
-    "answer": "150 liter",
+    "answer": "A",
     "explanation": "Digunakan = 3/8 × 240 = 90 liter. Sisa = 240 - 90 = 150 liter"
   },
   {
@@ -460,7 +460,7 @@
       "Rp 110.000",
       "Rp 80.000"
     ],
-    "answer": "Rp 100.000",
+    "answer": "A",
     "explanation": "3 bagian = 60.000, maka 1 bagian = 20.000. Uang Budi = 5 × 20.000 = 100.000"
   },
   {
@@ -476,7 +476,7 @@
       "14 hari",
       "18 hari"
     ],
-    "answer": "16 hari",
+    "answer": "A",
     "explanation": "12 × 8 = 6 × x, maka x = 96 ÷ 6 = 16 hari"
   }
 ]
