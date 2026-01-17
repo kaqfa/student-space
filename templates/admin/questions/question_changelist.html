@@ -1,0 +1,20 @@
+{% extends "admin/change_list.html" %}
+{% load i18n admin_urls static %}
+
+{% block content_title %}
+<h1>{{ title }}</h1>
+
+<div style="margin: 20px 0; padding: 15px; background-color: #f0fdf4; border-left: 4px solid #10b981; border-radius: 4px;">
+    <h3 style="margin-top: 0; color: #065f46;">📥 Import Questions</h3>
+    <p style="margin-bottom: 10px;">Bulk import questions from JSON file with user-friendly interface and preview:</p>
+    <a href="{% url 'questions:import' %}" 
+       class="button" 
+       style="background-color: #10b981; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px; display: inline-block;">
+        📂 Import Questions from File
+    </a>
+</div>
+{% endblock %}
+
+{% block result_list %}
+  {{ block.super }}
+{% endblock %}

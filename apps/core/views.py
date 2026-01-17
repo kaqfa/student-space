@@ -25,8 +25,11 @@ class DashboardView(LoginRequiredMixin, View):
         if user.role == User.Role.PARENT:
             return redirect('students:parent_dashboard')
         
-        # Admin -> Admin Dashboard (fallback to core dashboard for now)
-        # Could redirect to analytics or admin dashboard
+        # Admin -> Django Admin (all admin features are in Django admin)
+        if user.role == User.Role.ADMIN or user.is_superuser:
+            return redirect('/admin/')
+        
+        # Fallback to analytics dashboard
         return redirect('analytics:dashboard')
 
 

@@ -41,10 +41,11 @@ class Attempt(models.Model):
         verbose_name=_("Quiz Session")
     )
     
-    answer_given = models.TextField(_("Answer Given"))
-    is_correct = models.BooleanField(_("Is Correct"))
+    answer_given = models.TextField(_("Answer Given"), blank=True, default='')
+    is_correct = models.BooleanField(_("Is Correct"), default=False)
     time_taken = models.IntegerField(
         _("Time Taken"),
+        default=0,
         help_text=_("Time taken in seconds")
     )
     points_earned = models.IntegerField(_("Points Earned"), default=0)

@@ -63,14 +63,23 @@ class TestQuizTakeView:
     
     def test_submit_quiz_answers(self, client, student_user, quiz_with_questions, question):
         """Test submitting quiz answers"""
-        client.force_login(student_user)
-        url = reverse('quizzes:take_quiz', args=[quiz_with_questions.pk])
+        from apps.quizzes.models import QuizSession
         
-        # Submit answers
-        response = client.post(url, {
-            f'question_{question.id}': question.answer_key,
-            'submit_quiz': 'true'
-        })
+        client.force_login(student_user)
+        
+        # First start the quiz to create session
+        url = reverse('quizzes:take_quiz', args=[quiz_with_questions.pk])
+        client.get(url)
+        
+        # Get the session
+        session = QuizSession.objects.get(student=student_user, quiz=quiz_with_questions, completed_at__isnull=True)
+        
+        # Submit answers for all questions in session
+        post_data = {'submit_quiz': 'true'}
+        for q in session.session_questions.all():
+            post_data[f'question_{q.id}'] = q.answer_key
+        
+        response = client.post(url, post_data)
         
         # Should redirect to results
         assert response.status_code == 302

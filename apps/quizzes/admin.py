@@ -13,15 +13,53 @@ class AttemptInline(admin.TabularInline):
 
 @admin.register(Quiz)
 class QuizAdmin(admin.ModelAdmin):
-    list_display = ('title', 'subject', 'grade', 'question_count', 'is_active', 'created_at')
-    list_filter = ('is_active', 'grade', 'subject')
+    list_display = ('title', 'quiz_type_badge', 'subject', 'grade', 'question_count_display', 'time_limit_minutes', 'is_active', 'created_at')
+    list_filter = ('is_active', 'quiz_type', 'grade', 'subject', 'created_at')
     search_fields = ('title', 'description')
     filter_horizontal = ('questions',)
     autocomplete_fields = ['subject']
+    readonly_fields = ('created_by', 'created_at', 'updated_at', 'total_points')
     
-    def question_count(self, obj):
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('title', 'description', 'quiz_type', 'subject', 'grade', 'is_active')
+        }),
+        ('Quiz Configuration', {
+            'fields': ('time_limit_minutes', 'passing_score', 'question_count', 'questions'),
+            'description': 'For Subject Quiz: set question_count. For Custom Quiz: select specific questions.'
+        }),
+        ('Metadata', {
+            'fields': ('created_by', 'created_at', 'updated_at', 'total_points'),
+            'classes': ('collapse',)
+        })
+    )
+    
+    change_list_template = 'admin/quizzes/quiz_changelist.html'
+    
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.created_by = request.user
+        super().save_model(request, obj, form, change)
+    
+    def quiz_type_badge(self, obj):
+        from django.utils.html import format_html
+        colors = {
+            'subject_based': '#10b981',  # green
+            'custom': '#3b82f6'  # blue
+        }
+        color = colors.get(obj.quiz_type, '#6b7280')
+        label = obj.get_quiz_type_display()
+        return format_html(
+            '<span style="background-color: {}; color: white; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: bold;">{}</span>',
+            color, label
+        )
+    quiz_type_badge.short_description = "Type"
+    
+    def question_count_display(self, obj):
+        if obj.quiz_type == 'subject_based':
+            return f"{obj.question_count} (random)"
         return obj.questions.count()
-    question_count.short_description = "Questions"
+    question_count_display.short_description = "Questions"
 
 @admin.register(QuizSession)
 class QuizSessionAdmin(admin.ModelAdmin):

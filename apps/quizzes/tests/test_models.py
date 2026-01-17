@@ -41,7 +41,8 @@ class TestQuizModel:
     
     def test_question_count_property(self, quiz_with_questions):
         """Test question_count property"""
-        assert quiz_with_questions.question_count == 1
+        # Custom quiz without question_count field set returns count of questions
+        assert quiz_with_questions.get_question_count == 1
     
     def test_quiz_with_multiple_questions(self, quiz, question, topic, admin_user):
         """Test quiz with multiple questions"""
@@ -61,7 +62,8 @@ class TestQuizModel:
         
         quiz.questions.add(question, q2)
         
-        assert quiz.question_count == 2
+        # Custom quiz returns count of manually selected questions
+        assert quiz.get_question_count == 2
         assert quiz.total_points == 25  # 10 + 15
 
 

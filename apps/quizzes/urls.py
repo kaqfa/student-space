@@ -14,11 +14,21 @@ from .views import (
     QuizTakeView,
     QuizResultView,
     ProxyQuizSelectStudentView,
+    
+    # Dedicated Quiz Creation Views
+    SubjectQuizCreateView,
+    CustomQuizCreateView,
 )
 
 app_name = "quizzes"
 
 urlpatterns = [
+    # ============================================================
+    # DEDICATED QUIZ CREATION INTERFACES
+    # ============================================================
+    path("create/subject/", SubjectQuizCreateView.as_view(), name="create_subject_quiz"),
+    path("create/custom/", CustomQuizCreateView.as_view(), name="create_custom_quiz"),
+    
     # ============================================================
     # ADMIN/PARENT QUIZ MANAGEMENT
     # ============================================================

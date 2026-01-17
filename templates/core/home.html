@@ -5,70 +5,112 @@
 
 {% block extra_css %}
 <style>
-/* Hero Section - Full Width */
-.hero-gradient {
-    background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 50%, #43A047 100%);
-    width: 100vw;
-    margin-left: calc(-50vw + 50%);
-}
-
 html {
     scroll-behavior: smooth;
 }
 
 /* Animations */
 @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
+    from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-.fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
-.fade-in-up-delay-1 { animation-delay: 0.2s; opacity: 0; }
-.fade-in-up-delay-2 { animation-delay: 0.4s; opacity: 0; }
-.fade-in-up-delay-3 { animation-delay: 0.6s; opacity: 0; }
+.fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
+.fade-in-up-delay-1 { animation-delay: 0.15s; opacity: 0; }
+.fade-in-up-delay-2 { animation-delay: 0.3s; opacity: 0; }
+.fade-in-up-delay-3 { animation-delay: 0.45s; opacity: 0; }
 
 @keyframes float {
     0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-15px); }
+    50% { transform: translateY(-10px); }
 }
 
 .float-animation {
-    animation: float 5s ease-in-out infinite;
+    animation: float 4s ease-in-out infinite;
 }
 
 /* Card hover */
 .feature-card {
-    transition: all 0.3s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .feature-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 40px -12px rgba(0,0,0,0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px -8px rgba(0,0,0,0.12);
 }
 
 /* Gradient text */
 .gradient-text {
-    background: linear-gradient(135deg, #2E7D32 0%, #66BB6A 100%);
+    background: linear-gradient(90deg, #2E7D32, #66BB6A);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
+
+/* Reset any body effects */
+body {
+    background: #f9fafb !important;
+    box-shadow: none !important;
+    filter: none !important;
+}
+
+body::before, body::after {
+    display: none !important;
+}
+
+/* Hero background */
+.hero-green {
+    background: linear-gradient(135deg, #15803d 0%, #16a34a 50%, #22c55e 100%) !important;
+}
 </style>
 {% endblock %}
 
-{% block content %}
-<!-- Hero Section - Full Width -->
-<section class="hero-gradient min-h-screen flex items-center relative overflow-hidden">
-    <!-- Decorative circles -->
-    <div class="absolute top-20 left-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
-    <div class="absolute bottom-20 right-20 w-80 h-80 bg-green-300/10 rounded-full blur-3xl"></div>
-    
-    <div class="w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-16 py-24">
+{% block navbar %}
+<!-- Custom navbar for landing page -->
+<nav class="fixed top-0 left-0 right-0 z-50" style="background: linear-gradient(135deg, #15803d 0%, #16a34a 50%, #22c55e 100%);">
+    <div class="max-w-7xl mx-auto px-8 md:px-16 py-4">
+        <div class="flex items-center justify-between">
+            <a href="{% url 'core:home' %}" class="flex items-center gap-3 text-xl font-bold text-white hover:opacity-90 transition-opacity">
+                <!-- SVG Logo -->
+                <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Book pages -->
+                    <rect x="6" y="8" width="24" height="20" rx="2" fill="white" opacity="0.95"/>
+                    <!-- Book spine -->
+                    <rect x="6" y="8" width="4" height="20" rx="1" fill="#f0fdf4"/>
+                    <!-- Star (excellence symbol) -->
+                    <path d="M18 14L19.5 17L23 17.5L20.5 20L21 23.5L18 21.5L15 23.5L15.5 20L13 17.5L16.5 17L18 14Z" fill="#22c55e"/>
+                    <!-- Book lines -->
+                    <line x1="11" y1="13" x2="25" y2="13" stroke="#e5e7eb" stroke-width="1.5"/>
+                    <line x1="11" y1="17" x2="25" y2="17" stroke="#e5e7eb" stroke-width="1.5"/>
+                    <line x1="11" y1="21" x2="22" y2="21" stroke="#e5e7eb" stroke-width="1.5"/>
+                </svg>
+                <span>Bank Soal SD</span>
+            </a>
+            <div class="flex items-center gap-4">
+                {% if user.is_authenticated %}
+                <a href="{% url 'core:dashboard' %}" class="text-white hover:text-green-100 transition-colors">Dashboard</a>
+                <a href="{% url 'logout' %}" class="px-4 py-2 bg-white text-green-700 rounded-lg font-medium hover:bg-green-50 transition-colors">Logout</a>
+                {% else %}
+                <a href="{% url 'login' %}" class="text-white hover:text-green-100 transition-colors">Masuk</a>
+                <a href="{% url 'students:register' %}" class="px-4 py-2 bg-white text-green-700 rounded-lg font-medium hover:bg-green-50 transition-colors">Daftar</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+
+{% block main_content %}
+<!-- Full width content without container -->
+<main class="flex-grow">
+<!-- Hero Section -->
+<section class="hero-green min-h-screen flex items-center pt-16" style="background: linear-gradient(135deg, #15803d 0%, #16a34a 50%, #22c55e 100%);">
+    <div class="w-full max-w-7xl mx-auto px-8 md:px-16 py-20">
         <div class="flex flex-col lg:flex-row items-center justify-between gap-16">
             <!-- Hero Text -->
             <div class="lg:w-1/2 text-center lg:text-left">
                 <div class="fade-in-up">
-                    <span class="inline-block px-5 py-2 rounded-full bg-white/20 text-white text-sm font-medium mb-8">
+                    <span class="inline-block px-4 py-2 rounded-full bg-white/20 text-white text-sm font-medium mb-8">
                         ✨ Platform Belajar #1 untuk SD
                     </span>
                 </div>
@@ -79,36 +121,36 @@ html {
                     Anak Anda
                 </h1>
                 
-                <p class="fade-in-up fade-in-up-delay-2 text-lg md:text-xl text-white/90 mb-10 max-w-lg mx-auto lg:mx-0 leading-relaxed">
+                <p class="fade-in-up fade-in-up-delay-2 text-lg md:text-xl mb-10 max-w-lg mx-auto lg:mx-0 leading-relaxed" style="color: rgba(255, 255, 255, 0.9);">
                     Bank Soal SD membantu anak-anak belajar dengan cara yang menyenangkan, terstruktur, dan sesuai kurikulum. Pantau perkembangan belajar mereka secara real-time!
                 </p>
                 
                 <div class="fade-in-up fade-in-up-delay-3 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                     {% if user.is_authenticated %}
-                    <a href="{% url 'core:dashboard' %}" class="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-green-700 bg-white rounded-xl hover:bg-gray-100 transition-all shadow-lg">
+                    <a href="{% url 'core:dashboard' %}" class="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-green-700 bg-white rounded-xl hover:bg-green-50 transition-colors shadow-lg">
                         → Masuk ke Dashboard
                     </a>
                     {% else %}
-                    <a href="{% url 'students:register' %}" class="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-green-700 bg-white rounded-xl hover:bg-gray-100 transition-all shadow-lg">
-                        + Daftar Gratis
+                    <a href="{% url 'students:register' %}" class="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-green-700 bg-white rounded-xl hover:bg-green-50 transition-colors shadow-lg">
+                        Daftar Gratis
                     </a>
-                    <a href="{% url 'login' %}" class="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-white border-2 border-white/40 rounded-xl hover:bg-white/10 transition-all">
+                    <a href="{% url 'login' %}" class="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-white border-2 border-white/40 rounded-xl hover:bg-white/10 transition-colors">
                         Sudah Punya Akun? Masuk
                     </a>
                     {% endif %}
                 </div>
                 
                 <!-- Trust badges -->
-                <div class="fade-in-up fade-in-up-delay-3 mt-12 flex items-center justify-center lg:justify-start gap-8 text-white/80 text-sm">
-                    <span>✓ Gratis</span>
-                    <span>✓ Tanpa Iklan</span>
-                    <span>✓ Aman untuk Anak</span>
+                <div class="fade-in-up fade-in-up-delay-3 mt-12 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-white text-sm">
+                    <span class="flex items-center gap-2">✓ Gratis</span>
+                    <span class="flex items-center gap-2">✓ Tanpa Iklan</span>
+                    <span class="flex items-center gap-2">✓ Aman untuk Anak</span>
                 </div>
             </div>
             
             <!-- Hero Card -->
-            <div class="lg:w-1/2 fade-in-up fade-in-up-delay-2">
-                <div class="bg-white rounded-3xl shadow-2xl p-8 float-animation max-w-md mx-auto">
+            <div class="lg:w-5/12 fade-in-up fade-in-up-delay-2">
+                <div class="bg-white rounded-3xl shadow-2xl p-8 float-animation">
                     <div class="flex items-center gap-4 mb-6">
                         <div class="w-14 h-14 bg-green-500 rounded-full flex items-center justify-center text-2xl">
                             👧
@@ -152,8 +194,8 @@ html {
 
 <!-- Stats Section -->
 <section class="py-20 bg-white dark:bg-gray-800">
-    <div class="max-w-6xl mx-auto px-6 md:px-12">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-10">
+    <div class="max-w-6xl mx-auto px-8 md:px-16">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
             <div class="text-center">
                 <div class="text-4xl md:text-5xl font-bold gradient-text mb-3">500+</div>
                 <p class="text-gray-600 dark:text-gray-400">Soal Berkualitas</p>
@@ -176,9 +218,9 @@ html {
 
 <!-- Features Section -->
 <section class="py-24 bg-gray-50 dark:bg-gray-900">
-    <div class="max-w-6xl mx-auto px-6 md:px-12">
+    <div class="max-w-6xl mx-auto px-8 md:px-16">
         <div class="text-center mb-16">
-            <span class="inline-block px-5 py-2 rounded-full bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-sm font-medium mb-6">
+            <span class="inline-block px-4 py-2 rounded-full bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-sm font-medium mb-6">
                 Mengapa Memilih Kami?
             </span>
             <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
@@ -190,51 +232,38 @@ html {
         </div>
         
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Feature Cards with Emoji Icons -->
-            <div class="feature-card bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700">
-                <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6 text-3xl">
-                    📝
-                </div>
+            <div class="feature-card bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-200 dark:border-gray-700">
+                <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-6 text-2xl">📝</div>
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Kuis Interaktif</h3>
                 <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Soal-soal yang menarik dan interaktif membuat anak semangat belajar tanpa merasa bosan.</p>
             </div>
             
-            <div class="feature-card bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700">
-                <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mb-6 text-3xl">
-                    📊
-                </div>
+            <div class="feature-card bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-200 dark:border-gray-700">
+                <div class="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center mb-6 text-2xl">📊</div>
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Analisis Progress</h3>
                 <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Pantau perkembangan belajar anak secara real-time dengan grafik dan statistik yang mudah dipahami.</p>
             </div>
             
-            <div class="feature-card bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700">
-                <div class="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mb-6 text-3xl">
-                    📚
-                </div>
+            <div class="feature-card bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-200 dark:border-gray-700">
+                <div class="w-14 h-14 bg-purple-100 rounded-xl flex items-center justify-center mb-6 text-2xl">📚</div>
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Sesuai Kurikulum</h3>
                 <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Materi disusun berdasarkan Kurikulum Merdeka, memastikan anak belajar sesuai standar nasional.</p>
             </div>
             
-            <div class="feature-card bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700">
-                <div class="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mb-6 text-3xl">
-                    👨‍👩‍👧
-                </div>
+            <div class="feature-card bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-200 dark:border-gray-700">
+                <div class="w-14 h-14 bg-orange-100 rounded-xl flex items-center justify-center mb-6 text-2xl">👨‍👩‍👧</div>
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Mode Orang Tua</h3>
                 <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Orang tua dapat mendampingi anak mengerjakan kuis dan melihat area yang perlu ditingkatkan.</p>
             </div>
             
-            <div class="feature-card bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700">
-                <div class="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mb-6 text-3xl">
-                    🔒
-                </div>
+            <div class="feature-card bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-200 dark:border-gray-700">
+                <div class="w-14 h-14 bg-red-100 rounded-xl flex items-center justify-center mb-6 text-2xl">🔒</div>
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Aman & Terpercaya</h3>
                 <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Platform tanpa iklan dan konten aman untuk anak. Data pribadi dijaga dengan keamanan tinggi.</p>
             </div>
             
-            <div class="feature-card bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700">
-                <div class="w-16 h-16 bg-cyan-100 rounded-2xl flex items-center justify-center mb-6 text-3xl">
-                    🕐
-                </div>
+            <div class="feature-card bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-200 dark:border-gray-700">
+                <div class="w-14 h-14 bg-cyan-100 rounded-xl flex items-center justify-center mb-6 text-2xl">🕐</div>
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Belajar Kapan Saja</h3>
                 <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Akses 24/7 dari mana saja. Belajar bisa dilakukan di rumah, di perjalanan, atau di mana pun.</p>
             </div>
@@ -244,9 +273,9 @@ html {
 
 <!-- How It Works -->
 <section class="py-24 bg-white dark:bg-gray-800">
-    <div class="max-w-5xl mx-auto px-6 md:px-12">
+    <div class="max-w-5xl mx-auto px-8 md:px-16">
         <div class="text-center mb-16">
-            <span class="inline-block px-5 py-2 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-sm font-medium mb-6">
+            <span class="inline-block px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-sm font-medium mb-6">
                 Mudah Digunakan
             </span>
             <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
@@ -256,25 +285,19 @@ html {
         
         <div class="grid md:grid-cols-3 gap-12">
             <div class="text-center">
-                <div class="w-20 h-20 mx-auto mb-8 bg-green-500 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg">
-                    1
-                </div>
+                <div class="w-20 h-20 mx-auto mb-8 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg" style="background-color: #22c55e;">1</div>
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Daftar Akun</h3>
                 <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Buat akun gratis untuk anak atau orang tua. Proses cepat, hanya butuh beberapa menit.</p>
             </div>
             
             <div class="text-center">
-                <div class="w-20 h-20 mx-auto mb-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg">
-                    2
-                </div>
+                <div class="w-20 h-20 mx-auto mb-8 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg" style="background-color: #3b82f6;">2</div>
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Pilih Kuis</h3>
                 <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Pilih mata pelajaran dan tingkat kesulitan sesuai kemampuan anak.</p>
             </div>
             
             <div class="text-center">
-                <div class="w-20 h-20 mx-auto mb-8 bg-orange-500 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg">
-                    3
-                </div>
+                <div class="w-20 h-20 mx-auto mb-8 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg" style="background-color: #f97316;">3</div>
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Lihat Hasil</h3>
                 <p class="text-gray-600 dark:text-gray-400 leading-relaxed">Dapatkan hasil instan dan analisis detail untuk melihat perkembangan belajar.</p>
             </div>
@@ -284,9 +307,9 @@ html {
 
 <!-- Testimonials -->
 <section class="py-24 bg-green-50 dark:bg-gray-900">
-    <div class="max-w-6xl mx-auto px-6 md:px-12">
+    <div class="max-w-6xl mx-auto px-8 md:px-16">
         <div class="text-center mb-16">
-            <span class="inline-block px-5 py-2 rounded-full bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-sm font-medium mb-6">
+            <span class="inline-block px-4 py-2 rounded-full bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-sm font-medium mb-6">
                 Testimoni
             </span>
             <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
@@ -295,17 +318,11 @@ html {
         </div>
         
         <div class="grid md:grid-cols-3 gap-8">
-            <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm">
-                <div class="flex items-center gap-1 mb-6 text-yellow-400 text-xl">
-                    ★★★★★
-                </div>
-                <p class="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed italic">
-                    "Anak saya jadi lebih semangat belajar! Fitur analisisnya sangat membantu saya memahami di mana dia perlu bimbingan lebih."
-                </p>
+            <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-gray-700">
+                <div class="flex items-center gap-1 mb-6 text-yellow-400 text-lg">★★★★★</div>
+                <p class="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">"Anak saya jadi lebih semangat belajar! Fitur analisisnya sangat membantu saya memahami di mana dia perlu bimbingan lebih."</p>
                 <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 bg-pink-500 rounded-full flex items-center justify-center text-white font-bold">
-                        SR
-                    </div>
+                    <div class="w-12 h-12 bg-pink-500 rounded-full flex items-center justify-center text-white font-bold">SR</div>
                     <div>
                         <p class="font-bold text-gray-900 dark:text-white">Siti Rahayu</p>
                         <p class="text-sm text-gray-500">Ibu dari 2 anak SD</p>
@@ -313,17 +330,11 @@ html {
                 </div>
             </div>
             
-            <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm">
-                <div class="flex items-center gap-1 mb-6 text-yellow-400 text-xl">
-                    ★★★★★
-                </div>
-                <p class="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed italic">
-                    "Sangat praktis! Saya bisa memantau progress belajar anak dari kantor. Soal-soalnya juga berkualitas dan sesuai kurikulum."
-                </p>
+            <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-gray-700">
+                <div class="flex items-center gap-1 mb-6 text-yellow-400 text-lg">★★★★★</div>
+                <p class="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">"Sangat praktis! Saya bisa memantau progress belajar anak dari kantor. Soal-soalnya juga berkualitas dan sesuai kurikulum."</p>
                 <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">
-                        BP
-                    </div>
+                    <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">BP</div>
                     <div>
                         <p class="font-bold text-gray-900 dark:text-white">Budi Pratama</p>
                         <p class="text-sm text-gray-500">Ayah dari anak kelas 4</p>
@@ -331,17 +342,11 @@ html {
                 </div>
             </div>
             
-            <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm">
-                <div class="flex items-center gap-1 mb-6 text-yellow-400 text-xl">
-                    ★★★★★
-                </div>
-                <p class="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed italic">
-                    "Mode proxy untuk orang tua sangat berguna! Saya bisa mendampingi anak belajar sambil melihat langsung kesulitannya."
-                </p>
+            <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-gray-700">
+                <div class="flex items-center gap-1 mb-6 text-yellow-400 text-lg">★★★★★</div>
+                <p class="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">"Mode proxy untuk orang tua sangat berguna! Saya bisa mendampingi anak belajar sambil melihat langsung kesulitannya."</p>
                 <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">
-                        AN
-                    </div>
+                    <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">AN</div>
                     <div>
                         <p class="font-bold text-gray-900 dark:text-white">Anita Nurhayati</p>
                         <p class="text-sm text-gray-500">Ibu rumah tangga</p>
@@ -353,8 +358,8 @@ html {
 </section>
 
 <!-- CTA Section -->
-<section class="py-24 hero-gradient">
-    <div class="max-w-4xl mx-auto px-6 md:px-12 text-center">
+<section class="py-24 hero-green" style="background: linear-gradient(135deg, #15803d 0%, #16a34a 50%, #22c55e 100%);">
+    <div class="max-w-4xl mx-auto px-8 md:px-16 text-center">
         <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-8">
             Siap Membantu Anak Anda Berprestasi?
         </h2>
@@ -364,40 +369,43 @@ html {
         
         {% if not user.is_authenticated %}
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="{% url 'students:register' %}" class="inline-flex items-center justify-center px-10 py-5 text-xl font-bold text-green-700 bg-white rounded-xl hover:bg-gray-100 transition-all shadow-xl">
-                + Daftar Gratis Sekarang
+            <a href="{% url 'students:register' %}" class="inline-flex items-center justify-center px-10 py-5 text-xl font-bold text-green-700 bg-white rounded-xl hover:bg-green-50 transition-colors shadow-xl">
+                Daftar Gratis Sekarang
             </a>
-            <a href="{% url 'students:register_parent' %}" class="inline-flex items-center justify-center px-10 py-5 text-xl font-medium text-white border-2 border-white/40 rounded-xl hover:bg-white/10 transition-all">
+            <a href="{% url 'students:register_parent' %}" class="inline-flex items-center justify-center px-10 py-5 text-xl font-medium text-white border-2 border-white/40 rounded-xl hover:bg-white/10 transition-colors">
                 Daftar sebagai Orang Tua
             </a>
         </div>
         {% else %}
-        <a href="{% url 'core:dashboard' %}" class="inline-flex items-center justify-center px-10 py-5 text-xl font-bold text-green-700 bg-white rounded-xl hover:bg-gray-100 transition-all shadow-xl">
+        <a href="{% url 'core:dashboard' %}" class="inline-flex items-center justify-center px-10 py-5 text-xl font-bold text-green-700 bg-white rounded-xl hover:bg-green-50 transition-colors shadow-xl">
             Masuk ke Dashboard →
         </a>
         {% endif %}
     </div>
 </section>
+</main>
+{% endblock %}
 
-<!-- Footer -->
+{% block footer %}
+<!-- Custom Footer -->
 <footer class="bg-gray-900 text-white py-16">
-    <div class="max-w-6xl mx-auto px-6 md:px-12">
-        <div class="grid md:grid-cols-4 gap-10">
-            <div>
-                <h3 class="text-xl font-bold mb-6 gradient-text">Bank Soal SD</h3>
-                <p class="text-gray-400 leading-relaxed">Platform belajar terbaik untuk anak SD Indonesia. Sesuai kurikulum, aman, dan menyenangkan.</p>
+    <div class="max-w-6xl mx-auto px-8 md:px-16">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-10 mb-12">
+            <div class="col-span-2 md:col-span-1">
+                <h3 class="text-xl font-bold mb-6 text-green-400">Bank Soal SD</h3>
+                <p class="text-gray-400 leading-relaxed text-sm">Platform belajar terbaik untuk anak SD Indonesia. Sesuai kurikulum, aman, dan menyenangkan.</p>
             </div>
             <div>
-                <h4 class="font-bold mb-6">Menu</h4>
-                <ul class="space-y-3 text-gray-400">
-                    <li><a href="{% url 'login' %}" class="hover:text-white transition">Masuk</a></li>
-                    <li><a href="{% url 'students:register' %}" class="hover:text-white transition">Daftar Siswa</a></li>
-                    <li><a href="{% url 'students:register_parent' %}" class="hover:text-white transition">Daftar Orang Tua</a></li>
+                <h4 class="font-bold mb-6 text-white">Menu</h4>
+                <ul class="space-y-3 text-gray-400 text-sm">
+                    <li><a href="{% url 'login' %}" class="hover:text-white transition-colors">Masuk</a></li>
+                    <li><a href="{% url 'students:register' %}" class="hover:text-white transition-colors">Daftar Siswa</a></li>
+                    <li><a href="{% url 'students:register_parent' %}" class="hover:text-white transition-colors">Daftar Orang Tua</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="font-bold mb-6">Fitur</h4>
-                <ul class="space-y-3 text-gray-400">
+                <h4 class="font-bold mb-6 text-white">Fitur</h4>
+                <ul class="space-y-3 text-gray-400 text-sm">
                     <li>Kuis Interaktif</li>
                     <li>Analisis Progress</li>
                     <li>Mode Orang Tua</li>
@@ -405,14 +413,14 @@ html {
                 </ul>
             </div>
             <div>
-                <h4 class="font-bold mb-6">Kontak</h4>
-                <ul class="space-y-3 text-gray-400">
+                <h4 class="font-bold mb-6 text-white">Kontak</h4>
+                <ul class="space-y-3 text-gray-400 text-sm">
                     <li>✉ info@banksoalsd.com</li>
                     <li>📞 +62 812 3456 7890</li>
                 </ul>
             </div>
         </div>
-        <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-500">
+        <div class="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
             <p>© 2026 Bank Soal SD. All rights reserved.</p>
         </div>
     </div>

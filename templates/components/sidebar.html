@@ -3,8 +3,8 @@
       <ul class="space-y-2 font-medium">
          <!-- Dashboard - All Users -->
          <li>
-            <a href="{% url 'core:dashboard' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {% if request.resolver_match.view_name == 'core:dashboard' %}bg-gray-100 dark:bg-gray-700{% endif %}">
-               <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+            <a href="{% url 'core:dashboard' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-green-50 dark:hover:bg-green-900/20 group {% if request.resolver_match.view_name == 'core:dashboard' %}bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300{% endif %}">
+               <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400 {% if request.resolver_match.view_name == 'core:dashboard' %}text-green-600 dark:text-green-400{% endif %}" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
                   <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"/>
                   <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z"/>
                </svg>
@@ -25,16 +25,16 @@
             </div>
          </li>
          <li>
-            <a href="{% url 'students:my_students' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {% if 'my_students' in request.resolver_match.url_name or 'parent_student' in request.resolver_match.url_name %}bg-gray-100 dark:bg-gray-700{% endif %}">
-               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <a href="{% url 'students:my_students' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-green-50 dark:hover:bg-green-900/20 group {% if 'my_students' in request.resolver_match.url_name or 'parent_student' in request.resolver_match.url_name %}bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300{% endif %}">
+               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                </svg>
                <span class="flex-1 ms-3 whitespace-nowrap">Siswa Saya</span>
             </a>
          </li>
          <li>
-            <a href="{% url 'students:select_for_quiz' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {% if 'select_for_quiz' in request.resolver_match.url_name %}bg-gray-100 dark:bg-gray-700{% endif %}">
-               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <a href="{% url 'students:select_for_quiz' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-green-50 dark:hover:bg-green-900/20 group {% if 'select_for_quiz' in request.resolver_match.url_name %}bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300{% endif %}">
+               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                </svg>
@@ -51,24 +51,24 @@
             </div>
          </li>
          <li>
-            <a href="{% url 'questions:list' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {% if request.resolver_match.app_name == 'questions' and 'tag' not in request.resolver_match.url_name and 'kd' not in request.resolver_match.url_name %}bg-gray-100 dark:bg-gray-700{% endif %}">
-               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <a href="{% url 'questions:list' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-green-50 dark:hover:bg-green-900/20 group {% if request.resolver_match.app_name == 'questions' and 'tag' not in request.resolver_match.url_name and 'kd' not in request.resolver_match.url_name %}bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300{% endif %}">
+               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                </svg>
                <span class="flex-1 ms-3 whitespace-nowrap">Bank Soal</span>
             </a>
          </li>
          <li>
-            <a href="{% url 'questions:tag-list' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {% if 'tag' in request.resolver_match.url_name %}bg-gray-100 dark:bg-gray-700{% endif %}">
-               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <a href="{% url 'questions:tag-list' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-green-50 dark:hover:bg-green-900/20 group {% if 'tag' in request.resolver_match.url_name %}bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300{% endif %}">
+               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                </svg>
                <span class="flex-1 ms-3 whitespace-nowrap">Tags</span>
             </a>
          </li>
          <li>
-            <a href="{% url 'questions:kd-list' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {% if 'kd' in request.resolver_match.url_name %}bg-gray-100 dark:bg-gray-700{% endif %}">
-               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <a href="{% url 'questions:kd-list' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-green-50 dark:hover:bg-green-900/20 group {% if 'kd' in request.resolver_match.url_name %}bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300{% endif %}">
+               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                </svg>
                <span class="flex-1 ms-3 whitespace-nowrap">Kompetensi Dasar</span>
@@ -84,16 +84,16 @@
             </div>
          </li>
          <li>
-            <a href="{% url 'quizzes:list' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {% if request.resolver_match.app_name == 'quizzes' and 'student' not in request.resolver_match.url_name %}bg-gray-100 dark:bg-gray-700{% endif %}">
-               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <a href="{% url 'quizzes:list' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-green-50 dark:hover:bg-green-900/20 group {% if request.resolver_match.app_name == 'quizzes' and 'student' not in request.resolver_match.url_name %}bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300{% endif %}">
+               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                </svg>
                <span class="flex-1 ms-3 whitespace-nowrap">Kuis</span>
             </a>
          </li>
          <li>
-            <a href="{% url 'analytics:dashboard' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {% if request.resolver_match.app_name == 'analytics' %}bg-gray-100 dark:bg-gray-700{% endif %}">
-               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <a href="{% url 'analytics:dashboard' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-green-50 dark:hover:bg-green-900/20 group {% if request.resolver_match.app_name == 'analytics' %}bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300{% endif %}">
+               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                </svg>
                <span class="flex-1 ms-3 whitespace-nowrap">Analytics</span>
@@ -111,16 +111,16 @@
              </div>
          </li>
          <li>
-            <a href="{% url 'quizzes:student-list' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {% if 'student-list' in request.resolver_match.url_name %}bg-gray-100 dark:bg-gray-700{% endif %}">
-               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <a href="{% url 'quizzes:student-list' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-green-50 dark:hover:bg-green-900/20 group {% if 'student-list' in request.resolver_match.url_name %}bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300{% endif %}">
+               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                </svg>
                <span class="flex-1 ms-3 whitespace-nowrap">Kuis Tersedia</span>
             </a>
          </li>
          <li>
-            <a href="{% url 'analytics:progress' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {% if 'progress' in request.resolver_match.view_name %}bg-gray-100 dark:bg-gray-700{% endif %}">
-               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <a href="{% url 'analytics:progress' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-green-50 dark:hover:bg-green-900/20 group {% if 'progress' in request.resolver_match.view_name %}bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300{% endif %}">
+               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                </svg>
                <span class="flex-1 ms-3 whitespace-nowrap">Progress Saya</span>
@@ -134,8 +134,8 @@
              </div>
          </li>
          <li>
-            <a href="{% url 'students:link_requests' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group {% if 'link_request' in request.resolver_match.url_name %}bg-gray-100 dark:bg-gray-700{% endif %}">
-               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <a href="{% url 'students:link_requests' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-green-50 dark:hover:bg-green-900/20 group {% if 'link_request' in request.resolver_match.url_name %}bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300{% endif %}">
+               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
                </svg>
                <span class="flex-1 ms-3 whitespace-nowrap">Permintaan Orang Tua</span>
@@ -148,8 +148,8 @@
       <div class="pt-4 mt-4 space-y-2 border-t border-gray-200 dark:border-gray-700">
          <form action="{% url 'logout' %}" method="post">
              {% csrf_token %}
-             <button type="submit" class="flex w-full items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
-                <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+             <button type="submit" class="flex w-full items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-700 dark:text-white dark:hover:text-red-400 group">
+                <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-red-600 dark:group-hover:text-red-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                 </svg>
                 <span class="ms-3">Logout</span>

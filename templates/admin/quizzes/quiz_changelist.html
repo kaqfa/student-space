@@ -1,0 +1,27 @@
+{% extends "admin/change_list.html" %}
+{% load i18n admin_urls static %}
+
+{% block content_title %}
+<h1>{{ title }}</h1>
+
+<div style="margin: 20px 0; padding: 15px; background-color: #f0f9ff; border-left: 4px solid #3b82f6; border-radius: 4px;">
+    <h3 style="margin-top: 0; color: #1e40af;">✨ Create Quiz</h3>
+    <p style="margin-bottom: 10px;">Choose the type of quiz you want to create:</p>
+    <div style="display: flex; gap: 10px;">
+        <a href="{% url 'quizzes:create_subject_quiz' %}" 
+           class="button" 
+           style="background-color: #10b981; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px; display: inline-block;">
+            📚 Subject Quiz (Random Questions)
+        </a>
+        <a href="{% url 'quizzes:create_custom_quiz' %}" 
+           class="button" 
+           style="background-color: #3b82f6; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px; display: inline-block;">
+            🎯 Custom Quiz (Select Questions)
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block result_list %}
+  {{ block.super }}
+{% endblock %}

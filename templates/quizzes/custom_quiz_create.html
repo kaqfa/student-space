@@ -1,0 +1,235 @@
+{% extends 'admin_base.html' %}
+
+{% block title %}Create Custom Quiz - Bank Soal SD{% endblock %}
+{% block page_title %}🎯 Create Custom Quiz{% endblock %}
+{% block page_subtitle %}Pilih soal secara manual untuk membuat quiz kustom{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Left Sidebar: Quiz Info -->
+    <div class="lg:col-span-1">
+        <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800 sticky top-6">
+            <div class="px-5 py-4 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-800">
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Informasi Quiz</h2>
+            </div>
+            
+            <form method="post" id="createQuizForm" class="p-5">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="create_quiz">
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Judul <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" name="title" required 
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                               placeholder="Matematika - Latihan Khusus">
+                    </div>
+                    
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Deskripsi</label>
+                        <textarea name="description" rows="2" 
+                                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"></textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Mata Pelajaran <span class="text-red-500">*</span>
+                        </label>
+                        <select name="subject" required 
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+                            <option value="">Pilih...</option>
+                            {% for subject in subjects %}
+                                <option value="{{ subject.id }}">{{ subject.name }} (Kelas {{ subject.grade }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Kelas <span class="text-red-500">*</span>
+                        </label>
+                        <select name="grade" required 
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+                            <option value="">Pilih...</option>
+                            {% for grade in grades %}
+                                <option value="{{ grade }}">Kelas {{ grade }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Jumlah Soal per Sesi
+                        </label>
+                        <input type="number" name="question_count" min="1" max="100"
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                               placeholder="Kosongkan untuk semua">
+                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                            <svg class="w-3 h-3 inline-block mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                            </svg>
+                            Random dari soal yang dipilih
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Waktu (menit) <span class="text-red-500">*</span>
+                        </label>
+                        <input type="number" name="time_limit_minutes" value="30" min="1" required 
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+                    </div>
+                    
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Nilai Lulus (%) <span class="text-red-500">*</span>
+                        </label>
+                        <input type="number" name="passing_score" value="70" min="0" max="100" required 
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+                    </div>
+                </div>
+                
+                <div class="mt-5 pt-5 border-t border-gray-200 dark:border-gray-700">
+                    <div class="mb-3 p-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
+                        <p class="text-sm font-medium text-blue-800 dark:text-blue-300">
+                            Soal Terpilih: <span id="selectedCount" class="text-lg font-bold">{{ selected_questions|length }}</span>
+                        </p>
+                    </div>
+                    <button type="submit" 
+                            class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        <svg class="w-4 h-4 inline-block mr-2 -ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        Buat Custom Quiz
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Right: Question Browser -->
+    <div class="lg:col-span-2">
+        <div class="bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800">
+            <div class="px-5 py-4 border-b border-gray-200 dark:border-gray-700">
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Pilih Soal</h2>
+                
+                <!-- Filters -->
+                <form method="get" class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                    <select name="subject" onchange="this.form.submit()" 
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        <option value="">Semua Mapel</option>
+                        {% for subject in subjects %}
+                            <option value="{{ subject.id }}" {% if request.GET.subject == subject.id|stringformat:"s" %}selected{% endif %}>
+                                {{ subject.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    
+                    <select name="difficulty" onchange="this.form.submit()" 
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                        <option value="">Semua Tingkat</option>
+                        {% for diff_value, diff_label in difficulties %}
+                            <option value="{{ diff_value }}" {% if request.GET.difficulty == diff_value %}selected{% endif %}>
+                                {{ diff_label }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    
+                    <input type="text" name="search" placeholder="Cari soal..." value="{{ request.GET.search }}"
+                           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+                    
+                    <button type="submit" 
+                            class="text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+                        Filter
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Questions List -->
+            <div class="p-5">
+                <div class="space-y-3 max-h-[600px] overflow-y-auto">
+                    {% for question in questions %}
+                        <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
+                            <div class="flex items-start gap-3">
+                                <form method="post" class="flex-shrink-0">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="question_id" value="{{ question.id }}">
+                                    {% if question.id|stringformat:"s" in selected_questions %}
+                                        <input type="hidden" name="action" value="remove_question">
+                                        <button type="submit" 
+                                                class="flex items-center px-3 py-1.5 text-xs font-medium text-red-700 bg-red-100 rounded-lg hover:bg-red-200 dark:bg-red-900 dark:text-red-300 dark:hover:bg-red-800">
+                                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                            </svg>
+                                            Terpilih
+                                        </button>
+                                    {% else %}
+                                        <input type="hidden" name="action" value="add_question">
+                                        <button type="submit" 
+                                                class="flex items-center px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-100 rounded-lg hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-300 dark:hover:bg-blue-800">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                            </svg>
+                                            Pilih
+                                        </button>
+                                    {% endif %}
+                                </form>
+                                
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-medium text-gray-900 dark:text-white mb-1">
+                                        {{ question.question_text|truncatewords:25 }}
+                                    </p>
+                                    <div class="flex flex-wrap gap-2 text-xs">
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                                            {{ question.topic.subject.name }}
+                                        </span>
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300">
+                                            {{ question.topic.name }}
+                                        </span>
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded {% if question.difficulty == 'mudah' %}bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300{% elif question.difficulty == 'sedang' %}bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300{% else %}bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300{% endif %}">
+                                            {{ question.get_difficulty_display }}
+                                        </span>
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">
+                                            {{ question.points }} poin
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="text-center py-12">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Tidak ada soal ditemukan</p>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <!-- Pagination -->
+                {% if is_paginated %}
+                    <div class="mt-5 flex justify-center gap-2">
+                        {% if page_obj.has_previous %}
+                            <a href="?page={{ page_obj.previous_page_number }}" 
+                               class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                Previous
+                            </a>
+                        {% endif %}
+                        <span class="px-3 py-2 text-sm text-gray-700 dark:text-gray-300">
+                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                        </span>
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}" 
+                               class="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                Next
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

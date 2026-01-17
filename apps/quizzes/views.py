@@ -12,7 +12,7 @@ from apps.analytics.models import Attempt
 from apps.accounts.mixins import ParentOrAdminMixin, StudentRequiredMixin, ParentRequiredMixin
 from apps.accounts.models import ParentStudent
 from .models import Quiz, QuizSession
-from .forms import QuizForm
+from .forms import QuizForm, SubjectQuizForm
 from apps.questions.models import Question
 
 User = get_user_model()
@@ -279,32 +279,55 @@ class QuizTakeView(LoginRequiredMixin, DetailView):
         return self.finish_quiz(session, request.POST)
 
     def finish_quiz(self, session, post_data=None):
+        """Finish quiz by updating existing Attempt records with student answers."""
         quiz = session.quiz
         earned_points = 0
         
         if post_data:
-            for question in quiz.questions.all():
+            # Update existing Attempt records with student answers
+            for question in session.session_questions.all():
                 answer_key = "question_" + str(question.id)
                 answer_given = post_data.get(answer_key, "").strip().upper()
                 
-                is_correct = False
-                if question.question_type == 'pilgan':
-                    if answer_given == question.answer_key:
-                        is_correct = True
-                
-                Attempt.objects.create(
-                    student=session.student,
-                    question=question,
-                    quiz_session=session,
-                    answer_given=answer_given,
-                    is_correct=is_correct,
-                    time_taken=0 
-                )
-                
-                if is_correct:
-                    earned_points += question.points
+                # Find the pre-generated Attempt record
+                try:
+                    attempt = Attempt.objects.get(
+                        student=session.student,
+                        question=question,
+                        quiz_session=session
+                    )
+                    
+                    # Update with student's answer
+                    attempt.answer_given = answer_given
+                    
+                    # Check if correct
+                    is_correct = False
+                    if question.question_type == 'pilgan':
+                        if answer_given == question.answer_key:
+                            is_correct = True
+                    
+                    attempt.is_correct = is_correct
+                    # time_taken will be calculated later or left as 0 for now
+                    attempt.save()  # save() method will auto-calculate points_earned
+                    
+                    if is_correct:
+                        earned_points += question.points
+                        
+                except Attempt.DoesNotExist:
+                    # Fallback: create attempt if it doesn't exist (shouldn't happen)
+                    Attempt.objects.create(
+                        student=session.student,
+                        question=question,
+                        quiz_session=session,
+                        answer_given=answer_given,
+                        is_correct=is_correct,
+                        time_taken=0
+                    )
+                    if is_correct:
+                        earned_points += question.points
         
-        max_points = quiz.total_points
+        # Calculate final score based on session questions
+        max_points = sum(q.points for q in session.session_questions.all())
         if max_points > 0:
             final_score = (earned_points / max_points) * 100
         else:
@@ -430,3 +453,140 @@ class ProxyQuizSelectStudentView(ParentRequiredMixin, ListView):
         ).order_by('grade', 'first_name')
         
         return context
+
+
+# ============================================================
+# DEDICATED QUIZ CREATION VIEWS (User-Friendly Interfaces)
+# ============================================================
+
+class SubjectQuizCreateView(ParentOrAdminMixin, CreateView):
+    """Create a subject-based quiz with random questions."""
+    model = Quiz
+    form_class = SubjectQuizForm
+    template_name = "quizzes/subject_quiz_create.html"
+    success_url = reverse_lazy('admin:quizzes_quiz_changelist')
+    
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        messages.success(self.request, f"Subject Quiz '{form.instance.title}' created successfully! Questions will be randomly selected when students take the quiz.")
+        return super().form_valid(form)
+
+
+class CustomQuizCreateView(ParentOrAdminMixin, ListView):
+    """Create a custom quiz with manually selected questions."""
+    model = Question
+    template_name = "quizzes/custom_quiz_create.html"
+    context_object_name = "questions"
+    paginate_by = 20
+    
+    def get_queryset(self):
+        queryset = Question.objects.select_related('topic', 'topic__subject')
+        
+        # Filter by subject
+        subject_id = self.request.GET.get('subject')
+        if subject_id:
+            queryset = queryset.filter(topic__subject_id=subject_id)
+        
+        # Filter by grade
+        grade = self.request.GET.get('grade')
+        if grade:
+            queryset = queryset.filter(topic__subject__grade=grade)
+        
+        # Filter by topic
+        topic_id = self.request.GET.get('topic')
+        if topic_id:
+            queryset = queryset.filter(topic_id=topic_id)
+        
+        # Filter by difficulty
+        difficulty = self.request.GET.get('difficulty')
+        if difficulty:
+            queryset = queryset.filter(difficulty=difficulty)
+        
+        # Search
+        search = self.request.GET.get('search')
+        if search:
+            queryset = queryset.filter(question_text__icontains=search)
+        
+        return queryset.order_by('-created_at')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        from apps.subjects.models import Subject, Topic
+        
+        context['subjects'] = Subject.objects.all().order_by('grade', 'name')
+        context['topics'] = Topic.objects.all().order_by('subject__name', 'name')
+        context['difficulties'] = Question.Difficulty.choices
+        context['grades'] = range(1, 7)
+        
+        # Get selected question IDs from session
+        context['selected_questions'] = self.request.session.get('selected_question_ids', [])
+        
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        action = request.POST.get('action')
+        
+        if action == 'add_question':
+            question_id = request.POST.get('question_id')
+            selected = request.session.get('selected_question_ids', [])
+            if question_id and question_id not in selected:
+                selected.append(question_id)
+                request.session['selected_question_ids'] = selected
+                messages.success(request, "Question added to selection.")
+        
+        elif action == 'remove_question':
+            question_id = request.POST.get('question_id')
+            selected = request.session.get('selected_question_ids', [])
+            if question_id in selected:
+                selected.remove(question_id)
+                request.session['selected_question_ids'] = selected
+                messages.success(request, "Question removed from selection.")
+        
+        elif action == 'create_quiz':
+            title = request.POST.get('title')
+            description = request.POST.get('description', '')
+            subject_id = request.POST.get('subject')
+            grade = request.POST.get('grade')
+            time_limit = request.POST.get('time_limit_minutes', 30)
+            passing_score = request.POST.get('passing_score', 70)
+            question_count = request.POST.get('question_count', '')  # Optional
+            
+            selected_ids = request.session.get('selected_question_ids', [])
+            
+            if not title or not subject_id or not grade:
+                messages.error(request, "Please provide title, subject, and grade.")
+            elif not selected_ids:
+                messages.error(request, "Please select at least one question.")
+            else:
+                from apps.subjects.models import Subject
+                subject = get_object_or_404(Subject, pk=subject_id)
+                
+                # Prepare question_count (convert to int or None)
+                q_count = int(question_count) if question_count else None
+                if q_count and q_count > len(selected_ids):
+                    messages.warning(request, f"Question count ({q_count}) exceeds selected questions ({len(selected_ids)}). Using all selected questions.")
+                    q_count = None
+                
+                quiz = Quiz.objects.create(
+                    title=title,
+                    description=description,
+                    subject=subject,
+                    grade=int(grade),
+                    quiz_type=Quiz.QuizType.CUSTOM,
+                    question_count=q_count,
+                    time_limit_minutes=int(time_limit),
+                    passing_score=int(passing_score),
+                    created_by=request.user
+                )
+                
+                questions = Question.objects.filter(id__in=selected_ids)
+                quiz.questions.set(questions)
+                
+                # Clear session
+                request.session['selected_question_ids'] = []
+                
+                count_msg = f" ({q_count} will be randomly selected per session)" if q_count else ""
+                messages.success(request, f"Custom Quiz '{title}' created with {len(selected_ids)} questions{count_msg}!")
+                return redirect('admin:quizzes_quiz_changelist')
+        
+        return redirect('quizzes:create_custom_quiz')

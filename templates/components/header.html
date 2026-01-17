@@ -1,33 +1,45 @@
-<nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+<nav class="fixed top-0 z-50 w-full" style="background: linear-gradient(135deg, #15803d 0%, #16a34a 50%, #22c55e 100%);">
   <div class="px-3 py-3 lg:px-5">
     <div class="flex items-center justify-between">
       <div class="flex items-center justify-start rtl:justify-end">
-        <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+        <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-white/80 rounded-lg sm:hidden hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/20">
             <span class="sr-only">Open sidebar</span>
             <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
             </svg>
          </button>
-        <a href="{% url 'core:dashboard' %}" class="flex ms-2 md:ms-24">
-          <!-- <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 me-3" alt="FlowBite Logo" /> -->
-          <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Bank Soal SD</span>
+        <a href="{% url 'core:dashboard' %}" class="flex items-center gap-3 ms-2 md:ms-24">
+          <!-- SVG Logo -->
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Book pages -->
+              <rect x="6" y="8" width="24" height="20" rx="2" fill="white" opacity="0.95"/>
+              <!-- Book spine -->
+              <rect x="6" y="8" width="4" height="20" rx="1" fill="#f0fdf4"/>
+              <!-- Star (excellence symbol) -->
+              <path d="M18 14L19.5 17L23 17.5L20.5 20L21 23.5L18 21.5L15 23.5L15.5 20L13 17.5L16.5 17L18 14Z" fill="#22c55e"/>
+              <!-- Book lines -->
+              <line x1="11" y1="13" x2="25" y2="13" stroke="#e5e7eb" stroke-width="1.5"/>
+              <line x1="11" y1="17" x2="25" y2="17" stroke="#e5e7eb" stroke-width="1.5"/>
+              <line x1="11" y1="21" x2="22" y2="21" stroke="#e5e7eb" stroke-width="1.5"/>
+          </svg>
+          <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap text-white">Bank Soal SD</span>
         </a>
       </div>
       <div class="flex items-center">
           <div class="flex items-center ms-3">
             <div>
-              <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
+              <button type="button" class="flex text-sm bg-white/20 rounded-full focus:ring-4 focus:ring-white/30" aria-expanded="false" data-dropdown-toggle="dropdown-user">
                 <span class="sr-only">Open user menu</span>
                 {% if user.avatar %}
                     <img class="w-8 h-8 rounded-full" src="{{ user.avatar.url }}" alt="user photo">
                 {% else %}
-                    <div class="relative w-8 h-8 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
-                        <svg class="absolute w-10 h-10 text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    <div class="relative w-8 h-8 overflow-hidden bg-white/30 rounded-full">
+                        <svg class="absolute w-10 h-10 text-white -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
                     </div>
                 {% endif %}
               </button>
             </div>
-            <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
+            <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
               <div class="px-4 py-3" role="none">
                 <p class="text-sm text-gray-900 dark:text-white" role="none">
                   {{ user.get_full_name|default:user.username }}
@@ -37,12 +49,9 @@
                 </p>
               </div>
               <ul class="py-1" role="none">
-                <!-- <li>
-                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Profile</a>
-                </li> -->
-                <!-- <li>
-                  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Settings</a>
-                </li> -->
+                <li>
+                  <a href="{% url 'profile' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Profile</a>
+                </li>
                 <li>
                   <form action="{% url 'logout' %}" method="post">
                       {% csrf_token %}
