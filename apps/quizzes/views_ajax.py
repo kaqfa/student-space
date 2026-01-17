@@ -1,3 +1,13 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import get_user_model
+from django.http import JsonResponse
+from django.views import View
+
+from apps.quizzes.models import QuizSession
+from apps.questions.models import Question
+from apps.analytics.models import Attempt
+
+User = get_user_model()
 
 
 # ============================================================
