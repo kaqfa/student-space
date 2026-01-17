@@ -29,7 +29,7 @@
     <div class="sticky top-20 z-20 bg-white dark:bg-gray-800 shadow-md rounded-lg p-4 mb-6 flex justify-between items-center border border-gray-200 dark:border-gray-700">
         <div>
             <h1 class="text-lg font-bold text-gray-900 dark:text-white">{{ quiz.title }}</h1>
-            <p class="text-sm text-gray-500 dark:text-gray-400">{{ quiz.questions.count }} Soal</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">{{ session.session_questions.count }} Soal</p>
         </div>
         <div class="text-right">
              {% if remaining_seconds %}
@@ -51,7 +51,7 @@
         {% endif %}
         
         <div class="space-y-6">
-            {% for question in quiz.questions.all %}
+            {% for question in session.session_questions.all %}
             <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg p-6 border border-gray-200 dark:border-gray-700">
                 <div class="flex space-x-4">
                     <div class="flex-shrink-0">
