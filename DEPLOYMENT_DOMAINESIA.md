@@ -109,7 +109,15 @@ pip install -r requirements/production.txt
 
 ### 6. Setup Database
 
+**PENTING**: Pastikan menggunakan production settings!
+
 ```bash
+# Set environment variable untuk production settings
+export DJANGO_SETTINGS_MODULE=config.settings.production
+
+# Atau gunakan flag --settings di setiap command:
+# python manage.py migrate --settings=config.settings.production
+
 # Jalankan migrations
 python manage.py migrate
 
@@ -120,11 +128,17 @@ python manage.py createsuperuser
 python manage.py collectstatic --noinput
 ```
 
+**Alternatif**: Set di .env file (sudah ada di .env.production.example):
+```bash
+DJANGO_SETTINGS_MODULE=config.settings.production
+```
+
 ### 7. Test Koneksi Database
 
 Pastikan koneksi PostgreSQL berhasil:
 
 ```bash
+# Pastikan DJANGO_SETTINGS_MODULE sudah di-set
 python manage.py dbshell
 ```
 
@@ -190,6 +204,33 @@ Jika mendapat error koneksi database:
 2. Pastikan DATABASE_ENGINE=postgresql di .env
 3. Cek credentials di cPanel PostgreSQL Databases
 4. Pastikan user PostgreSQL punya permission ke database
+
+### ModuleNotFoundError: No module named 'debug_toolbar'
+
+Error ini terjadi karena menggunakan development settings di production. **Solusi**:
+
+1. **Set DJANGO_SETTINGS_MODULE dengan benar**:
+```bash
+export DJANGO_SETTINGS_MODULE=config.settings.production
+```
+
+2. **Atau gunakan flag --settings di setiap command**:
+```bash
+python manage.py migrate --settings=config.settings.production
+python manage.py collectstatic --noinput --settings=config.settings.production
+```
+
+3. **Pastikan .env file sudah benar**:
+```bash
+# File .env harus berisi:
+DJANGO_SETTINGS_MODULE=config.settings.production
+```
+
+4. **Pastikan install dari production requirements**:
+```bash
+pip install -r requirements/production.txt
+# JANGAN install dari requirements/development.txt di production!
+```
 
 ### Import Error: No module named 'psycopg2'
 
