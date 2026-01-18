@@ -1,0 +1,60 @@
+# ============================================
+# .htaccess untuk exp.fahrifirdaus.my.id
+# ============================================
+# File ini harus di: /home/fahrifir/exp.fahrifirdaus.my.id/.htaccess
+
+# ============================================
+# PASSENGER CONFIGURATION
+# ============================================
+
+# Enable Passenger
+PassengerEnabled On
+
+# Path ke root aplikasi Django (folder dengan manage.py dan passenger_wsgi.py)
+PassengerAppRoot /home/fahrifir/student-space
+
+# Path ke Python di virtual environment (yang dibuat cPanel)
+PassengerPython /home/fahrifir/virtualenv/exp.fahrifirdaus.my.id/3.12/bin/python
+
+# File WSGI yang akan dijalankan
+PassengerStartupFile passenger_wsgi.py
+
+# Environment mode
+PassengerAppEnv production
+
+# ============================================
+# STATIC & MEDIA FILES
+# ============================================
+
+# Alias untuk static files
+Alias /static /home/fahrifir/exp.fahrifirdaus.my.id/staticfiles
+Alias /media /home/fahrifir/exp.fahrifirdaus.my.id/media
+
+# Permission untuk static files
+<Directory /home/fahrifir/exp.fahrifirdaus.my.id/staticfiles>
+    Options -Indexes +FollowSymLinks
+    AllowOverride None
+    Require all granted
+</Directory>
+
+# Permission untuk media files
+<Directory /home/fahrifir/exp.fahrifirdaus.my.id/media>
+    Options -Indexes +FollowSymLinks
+    AllowOverride None
+    Require all granted
+</Directory>
+
+# ============================================
+# SECURITY
+# ============================================
+
+# Prevent directory listing
+Options -Indexes
+
+# Hide server signature
+ServerSignature Off
+
+# ============================================
+# DEBUGGING (uncomment jika masih error)
+# ============================================
+# PassengerLogLevel 3

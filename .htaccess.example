@@ -1,0 +1,92 @@
+# ============================================
+# .htaccess untuk Django dengan Passenger
+# ============================================
+# File ini harus berada di public_html atau document root domain Anda
+
+# CATATAN PENTING:
+# - Ganti '/home/username/banksoal' dengan path SEBENARNYA
+# - Ganti 'username' dengan username hosting Anda
+# - File ini untuk Passenger 5.x/6.x (yang digunakan Domainesia)
+
+# ============================================
+# PASSENGER CONFIGURATION
+# ============================================
+
+# Enable Passenger untuk direktori ini
+PassengerEnabled On
+
+# Path ke root project Django (folder yang berisi manage.py dan passenger_wsgi.py)
+# ⚠️ GANTI dengan path sebenarnya!
+PassengerAppRoot /home/username/banksoal
+
+# Path ke Python di virtual environment
+# ⚠️ GANTI dengan path sebenarnya!
+PassengerPython /home/username/banksoal/venv/bin/python
+
+# File WSGI yang akan dijalankan (harus ada di PassengerAppRoot)
+PassengerStartupFile passenger_wsgi.py
+
+# Environment mode (production/development)
+PassengerAppEnv production
+
+# ============================================
+# STATIC FILES CONFIGURATION
+# ============================================
+
+# Alias untuk static files (CSS, JS, images)
+# ⚠️ GANTI dengan path sebenarnya!
+Alias /static /home/username/public_html/staticfiles
+Alias /media /home/username/public_html/media
+
+# Permission untuk static files
+<Directory /home/username/public_html/staticfiles>
+    Options -Indexes +FollowSymLinks
+    AllowOverride None
+    Require all granted
+</Directory>
+
+# Permission untuk media files
+<Directory /home/username/public_html/media>
+    Options -Indexes +FollowSymLinks
+    AllowOverride None
+    Require all granted
+</Directory>
+
+# ============================================
+# SECURITY HEADERS
+# ============================================
+
+# Prevent directory listing
+Options -Indexes
+
+# Hide server signature
+ServerSignature Off
+
+# ============================================
+# ERROR HANDLING
+# ============================================
+
+# Passenger error logging
+# Uncomment untuk debugging
+# PassengerLogLevel 3
+# PassengerDebugLogFile /home/username/logs/passenger_debug.log
+
+# ============================================
+# PERFORMANCE OPTIMIZATION
+# ============================================
+
+# Max pool size (sesuaikan dengan RAM hosting)
+# PassengerMaxPoolSize 6
+
+# Min instances (app instances yang selalu berjalan)
+# PassengerMinInstances 1
+
+# ============================================
+# TROUBLESHOOTING
+# ============================================
+# Jika masih error "No such application":
+# 1. Pastikan PassengerAppRoot benar (folder yang ada passenger_wsgi.py)
+# 2. Pastikan PassengerPython benar (path ke venv/bin/python)
+# 3. Cek permission file: chmod 644 passenger_wsgi.py
+# 4. Cek permission folder: chmod 755 /home/username/banksoal
+# 5. Restart: touch /home/username/banksoal/tmp/restart.txt
