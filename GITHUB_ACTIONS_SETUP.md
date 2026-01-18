@@ -94,6 +94,9 @@ pip install -r requirements/production.txt
 cp .env.production.example .env
 nano .env  # Edit dengan credentials yang benar
 
+# PENTING: Pastikan .env berisi DJANGO_SETTINGS_MODULE=config.settings.production
+# untuk menghindari error ModuleNotFoundError: No module named 'debug_toolbar'
+
 # Initial setup
 python manage.py migrate
 python manage.py collectstatic --noinput
@@ -206,6 +209,10 @@ Common issues:
 - **Git pull failed**: Cek git credentials di server
 - **Migration failed**: Cek database credentials di .env
 - **Permission denied**: Cek file permissions di server
+- **ModuleNotFoundError: No module named 'debug_toolbar'**:
+  - Pastikan .env berisi `DJANGO_SETTINGS_MODULE=config.settings.production`
+  - Atau export DJANGO_SETTINGS_MODULE=config.settings.production sebelum run migrations
+  - Install dari requirements/production.txt, BUKAN development.txt
 
 ## 🔐 Security Best Practices
 
@@ -304,6 +311,10 @@ Jika auto deploy error, bisa manual deploy:
 ssh username@srv123.niagahoster.com
 cd ~/banksoal
 source venv/bin/activate
+
+# Set production settings
+export DJANGO_SETTINGS_MODULE=config.settings.production
+
 git pull origin main
 pip install -r requirements/production.txt
 python manage.py migrate --noinput

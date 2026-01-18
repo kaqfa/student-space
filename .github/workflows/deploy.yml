@@ -78,6 +78,9 @@ jobs:
             # Activate virtual environment
             source venv/bin/activate
 
+            # Set production settings
+            export DJANGO_SETTINGS_MODULE=config.settings.production
+
             # Pull latest code
             git pull origin main
 
