@@ -6,15 +6,24 @@ Error: `No such application (or application not configured) "exp.fahrifirdaus.my
 ## 📍 Struktur Direktori Anda
 ```
 /home/fahrifir/
-├── student-space/              ← Aplikasi Django di sini
+├── student-space/              ← Django source code (dari GitHub)
 │   ├── manage.py
-│   └── passenger_wsgi.py       ⚠️ FILE INI HARUS ADA DI SINI
-├── exp.fahrifirdaus.my.id/     ← Document root domain
-│   └── .htaccess               ⚠️ FILE INI HARUS ADA DI SINI
+│   ├── config/
+│   ├── apps/
+│   └── .env                    ← Config file
+├── exp.fahrifirdaus.my.id/     ← Document root (setup cPanel)
+│   ├── passenger_wsgi.py       ⚠️ FILE INI DI SINI (bukan di student-space!)
+│   ├── .htaccess               ⚠️ FILE INI DI SINI
+│   ├── staticfiles/
+│   └── media/
 └── virtualenv/
     └── exp.fahrifirdaus.my.id/
-        └── 3.12/bin/python     ← Virtual environment
+        └── 3.12/bin/python     ← Virtual environment (dibuat cPanel)
 ```
+
+**PENTING:** 
+- Source code Django di `/home/fahrifir/student-space/` (dari git clone)
+- `passenger_wsgi.py` dan `.htaccess` di `/home/fahrifir/exp.fahrifirdaus.my.id/` (document root)
 
 ## ✅ Solusi Cepat
 
@@ -42,10 +51,10 @@ Script akan otomatis:
 
 ### Opsi 2: Manual Setup
 
-**1. Buat file passenger_wsgi.py** di `/home/fahrifir/student-space/`
+**1. Buat file passenger_wsgi.py** di `/home/fahrifir/exp.fahrifirdaus.my.id/` (DOCUMENT ROOT!)
 
 ```bash
-cd /home/fahrifir/student-space
+cd /home/fahrifir/exp.fahrifirdaus.my.id
 nano passenger_wsgi.py
 ```
 
@@ -54,7 +63,13 @@ Paste ini:
 import sys
 import os
 
+# Document root (di mana file ini berada)
+DOCUMENT_ROOT = '/home/fahrifir/exp.fahrifirdaus.my.id'
+
+# Source code Django (dari GitHub)
 PROJECT_ROOT = '/home/fahrifir/student-space'
+
+# Virtual environment
 VENV_PATH = '/home/fahrifir/virtualenv/exp.fahrifirdaus.my.id/3.12/bin/python'
 
 if sys.executable != VENV_PATH:
@@ -73,14 +88,14 @@ try:
     application = get_wsgi_application()
 except Exception as e:
     import traceback
-    with open(os.path.join(PROJECT_ROOT, 'passenger_error.log'), 'w') as f:
+    with open(os.path.join(DOCUMENT_ROOT, 'passenger_error.log'), 'w') as f:
         f.write(traceback.format_exc())
     raise
 ```
 
 Save: Ctrl+O, Enter, Ctrl+X
 
-**2. Buat file .htaccess** di `/home/fahrifir/exp.fahrifirdaus.my.id/`
+**2. Buat/Update file .htaccess** di `/home/fahrifir/exp.fahrifirdaus.my.id/`
 
 ```bash
 cd /home/fahrifir/exp.fahrifirdaus.my.id
@@ -90,7 +105,7 @@ nano .htaccess
 Paste ini:
 ```apache
 PassengerEnabled On
-PassengerAppRoot /home/fahrifir/student-space
+PassengerAppRoot /home/fahrifir/exp.fahrifirdaus.my.id
 PassengerPython /home/fahrifir/virtualenv/exp.fahrifirdaus.my.id/3.12/bin/python
 PassengerStartupFile passenger_wsgi.py
 PassengerAppEnv production

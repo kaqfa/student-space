@@ -1,7 +1,7 @@
 # ============================================
 # .htaccess untuk exp.fahrifirdaus.my.id
 # ============================================
-# File ini harus di: /home/fahrifir/exp.fahrifirdaus.my.id/.htaccess
+# File ini di: /home/fahrifir/exp.fahrifirdaus.my.id/.htaccess
 
 # ============================================
 # PASSENGER CONFIGURATION
@@ -10,13 +10,14 @@
 # Enable Passenger
 PassengerEnabled On
 
-# Path ke root aplikasi Django (folder dengan manage.py dan passenger_wsgi.py)
-PassengerAppRoot /home/fahrifir/student-space
+# Path ke document root (di mana passenger_wsgi.py berada)
+# PENTING: Ini BUKAN path ke source code Django!
+PassengerAppRoot /home/fahrifir/exp.fahrifirdaus.my.id
 
 # Path ke Python di virtual environment (yang dibuat cPanel)
 PassengerPython /home/fahrifir/virtualenv/exp.fahrifirdaus.my.id/3.12/bin/python
 
-# File WSGI yang akan dijalankan
+# File WSGI yang akan dijalankan (ada di document root)
 PassengerStartupFile passenger_wsgi.py
 
 # Environment mode
