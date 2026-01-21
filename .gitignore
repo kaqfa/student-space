@@ -85,3 +85,8 @@ logs/
 
 # Compiled CSS (can be rebuilt)
 static/css/output.css
+
+# Docker
+.env.docker.local
+docker-compose.override.yml
+passenger_error.log
