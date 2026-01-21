@@ -1,0 +1,105 @@
+version: '3.8'
+
+services:
+  # ============================================
+  # Web Server - Apache + Passenger
+  # Simulates Domainesia cPanel environment
+  # ============================================
+  web:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: student-space-passenger
+    ports:
+      - "8080:80"      # Application
+    volumes:
+      # Mount source code for live development
+      - .:/var/www/student-space
+      # Named volumes for persistent data
+      - static_volume:/var/www/student-space/staticfiles
+      - media_volume:/var/www/student-space/media
+      - logs_volume:/var/www/student-space/logs
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PASSENGER_APP_ENV=production
+    env_file:
+      - .env.docker
+    depends_on:
+      - db
+    networks:
+      - student-space-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ============================================
+  # Database - PostgreSQL
+  # Matches production database
+  # ============================================
+  db:
+    image: postgres:12-alpine
+    container_name: student-space-db
+    ports:
+      - "5433:5432"    # Avoid conflict with local PostgreSQL
+    environment:
+      POSTGRES_DB: studentspace
+      POSTGRES_USER: student
+      POSTGRES_PASSWORD: student123
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --lc-collate=en_US.UTF-8 --lc-ctype=en_US.UTF-8"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - student-space-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U student -d studentspace"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ============================================
+  # pgAdmin - Database Management Tool
+  # ============================================
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: student-space-pgadmin
+    ports:
+      - "8081:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@localhost.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - student-space-network
+    restart: unless-stopped
+    depends_on:
+      - db
+
+# ============================================
+# Persistent Volumes
+# ============================================
+volumes:
+  postgres_data:
+    name: student-space-postgres-data
+  static_volume:
+    name: student-space-static
+  media_volume:
+    name: student-space-media
+  logs_volume:
+    name: student-space-logs
+  pgadmin_data:
+    name: student-space-pgadmin
+
+# ============================================
+# Network Configuration
+# ============================================
+networks:
+  student-space-network:
+    name: student-space-network
+    driver: bridge
