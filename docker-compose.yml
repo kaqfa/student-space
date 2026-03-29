@@ -8,7 +8,7 @@ services:
   web:
     build:
       context: .
-      dockerfile: docker/Dockerfile
+      dockerfile: Dockerfile
     container_name: student-space-passenger
     ports:
       - "8080:80"      # Application
