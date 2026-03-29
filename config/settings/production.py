@@ -1,5 +1,5 @@
 """
-Production settings for Bank Soal SD
+Production settings for Student Space
 """
 from .base import *
 import dj_database_url
@@ -83,7 +83,7 @@ EMAIL_PORT = env.int('EMAIL_PORT', default=587)
 EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS', default=True)
 EMAIL_HOST_USER = env('EMAIL_HOST_USER', default='')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='')
-DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', default='noreply@banksoal.com')
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', default='noreply@student-space.app')
 
 # Cache (optional - Redis)
 if env('REDIS_URL', default=''):

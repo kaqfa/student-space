@@ -52,18 +52,15 @@ RUN mkdir -p \
     /var/www/student-space/logs
 
 # Copy Apache configuration
-COPY docker/apache-config.conf /etc/apache2/sites-available/student-space.conf
+COPY deploy/apache/student-space.conf /etc/apache2/sites-available/student-space.conf
 
 # Enable site and required Apache modules
 RUN a2dissite 000-default && \
     a2ensite student-space && \
     a2enmod rewrite headers ssl proxy proxy_http
 
-# Copy Passenger WSGI file
-COPY docker/passenger_wsgi.py /var/www/student-space/passenger_wsgi.py
-
 # Copy entrypoint script
-COPY docker/entrypoint.sh /usr/local/bin/
+COPY deploy/scripts/docker-entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Set proper permissions

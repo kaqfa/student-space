@@ -5,18 +5,15 @@ Quick reference untuk testing Student Space dengan Passenger di lokal.
 ## 🚀 Quick Start
 
 ```bash
-# Jalankan quick start script
-./docker/quick-start.sh
-
-# Atau manual:
-docker compose build
-docker compose up -d
+# Siapkan env dan jalankan
+cp .env.docker.example .env.docker
+docker compose --env-file .env.docker up --build
 ```
 
 ## 📱 Access
 
 - **Web**: http://localhost:8080
-- **Admin**: http://localhost:8080/admin (admin/admin123)
+- **Admin**: http://localhost:8080/admin (admin / admin123)
 - **pgAdmin**: http://localhost:8081
 
 ## 🔧 Useful Commands
@@ -38,8 +35,7 @@ docker compose exec web tail -f /var/log/apache2/student-space-error.log
 docker compose exec web bash
 docker compose exec web python manage.py shell
 
-# Restart
-docker compose restart web
+# Restart Passenger (tanpa rebuild)
 docker compose exec web passenger-config restart-app /var/www/student-space
 
 # Stop
@@ -47,18 +43,14 @@ docker compose down
 docker compose down -v  # Also remove volumes
 ```
 
-## 📖 Full Documentation
-
-Lihat [DOCKER_PASSENGER_TESTING.md](../DOCKER_PASSENGER_TESTING.md) untuk dokumentasi lengkap.
-
 ## 📁 Files
 
-- `Dockerfile` - Apache + Passenger image
-- `apache-config.conf` - Apache VirtualHost configuration
-- `passenger_wsgi.py` - WSGI entry point
-- `entrypoint.sh` - Container startup script
-- `quick-start.sh` - Quick start helper
-- `debug-passenger.sh` - Debugging tool
+- `Dockerfile` — Apache + Passenger image (di root project)
+- `deploy/apache/student-space.conf` — Apache VirtualHost configuration
+- `deploy/scripts/docker-entrypoint.sh` — Container startup script
+- `passenger_wsgi.py` — WSGI entry point (di root project, berlaku untuk Docker & Domainesia)
+- `docker/quick-start.sh` — Quick start helper
+- `docker/debug-passenger.sh` — Debugging tool
 
 ## 🎯 Testing Checklist
 
@@ -67,7 +59,7 @@ Lihat [DOCKER_PASSENGER_TESTING.md](../DOCKER_PASSENGER_TESTING.md) untuk dokume
 - [ ] Homepage accessible (http://localhost:8080)
 - [ ] Admin panel accessible
 - [ ] Static files loading
-- [ ] Database connection works
+- [ ] Database connection ke PostgreSQL (bukan SQLite)
 - [ ] Migrations applied
 - [ ] No errors in logs
 
@@ -77,7 +69,7 @@ Lihat [DOCKER_PASSENGER_TESTING.md](../DOCKER_PASSENGER_TESTING.md) untuk dokume
 ```bash
 docker compose logs web
 docker compose down -v
-docker compose build --no-cache
+docker compose --env-file .env.docker build --no-cache
 ```
 
 **Static files not loading:**
@@ -87,11 +79,18 @@ docker compose exec web python manage.py collectstatic --noinput --clear
 
 **Database connection error:**
 ```bash
+# Pastikan DATABASE_URL ada di .env.docker
+grep DATABASE_URL .env.docker
+
 docker compose down
-docker compose up -d
+docker compose --env-file .env.docker up -d
 ```
 
 **View detailed logs:**
 ```bash
 ./docker/debug-passenger.sh  # Choose option 5-9
 ```
+
+## 📖 Full Documentation
+
+Lihat [docs/deployment-domainesia-passenger.md](../docs/deployment-domainesia-passenger.md) untuk panduan lengkap deployment Docker dan Domainesia cPanel.

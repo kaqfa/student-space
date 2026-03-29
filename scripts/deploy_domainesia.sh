@@ -6,7 +6,7 @@
 set -e  # Exit on error
 
 echo "======================================"
-echo "Bank Soal SD - Deployment Script"
+echo "Student Space - Deployment Script"
 echo "======================================"
 echo ""
 
