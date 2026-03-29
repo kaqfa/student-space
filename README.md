@@ -1,9 +1,9 @@
-# 📚 Bank Soal SD
+# 📚 Student Space
 
 <div align="center">
 
 ![Django](https://img.shields.io/badge/Django-5.0-092E20?style=for-the-badge&logo=django&logoColor=white)
-![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.12+-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![Flowbite](https://img.shields.io/badge/Flowbite-2.0-1C64F2?style=for-the-badge)
 
@@ -15,7 +15,7 @@
 
 ## 🌟 Overview
 
-Bank Soal SD adalah aplikasi berbasis web yang dirancang khusus untuk membantu orang tua dalam homeschooling anak SD (kelas 1-6). Aplikasi ini menyediakan bank soal terstruktur, sistem quiz dengan timer, progress tracking detail, dan analytics untuk mengidentifikasi kekuatan dan kelemahan pembelajaran anak.
+Student Space adalah aplikasi berbasis web yang dirancang khusus untuk membantu orang tua dalam homeschooling anak SD (kelas 1-6). Aplikasi ini menyediakan bank soal terstruktur, sistem quiz dengan timer, progress tracking detail, dan analytics untuk mengidentifikasi kekuatan dan kelemahan pembelajaran anak.
 
 ## ✨ Fitur Utama
 
@@ -117,7 +117,7 @@ Bank Soal SD adalah aplikasi berbasis web yang dirancang khusus untuk membantu o
 ## 📁 Project Structure
 
 ```
-bank_soal_project/
+student-space/
 ├── apps/                    # Django applications
 │   ├── accounts/           # User & authentication
 │   ├── students/           # Student management
@@ -131,15 +131,203 @@ bank_soal_project/
 │       ├── base.py
 │       ├── development.py
 │       └── production.py
+├── deploy/                 # Deployment configurations
+│   ├── apache/
+│   │   └── student-space.conf   # Apache VirtualHost (Docker)
+│   └── scripts/
+│       └── docker-entrypoint.sh # Container startup script
+├── scripts/                # Helper scripts
+│   └── deploy_domainesia.sh     # Manual deploy script ke cPanel
+├── public/                 # Document root (digunakan Passenger)
+│   └── .htaccess.domainesia.example  # Template .htaccess untuk cPanel
 ├── templates/              # HTML templates
 ├── static/                 # Static files (CSS, JS, images)
 ├── media/                  # User uploaded files
 ├── docs/                   # Documentation
 │   ├── spec.md            # Technical specification
 │   ├── prd.md             # Product requirements
-│   └── todo.md            # Development checklist
+│   └── deployment-domainesia-passenger.md  # Panduan deployment Passenger
+├── Dockerfile              # Docker image (Apache + Passenger)
+├── docker-compose.yml      # Docker stack (web + db + pgadmin)
+├── passenger_wsgi.py       # WSGI entrypoint (Docker & Domainesia)
+├── .env.docker.example     # Template env untuk Docker lokal
+├── .env.passenger.example  # Template env untuk Domainesia
 └── requirements/           # Python dependencies
 ```
+
+---
+
+## 🚢 Deployment
+
+Proyek ini mendukung dua target deployment yang menggunakan stack yang sama: **Apache + Passenger**.
+
+> Dokumentasi lengkap: [docs/deployment-domainesia-passenger.md](docs/deployment-domainesia-passenger.md)
+
+---
+
+### Simulasi Lokal dengan Docker
+
+Stack Docker menjalankan Apache + Passenger di dalam container — identik dengan lingkungan Domainesia cPanel — sehingga dapat dipakai untuk testing sebelum push ke production.
+
+**Prasyarat:** Docker dan Docker Compose tersedia.
+
+```bash
+# 1. Siapkan environment
+cp .env.docker.example .env.docker
+# Edit .env.docker jika perlu (SECRET_KEY, DB credentials, dll)
+
+# 2. Jalankan container
+docker compose --env-file .env.docker up --build
+
+# 3. Akses aplikasi
+#    Web:    http://localhost:8080
+#    Admin:  http://localhost:8080/admin  (admin / admin123)
+#    pgAdmin: http://localhost:8081
+```
+
+Perintah berguna setelah container berjalan:
+
+```bash
+# Cek status Passenger
+docker compose exec web passenger-status
+
+# Tail logs Apache + Passenger
+docker compose logs -f web
+
+# Masuk ke shell container
+docker compose exec web bash
+
+# Restart aplikasi Passenger (tanpa rebuild container)
+docker compose exec web passenger-config restart-app /var/www/student-space
+
+# Hentikan semua container
+docker compose down
+docker compose down -v   # termasuk hapus volumes
+```
+
+---
+
+### Deploy ke Domainesia cPanel (Passenger)
+
+Domainesia menggunakan **cPanel → Setup Python App** yang menjalankan Passenger secara otomatis.
+
+#### A. Buat aplikasi Python di cPanel
+
+Di menu **Setup Python App**:
+- Python version: `3.12`
+- App directory: `student-space` (atau nama direktori pilihan)
+- App domain/URI: sesuaikan domain atau subdomain target
+- Application startup file & entry point: **kosongkan**
+
+#### B. Upload source code
+
+Clone atau upload seluruh isi repo ke direktori aplikasi:
+
+```bash
+# Via SSH
+cd /home/<cpanel-user>
+git clone <repo-url> student-space
+```
+
+Struktur direktori penting setelah upload:
+
+```text
+student-space/
+├── manage.py
+├── passenger_wsgi.py      ← entrypoint Passenger
+├── public/
+│   └── .htaccess.domainesia.example
+├── config/
+└── requirements/
+```
+
+#### C. Install dependencies
+
+Aktifkan virtualenv dari cPanel, lalu:
+
+```bash
+cd /home/<cpanel-user>/student-space
+pip install --upgrade pip
+pip install -r requirements/production.txt
+```
+
+#### D. Buat file `.env`
+
+```bash
+cp .env.passenger.example .env
+# Edit .env: isi SECRET_KEY, ALLOWED_HOSTS, DATABASE_URL, STATIC_ROOT, dll
+```
+
+Contoh nilai penting:
+
+```dotenv
+SECRET_KEY=your-secret-key-here
+ALLOWED_HOSTS=yourdomain.com,www.yourdomain.com
+CSRF_TRUSTED_ORIGINS=https://yourdomain.com
+DATABASE_URL=postgresql://username:password@localhost:5432/database_name
+STATIC_ROOT=/home/<cpanel-user>/student-space/staticfiles
+MEDIA_ROOT=/home/<cpanel-user>/student-space/media
+```
+
+#### E. Jalankan migrasi dan collectstatic
+
+```bash
+cd /home/<cpanel-user>/student-space
+python manage.py migrate --noinput
+python manage.py collectstatic --noinput
+```
+
+#### F. Konfigurasi `.htaccess`
+
+Passenger di cPanel dikonfigurasi via `.htaccess` di document root domain. Gunakan template:
+
+```bash
+# Salin template ke document root domain
+cp public/.htaccess.domainesia.example /home/<cpanel-user>/public_html/.htaccess
+# Edit path sesuai environment
+```
+
+Isi minimal `.htaccess`:
+
+```apache
+PassengerEnabled On
+PassengerAppRoot /home/<cpanel-user>/student-space
+PassengerPython /home/<cpanel-user>/virtualenv/student-space/3.12/bin/python
+PassengerStartupFile passenger_wsgi.py
+PassengerAppEnv production
+```
+
+#### G. Restart Passenger
+
+```bash
+mkdir -p /home/<cpanel-user>/student-space/tmp
+touch /home/<cpanel-user>/student-space/tmp/restart.txt
+```
+
+Atau klik **Restart** pada halaman Setup Python App di cPanel.
+
+---
+
+### Deploy Update (Script Otomatis)
+
+Untuk update berikutnya dari laptop:
+
+```bash
+bash scripts/deploy_domainesia.sh
+```
+
+---
+
+### Pre-Deploy Checklist
+
+- `DEBUG=False`
+- `SECRET_KEY` production sudah diganti
+- `ALLOWED_HOSTS` berisi domain final
+- `CSRF_TRUSTED_ORIGINS` berisi URL HTTPS final
+- `python manage.py migrate --noinput` sukses
+- `python manage.py collectstatic --noinput` sukses
+- Direktori `STATIC_ROOT` dan `MEDIA_ROOT` writable
+- Aplikasi sudah di-restart setelah perubahan env
 
 ---
 
@@ -150,6 +338,7 @@ bank_soal_project/
 | [Technical Spec](docs/spec.md) | Detailed technical specification |
 | [Product Requirements](docs/prd.md) | Product requirements document |
 | [Todo List](docs/todo.md) | Development checklist |
+| [Deployment Guide](docs/deployment-domainesia-passenger.md) | Panduan deploy Passenger (Docker & cPanel) |
 | [AGENTS.md](AGENTS.md) | AI agent working guidelines |
 | [Testing Guidelines](.agent/TESTING_GUIDELINES.md) | Testing strategy and best practices |
 | [E2E Testing Guide](tests/e2e/README.md) | E2E testing with Playwright |
@@ -174,9 +363,9 @@ bank_soal_project/
 - **Math Rendering:** KaTeX 0.16
 
 ### Infrastructure
-- **App Server:** Gunicorn
-- **Web Server:** Nginx
-- **OS:** Ubuntu 22.04 LTS
+- **App Server:** Passenger (Phusion)
+- **Web Server:** Apache 2.4
+- **Hosting:** Domainesia cPanel / Docker lokal
 - **SSL:** Let's Encrypt
 
 ---
