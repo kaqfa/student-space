@@ -24,6 +24,7 @@ RUN apt-get update && \
         libapache2-mod-passenger \
         libpq-dev \
         postgresql-client \
+        tzdata \
         netcat-openbsd \
         vim \
         curl && \
