@@ -2,6 +2,8 @@
 
 Dokumentasi lengkap untuk setup GitHub Actions agar bisa auto deploy ke Domainesia CloudHost setelah tests pass.
 
+Panduan deployment canonical ada di `docs/deployment-domainesia-passenger.md`.
+
 ## 📋 Overview
 
 GitHub Actions workflow ini akan:
@@ -28,7 +30,7 @@ Anda perlu menambahkan secrets di GitHub repository untuk koneksi SSH ke Domaine
 | `SSH_USERNAME` | Username SSH (biasanya sama dengan cPanel username) | `u123456` atau `username` |
 | `SSH_PASSWORD` | Password SSH/cPanel | `your-password-here` |
 | `SSH_PORT` | Port SSH (default: 22, tapi bisa beda) | `22` atau port custom |
-| `PROJECT_PATH` | Path lengkap ke direktori proyek di server | `/home/username/banksoal` |
+| `PROJECT_PATH` | Path lengkap ke direktori proyek di server | `/home/username/student-space` |
 
 ### Cara Mendapatkan Informasi SSH dari Domainesia:
 
@@ -49,8 +51,8 @@ Anda perlu menambahkan secrets di GitHub repository untuk koneksi SSH ke Domaine
 
 #### 4. Project Path
 - Path tempat Anda upload aplikasi Django
-- Contoh: `/home/username/banksoal`
-- Atau: `/home/username/public_html/banksoal`
+- Contoh: `/home/username/student-space`
+- Atau: `/home/username/public_html/student-space`
 - Pastikan path ini sudah ada dan berisi project Django Anda
 
 ### Screenshot: Cara Menambahkan Secrets
@@ -80,8 +82,8 @@ ssh username@srv123.niagahoster.com
 cd ~
 
 # Clone repository (first time only)
-git clone https://github.com/yourusername/student-space.git banksoal
-cd banksoal
+git clone https://github.com/yourusername/student-space.git student-space
+cd student-space
 
 # Create virtual environment
 python3 -m venv venv
@@ -133,14 +135,14 @@ cat ~/.ssh/id_ed25519.pub
 # Paste public key content
 
 # Update git remote ke SSH
-cd ~/banksoal
+cd ~/student-space
 git remote set-url origin git@github.com:yourusername/student-space.git
 ```
 
 ### 3. Create tmp Directory untuk Passenger Restart
 
 ```bash
-cd ~/banksoal
+cd ~/student-space
 mkdir -p tmp
 ```
 
@@ -149,13 +151,10 @@ mkdir -p tmp
 Test semua command yang akan dijalankan GitHub Actions:
 
 ```bash
-cd ~/banksoal
+cd ~/student-space
 source venv/bin/activate
 git pull origin main
-pip install -r requirements/production.txt
-python manage.py migrate --noinput
-python manage.py collectstatic --noinput
-touch tmp/restart.txt
+bash scripts/deploy_domainesia.sh
 ```
 
 Jika semua berhasil tanpa error, GitHub Actions akan bisa auto deploy.
@@ -178,10 +177,8 @@ Workflow ini punya 2 jobs:
 - Hanya jalan jika job Test berhasil
 - SSH ke server Domainesia
 - Pull latest code
-- Install/update dependencies
-- Run migrations
-- Collect static files
-- Restart Passenger dengan `touch tmp/restart.txt`
+- Jalankan step deploy server (dependencies, migrate, collectstatic)
+- Restart Passenger
 
 ## 📊 Monitoring Deployment
 
@@ -309,17 +306,14 @@ Jika auto deploy error, bisa manual deploy:
 
 ```bash
 ssh username@srv123.niagahoster.com
-cd ~/banksoal
+cd ~/student-space
 source venv/bin/activate
 
 # Set production settings
 export DJANGO_SETTINGS_MODULE=config.settings.production
 
 git pull origin main
-pip install -r requirements/production.txt
-python manage.py migrate --noinput
-python manage.py collectstatic --noinput
-touch tmp/restart.txt
+bash scripts/deploy_domainesia.sh
 ```
 
 ## 📞 Support
@@ -330,7 +324,7 @@ Jika ada masalah:
 2. **Check server logs** via SSH:
    ```bash
    tail -f ~/logs/error_log
-   tail -f ~/banksoal/logs/django.log
+   tail -f ~/student-space/logs/django.log
    ```
 3. **Hubungi support Domainesia** untuk masalah SSH/server
 4. **Create issue** di repository GitHub untuk masalah workflow

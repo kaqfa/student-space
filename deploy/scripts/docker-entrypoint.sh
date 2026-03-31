@@ -91,10 +91,9 @@ echo ""
 # 6. Set Permissions
 # ============================================
 echo "🔐 Setting permissions..."
-chown -R app:app /var/www/student-space
-chmod -R 755 /var/www/student-space
-chmod -R 775 /var/www/student-space/media
-chmod -R 775 /var/www/student-space/logs
+chown -R app:app /var/www/student-space 2>/dev/null || true
+chmod -R 775 /var/www/student-space/media 2>/dev/null || true
+chmod -R 775 /var/www/student-space/logs 2>/dev/null || true
 echo "  ✅ Permissions set"
 echo ""
 

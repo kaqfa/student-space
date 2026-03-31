@@ -7,17 +7,21 @@ FROM phusion/passenger-customizable:3.0.5
 LABEL maintainer="student-space"
 LABEL description="Local Passenger testing environment for Student Space"
 
-# Enable Passenger + Apache
-RUN /pd_build/python.sh && \
-    /pd_build/utilities.sh
+# Import Passenger repo signing key required by newer apt versions
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys D870AB033FB45BD1
 
-# Install Python 3.12 (match Domainesia version)
+# Enable Passenger + Apache
+RUN /pd_build/python.sh
+
+# Install runtime packages
 RUN apt-get update && \
     apt-get install -y \
-        python3.12 \
-        python3.12-dev \
-        python3.12-venv \
+        python3 \
+        python3-dev \
+        python3-venv \
         python3-pip \
+        apache2 \
+        libapache2-mod-passenger \
         libpq-dev \
         postgresql-client \
         netcat-openbsd \
@@ -27,7 +31,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Create virtualenv in similar location as cPanel
-RUN python3.12 -m venv /var/www/venv
+RUN python3 -m venv /var/www/venv
 ENV PATH="/var/www/venv/bin:$PATH"
 
 # Upgrade pip
@@ -57,7 +61,7 @@ COPY deploy/apache/student-space.conf /etc/apache2/sites-available/student-space
 # Enable site and required Apache modules
 RUN a2dissite 000-default && \
     a2ensite student-space && \
-    a2enmod rewrite headers ssl proxy proxy_http
+    a2enmod passenger rewrite headers ssl proxy proxy_http
 
 # Copy entrypoint script
 COPY deploy/scripts/docker-entrypoint.sh /usr/local/bin/entrypoint.sh
@@ -74,5 +78,5 @@ EXPOSE 80
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
     CMD curl -f http://localhost/ || exit 1
 
-# Use baseimage-docker's init system
-CMD ["/sbin/my_init"]
+# Run project entrypoint (it boots /sbin/my_init internally)
+CMD ["/usr/local/bin/entrypoint.sh"]

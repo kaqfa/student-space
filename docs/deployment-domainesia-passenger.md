@@ -1,15 +1,12 @@
 # Docker + Passenger Deployment Guide
 
-Panduan ini menyiapkan dua target deployment untuk proyek Jurnalinvest:
+Panduan ini adalah referensi utama untuk deployment Student Space dengan stack
+Apache + Passenger. Ada dua target yang memakai pola sama:
 
-1. Simulasi lokal dengan `Docker + Apache + Passenger`
-2. Deploy ke Domainesia `cPanel Setup Python App` berbasis Passenger
+1. Simulasi lokal dengan Docker
+2. Deploy ke Domainesia cPanel (Setup Python App)
 
-Panduan ini mengikuti alur tutorial Domainesia, tetapi disesuaikan untuk repo Django yang **sudah ada**. Jadi kita **tidak** menjalankan `django-admin startproject`.
-
-## Struktur Operasional
-
-File yang dipakai untuk deployment:
+## File yang Dipakai
 
 - `Dockerfile`
 - `docker-compose.yml`
@@ -18,286 +15,238 @@ File yang dipakai untuk deployment:
 - `.env.docker.example`
 - `.env.passenger.example`
 - `scripts/deploy_domainesia.sh`
-- `deploy/apache/jurnalinvest.conf`
+- `deploy/apache/student-space.conf`
 - `deploy/scripts/docker-entrypoint.sh`
 
-## 1. Simulasi Lokal dengan Docker
+## 1) Simulasi Lokal dengan Docker
 
 ### Prasyarat
 
 - Docker dan Docker Compose tersedia
-- PostgreSQL sudah berjalan di host atau stack Docker lain
-- Database bisa diakses dari container lewat `host.docker.internal`
+- Port `8080` dan `8081` tidak dipakai proses lain
 
-### Siapkan Environment
-
-Copy contoh env lalu sesuaikan bila perlu:
+### Setup dan Jalankan
 
 ```bash
 cp .env.docker.example .env.docker
-```
-
-Minimal yang perlu dicek:
-
-- `SECRET_KEY`
-- `ALLOWED_HOSTS`
-- `CSRF_TRUSTED_ORIGINS`
-- `DB_NAME`
-- `DB_USER`
-- `DB_PASSWORD`
-- `DB_HOST`
-- `DB_PORT`
-
-### Jalankan Container
-
-```bash
 docker compose --env-file .env.docker up --build
 ```
 
-Startup container akan menjalankan urutan berikut:
+### Akses
 
-1. Cek koneksi database PostgreSQL
+- Web: `http://localhost:8080`
+- Admin: `http://localhost:8080/admin`
+- pgAdmin: `http://localhost:8081`
+
+### Yang Terjadi Saat Startup
+
+Container web akan menjalankan:
+
+1. Cek koneksi PostgreSQL
 2. `python manage.py migrate --noinput`
 3. `python manage.py collectstatic --noinput`
-4. Start Apache + Passenger
+4. Menjalankan Apache + Passenger
 
-### Akses Aplikasi
-
-Default local URL:
-
-- [http://localhost:8080](http://localhost:8080)
-
-Kalau ingin port lain:
+### Verifikasi Cepat
 
 ```bash
-APP_PORT=8090 docker compose --env-file .env.docker up --build
+docker compose ps
+docker compose exec web passenger-status
+curl -I http://localhost:8080
 ```
 
-## 2. Mapping ke Tutorial Domainesia cPanel
+## 2) Deploy ke Domainesia cPanel (Passenger)
 
-Tutorial acuan:
+### Step A - Buat Python App di cPanel
 
-- [Deploy website berbasis Python di cPanel Hosting](https://www.domainesia.com/panduan/deploy-website-berbasis-python-di-cpanel-hosting/)
+Di menu Setup Python App:
 
-Penyesuaian penting untuk repo ini:
-
-- Jangan buat project Django baru
-- Upload source code proyek ini ke direktori app Domainesia
-- Gunakan `passenger_wsgi.py` dari repo ini, bukan file kosong/default
-- Gunakan template `.htaccess` bila environment cPanel mengikuti pola tutorial
-- Gunakan `config.settings` dan `config.wsgi.application`
-
-## 3. Deploy ke Domainesia cPanel
-
-### Step A. Buat aplikasi Python di cPanel
-
-Di `Setup Python App`:
-
-- Python version: `3.11`
-- App directory: misalnya `jurnalinvest`
-- App domain/URI: sesuaikan domain atau subdomain target
+- Python version: `3.11` atau `3.12` (ikuti yang tersedia di akun)
+- App directory: `student-space` (atau nama direktori pilihan)
 - Application startup file: kosongkan
 - Application entry point: kosongkan
 
-### Step B. Upload source code
+### Step B - Upload Source Code
 
-Upload seluruh isi repo ke direktori aplikasi, misalnya:
-
-```text
-/home/<cpanel-user>/jurnalinvest
-```
-
-Struktur penting setelah upload:
+Contoh struktur:
 
 ```text
-jurnalinvest/
-├── manage.py
-├── passenger_wsgi.py
-├── public/
-│   └── .htaccess.domainesia.example
-├── config/
-├── apps/
-├── templates/
-├── static/
-└── requirements.txt
+/home/<cpanel-user>/
+├── student-space/
+│   ├── manage.py
+│   ├── passenger_wsgi.py
+│   ├── config/
+│   ├── apps/
+│   └── ...
+└── public_html/
 ```
 
-### Step C. Aktifkan virtualenv dari cPanel
+### Step C - Install Dependencies
 
-Pakai command virtualenv yang diberikan Domainesia di halaman `Setup Python App`, lalu jalankan:
+Aktifkan virtualenv dari cPanel, lalu:
 
 ```bash
-cd /home/<cpanel-user>/jurnalinvest
+cd /home/<cpanel-user>/student-space
 pip install --upgrade pip
-pip install -r requirements.txt
+pip install -r requirements/production.txt
 ```
 
-### Step D. Buat file `.env`
-
-Mulai dari preset Passenger:
+### Step D - Buat File .env
 
 ```bash
 cp .env.passenger.example .env
 ```
 
-Lalu isi nilai production:
+Isi minimal yang wajib:
 
 - `SECRET_KEY`
 - `ALLOWED_HOSTS`
 - `CSRF_TRUSTED_ORIGINS`
-- `DB_NAME`
-- `DB_USER`
-- `DB_PASSWORD`
-- `DB_HOST`
-- `DB_PORT`
+- `DATABASE_URL`
 - `STATIC_ROOT`
 - `MEDIA_ROOT`
 
-Contoh path hosting:
+Contoh:
 
 ```dotenv
-STATIC_ROOT=/home/<cpanel-user>/jurnalinvest/staticfiles
-MEDIA_ROOT=/home/<cpanel-user>/jurnalinvest/media
+SECRET_KEY=replace-with-strong-secret
+ALLOWED_HOSTS=example.com,www.example.com
+CSRF_TRUSTED_ORIGINS=https://example.com,https://www.example.com
+DATABASE_URL=postgresql://user:password@localhost:5432/dbname
+STATIC_ROOT=/home/<cpanel-user>/student-space/staticfiles
+MEDIA_ROOT=/home/<cpanel-user>/student-space/media
 ```
 
-### Step E. Jalankan migrasi dan collectstatic
+### Step E - Migrate dan Collectstatic
 
 ```bash
-cd /home/<cpanel-user>/jurnalinvest
+cd /home/<cpanel-user>/student-space
+python manage.py migrate --noinput --settings=config.settings.production
+python manage.py collectstatic --noinput --settings=config.settings.production
+```
+
+### Step F - Konfigurasi .htaccess
+
+Salin template:
+
+```bash
+cp public/.htaccess.domainesia.example /home/<cpanel-user>/public_html/.htaccess
+```
+
+Kemudian sesuaikan path pada file `.htaccess`.
+
+### Step G - Restart Passenger
+
+```bash
+mkdir -p /home/<cpanel-user>/student-space/tmp
+touch /home/<cpanel-user>/student-space/tmp/restart.txt
+```
+
+Atau klik tombol Restart pada halaman Setup Python App.
+
+## 3) Script Deploy Manual
+
+Script utama deploy adalah:
+
+```bash
+bash scripts/deploy_domainesia.sh
+```
+
+Script ini cocok dijalankan di server setelah update source code, dan akan:
+
+- install Node dependencies
+- build Tailwind CSS
+- copy `flowbite.min.js.map` bila tersedia
+- setup/aktifkan virtualenv lokal `venv`
+- install Python dependencies production
+- jalankan migration
+- jalankan collectstatic
+
+## 4) Path Mapping: Docker vs Domainesia
+
+| Komponen | Docker (lokal) | Domainesia (contoh) |
+|---|---|---|
+| Project root | `/var/www/student-space` | `/home/<cpanel-user>/student-space` |
+| Venv python | `/var/www/venv/bin/python3` | `/home/<cpanel-user>/virtualenv/<app>/3.12/bin/python` |
+| Static root | `/var/www/student-space/staticfiles` | `/home/<cpanel-user>/student-space/staticfiles` |
+| Media root | `/var/www/student-space/media` | `/home/<cpanel-user>/student-space/media` |
+
+## 5) Troubleshooting
+
+### A. "No such application" (Passenger)
+
+Cek berurutan:
+
+1. Pastikan `passenger_wsgi.py` ada di project root
+2. Pastikan `.htaccess` ada di document root domain
+3. Pastikan path `PassengerAppRoot` dan `PassengerPython` benar
+4. Pastikan dependency production sudah ter-install di virtualenv
+5. Restart Passenger setelah perubahan config
+
+Perintah cepat:
+
+```bash
+ls -la /home/<cpanel-user>/student-space/passenger_wsgi.py
+ls -la /home/<cpanel-user>/public_html/.htaccess
+touch /home/<cpanel-user>/student-space/tmp/restart.txt
+```
+
+### B. `ModuleNotFoundError: No module named 'debug_toolbar'`
+
+Biasanya command dijalankan dengan settings development.
+
+Gunakan settings production:
+
+```bash
+export DJANGO_SETTINGS_MODULE=config.settings.production
 python manage.py migrate --noinput
 python manage.py collectstatic --noinput
 ```
 
-### Step F. Restart aplikasi Passenger
+Atau pakai flag `--settings=config.settings.production` di setiap command.
 
-Gunakan salah satu:
-
-```bash
-mkdir -p tmp
-touch tmp/restart.txt
-```
-
-Atau klik `Restart` pada halaman `Setup Python App`.
-
-## 3A. Script Deploy Manual dari Laptop
-
-Untuk update berikutnya, repo ini menyediakan script deploy manual:
-
-```bash
-bash scripts/deploy_domainesia.sh
-```
-
-Default script ini:
-
-- sync source code ke `domainesia-app:/home/fahrifir/jurnal-invest`
-- activate virtualenv `/home/fahrifir/virtualenv/jurnal-invest/3.11`
-- jalankan `pip install -r requirements.txt`
-- jalankan `python manage.py check`
-- jalankan `python manage.py migrate --noinput`
-- jalankan `python manage.py collectstatic --noinput`
-- trigger restart Passenger lewat `tmp/restart.txt`
-
-Variable yang bisa dioverride saat perlu:
-
-```bash
-SSH_TARGET=domainesia-app \
-REMOTE_APP_DIR=/home/fahrifir/jurnal-invest \
-REMOTE_VENV_DIR=/home/fahrifir/virtualenv/jurnal-invest/3.11 \
-INSTALL_DEPS=0 \
-RUN_MIGRATIONS=1 \
-RUN_COLLECTSTATIC=1 \
-RESTART_PASSENGER=1 \
-bash scripts/deploy_domainesia.sh
-```
-
-Catatan:
-
-- script tidak menyentuh file `.env`, jadi aman untuk kredensial production yang kamu isi manual di server
-- script memakai `rsync`, bukan `git pull`, karena server saat ini belum disiapkan akses clone dari repo private GitHub
-- kalau nanti server sudah punya deploy key GitHub, workflow ini bisa diubah ke `git pull`
-
-## 4. Passenger Entrypoint
-
-File `passenger_wsgi.py` di repo ini sudah menjadi entrypoint resmi untuk:
-
-- Apache + Passenger di Docker lokal
-- Passenger app di Domainesia cPanel
-
-File ini:
-
-- menambahkan root project ke `sys.path`
-- set `DJANGO_SETTINGS_MODULE=config.settings`
-- meng-import `config.wsgi.application`
-
-## 5. Template `.htaccess` untuk Domainesia
-
-Repo ini menyediakan template `.htaccess` di:
-
-- `public/.htaccess.domainesia.example`
-
-Template ini mengikuti bentuk konfigurasi tutorial Domainesia:
-
-- `PassengerAppRoot "/home/.../jurnalinvest"`
-- `PassengerBaseURI "/"`
-- `PassengerPython "/home/.../virtualenv/.../bin/python3.11"`
-
-Untuk simulasi lokal Docker, konfigurasi app tetap di-handle oleh Apache vhost di `deploy/apache/jurnalinvest.conf` karena image Passenger Debian yang dipakai menolak `PassengerAppRoot` di `.htaccess` dengan error `PassengerAppRoot not allowed here`.
-
-Jadi pembagiannya:
-
-- lokal Docker: aktif via Apache vhost
-- target Domainesia cPanel: pakai template `.htaccess` ini sebagai acuan
-
-## 6. Pre-Deploy Checklist
-
-Pastikan sebelum go-live:
-
-- `DEBUG=False`
-- `SECRET_KEY` production sudah diganti
-- `ALLOWED_HOSTS` berisi domain final
-- `CSRF_TRUSTED_ORIGINS` berisi URL HTTPS final
-- database PostgreSQL bisa diakses dari hosting
-- `python manage.py migrate --noinput` sukses
-- `python manage.py collectstatic --noinput` sukses
-- direktori `STATIC_ROOT` dan `MEDIA_ROOT` writable
-- aplikasi sudah di-restart setelah perubahan env
-
-## 7. Troubleshooting
-
-### HTTP 400 Bad Request
-
-Biasanya `ALLOWED_HOSTS` belum benar. Tambahkan domain final dan subdomain yang dipakai.
-
-### Form POST gagal karena CSRF
-
-Periksa `CSRF_TRUSTED_ORIGINS`. Untuk HTTPS, formatnya harus penuh, misalnya:
-
-```dotenv
-CSRF_TRUSTED_ORIGINS=https://example.com,https://www.example.com
-```
-
-### Static file tidak muncul
+### C. Static file tidak muncul
 
 Pastikan:
 
-- `STATIC_ROOT` mengarah ke direktori hasil collectstatic
-- `python manage.py collectstatic --noinput` sudah dijalankan
-- aplikasi di-restart setelah deploy
+- `STATIC_ROOT` sudah benar di `.env`
+- `collectstatic` sukses
+- permission direktori static bisa dibaca web server
 
-### Koneksi database gagal
-
-Periksa host, port, username, password, dan whitelist IP pada server PostgreSQL eksternal.
-
-### Passenger tidak memuat app
-
-Pastikan file berikut ada di root proyek:
-
-- `manage.py`
-- `passenger_wsgi.py`
-- folder `config/`
-
-Lalu restart app dari cPanel atau dengan:
+Perintah:
 
 ```bash
-touch tmp/restart.txt
+python manage.py collectstatic --noinput --settings=config.settings.production
 ```
+
+### D. Error database connection
+
+Validasi:
+
+- format `DATABASE_URL`
+- host, port, user, password
+- privilege user database
+
+### E. WhiteNoise `flowbite.min.js.map` missing
+
+Jika muncul error source map:
+
+```bash
+cp node_modules/flowbite/dist/flowbite.min.js.map static/js/
+python manage.py collectstatic --noinput --settings=config.settings.production
+```
+
+## 6) Pre-Deploy Checklist
+
+- `DEBUG=False`
+- `SECRET_KEY` production sudah diganti
+- `ALLOWED_HOSTS` dan `CSRF_TRUSTED_ORIGINS` sesuai domain final
+- `migrate` sukses
+- `collectstatic` sukses
+- app di-restart setelah perubahan `.env`/config
+
+## 7) Referensi Ringkas
+
+- Docker quick reference: `docker/README.md`
+- Deploy script: `scripts/deploy_domainesia.sh`
+- App entrypoint: `passenger_wsgi.py`

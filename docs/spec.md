@@ -178,7 +178,7 @@ bank_soal_project/
 ├── scripts/
 │   ├── import_questions.py (standalone script)
 │   ├── backup_db.sh
-│   └── deploy.sh
+│   └── deploy_domainesia.sh
 ├── docs/
 │   ├── PRD.md
 │   ├── TECHNICAL_SPEC.md

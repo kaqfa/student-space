@@ -152,7 +152,7 @@ echo -e "   ${BLUE}Memory stats:${NC}     docker compose exec web passenger-memo
 echo -e "   ${BLUE}Shell access:${NC}     docker compose exec web bash"
 echo -e "   ${BLUE}Stop services:${NC}    docker compose down"
 echo ""
-echo "📖 Full documentation: DOCKER_PASSENGER_TESTING.md"
+echo "📖 Full documentation: docs/deployment-domainesia-passenger.md"
 echo ""
 echo "============================================"
 
