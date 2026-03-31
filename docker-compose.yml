@@ -61,26 +61,6 @@ services:
       timeout: 5s
       retries: 5
 
-  # ============================================
-  # pgAdmin - Database Management Tool
-  # ============================================
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    container_name: student-space-pgadmin
-    ports:
-      - "8081:80"
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@localhost.com
-      PGADMIN_DEFAULT_PASSWORD: admin
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
-    volumes:
-      - pgadmin_data:/var/lib/pgadmin
-    networks:
-      - student-space-network
-    restart: unless-stopped
-    depends_on:
-      - db
-
 # ============================================
 # Persistent Volumes
 # ============================================
@@ -93,8 +73,6 @@ volumes:
     name: student-space-media
   logs_volume:
     name: student-space-logs
-  pgadmin_data:
-    name: student-space-pgadmin
 
 # ============================================
 # Network Configuration
