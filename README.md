@@ -350,7 +350,7 @@ bash scripts/deploy_domainesia.sh
 | [UI Improvement Plan](docs/ui-improvement-plan.md) | Rencana redesign UI ortu/siswa + migrasi admin ke Django Admin |
 | [Technical Spec](docs/spec.md) | Detailed technical specification (v1) |
 | [Product Requirements v1](docs/prd.md) | PRD lama (SD only) — historis |
-| [Todo List](docs/todo.md) | Development checklist |
+| [Implementation Progress](docs/implementation-progress.md) | Status fase B0–B8 / U0–U5 |
 | [Deployment Guide](docs/deployment-domainesia-passenger.md) | Panduan deploy Passenger (Docker & cPanel) |
 | [AGENTS.md](AGENTS.md) | AI agent working guidelines |
 | [Testing Guidelines](.agent/TESTING_GUIDELINES.md) | Testing strategy and best practices |

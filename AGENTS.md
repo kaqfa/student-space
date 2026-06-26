@@ -258,6 +258,12 @@ npm run build   # tooling Node, boleh di host; npm run watch untuk dev
 docker compose exec web python manage.py import_questions data/matematika-kelas6.json
 ```
 
+### Adding a New Django App
+```bash
+docker compose exec web python manage.py startapp <app_name> apps/<app_name>
+```
+Lalu register di `INSTALLED_APPS` dengan path `apps.<app_name>`.
+
 ---
 
 ## Important Files
@@ -270,32 +276,12 @@ docker compose exec web python manage.py import_questions data/matematika-kelas6
 | `docs/implementation-progress.md` | **Status fase B0–B8 / U0–U5 terkini**      |
 | `docs/spec.md`                  | Technical specification lengkap (v1)         |
 | `docs/prd.md`                   | PRD lama (SD only) — historis                |
-| `docs/todo.md`                  | Development todo/checklist                   |
 | `config/settings/base.py`       | Base Django settings                         |
 | `requirements/base.txt`         | Python dependencies                          |
 
 ---
 
-## Development Workflow
-
-### 1. Creating New Feature
-
-1. Check `docs/todo.md` untuk task yang akan dikerjakan
-2. Create/update models jika diperlukan
-3. Create/update migrations
-4. Create views, forms, templates
-5. Add URL patterns
-6. Write tests
-7. Update documentation
-
-### 2. Adding New Django App
-```bash
-docker compose exec web python manage.py startapp <app_name> apps/<app_name>
-```
-
-Kemudian register di `INSTALLED_APPS` dengan path `apps.<app_name>`.
-
-### 3. Commit Convention
+## Commit Convention
 
 ```
 <type>(<scope>): <subject>
@@ -303,6 +289,8 @@ Kemudian register di `INSTALLED_APPS` dengan path `apps.<app_name>`.
 Types: feat, fix, docs, style, refactor, test, chore
 Scope: accounts, academic, subjects, questions, quizzes, analytics, core
 ```
+
+> Catatan: detail alur kerja pengembangan (langkah brainstorm → spec → plan → eksekusi) akan dijelaskan di skill terpisah, bukan di dokumen ini.
 
 ---
 
