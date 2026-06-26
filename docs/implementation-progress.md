@@ -15,7 +15,7 @@ UI mengikuti: U0/U1 independen → U2 (setelah B1+B2) → U3 → U4 (setelah B5+
 | **U0** | Hapus custom UI admin, bersihkan nav, branding → "Ruang Belajar" | ✅ Done | Lihat detail di bawah |
 | **U1** | Django Admin: ModelAdmin/inline/actions/permission groups | ✅ Done | Import JSON action + permission groups; lihat detail di bawah |
 | **B1** | App `academic`: EducationLevel, Grade, AcademicYear, GradeSubject; refactor grade:int→FK; KD→Topic; Enrollment | ✅ Done | Expand+migrate (contract ditunda B8); lihat detail di bawah |
-| **B2** | Family, ParentProfile, TutorProfile, role tutor; tautkan ParentStudent→Family | ⏳ Pending | Tunggu B1 |
+| **B2** | Family, ParentProfile, TutorProfile, role tutor; tautkan ParentStudent→Family | ✅ Done | M2M membership + thin profiles; lihat detail di bawah |
 | **U2** | Ganti user.grade→Enrollment di UI; year switcher; Family di dashboard | ⏳ Pending | Tunggu B1+B2 |
 | **B3** | Question status (draft/published/archived), tipe benar/salah, QuestionSet, ImportBatch | ⏳ Pending | Bisa paralel dengan B4 setelah B1 |
 | **B4** | Selaraskan Quiz→QuizConfig (mode practice/timed/custom, filter tag), status QuizSession | ⏳ Pending | Bisa paralel dengan B3 setelah B1 |
@@ -101,6 +101,34 @@ App baru `apps/academic`. Strategi expand+migrate; kolom `grade:int` lama **teta
 **Verifikasi:** `manage.py check` bersih; `makemigrations --check` = "No changes detected"; migrate dari DB kosong OK + seed benar (2 level, 9 grade, 1 active year); backfill migration reversible (unapply/reapply OK). **120 tests pass** (suite lama + baru, tanpa regresi) — dijalankan via venv `.venv-test` (Django 5.0.14 + pytest-django, settings `config.settings.development`).
 
 > Catatan env: `python3` sistem = Django 6.0.5 tanpa pytest-django/debug_toolbar → untuk manage.py pakai `DJANGO_SETTINGS_MODULE=config.settings.base`. Untuk pytest dibuat venv `.venv-test` (gitignored) dari `requirements/development.txt` + `playwright` (dibutuhkan `tests/conftest.py`).
+
+## Detail B2 (✅ Done — additive)
+
+App `apps.accounts`. Family = unit/tenancy root. Additive (🟢/🟡 expand+migrate); no contract; no UI (= U2).
+
+**Keputusan desain:** keanggotaan family pakai **M2M** (`FamilyMembership` through), bukan FK tunggal di User — supaya satu siswa bisa di >1 family (ortu cerai) tanpa migrasi ulang. Profile **thin** (field minimal, tambah saat fitur butuh).
+
+**Models** (`apps/accounts/models.py`):
+- `Family`: name, owner=FK(User), created_at.
+- `FamilyMembership`: family FK, user FK, role_in_family (parent/student/tutor), unique (family,user).
+- `ParentProfile`: OneToOne(User), notification_prefs=JSON, phone.
+- `TutorProfile`: OneToOne(User), bio, specialization.
+
+**Role:** `User.Role.TUTOR` ditambah; `User.is_tutor` property. `is_parent_or_admin` tidak berubah (tutor bukan parent/admin).
+
+**Expand:** `ParentStudent.family = FK(Family, null=True, SET_NULL)`.
+
+**Migrate** (`accounts/migrations/0005_backfill_families.py`, reversible): tiap parent unik di ParentStudent → buat 1 Family (owner=parent, name="Keluarga {nama}"), FamilyMembership untuk parent (role parent) + tiap student terkait (role student), set `ParentStudent.family`. Idempotent via get_or_create.
+
+**Helper:** `User.family` property → family pertama via membership (atau None).
+
+**Admin:** FamilyAdmin (+FamilyMembership inline, member_count), FamilyMembershipAdmin, ParentProfileAdmin, TutorProfileAdmin; `family` ditambah ke ParentStudentAdmin list_display/filter.
+
+**Seed:** `user_manager` group +Family/FamilyMembership/ParentProfile/TutorProfile (kini 21 perms).
+
+**Verifikasi:** check bersih; `makemigrations --check` = "No changes detected"; migrate fresh-DB OK; backfill reversible (unapply/reapply OK). **126 tests pass** (120 lama + 6 baru, tanpa regresi).
+
+> Catatan: `accounts/tests.py` stub kosong dihapus (konflik dgn `tests/` package) — sama seperti `questions/tests.py` di B1.
 
 ## Konteks Teknis Penting
 
