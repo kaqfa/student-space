@@ -19,7 +19,7 @@ Ruang Belajar (codebase: `student-space`) adalah platform pembelajaran berbasis 
 
 Selain homeschooling, platform menargetkan pasar **persiapan Tes Kemampuan Akademik (TKA)** untuk masuk SD/SMP/program unggulan: try-out berbasis blueprint, readiness score, dan rencana belajar otomatis.
 
-> **Arah produk (v2):** dokumen acuan terbaru adalah [docs/prd-v2.md](docs/prd-v2.md). README ini mendeskripsikan visi target v2; sebagian fitur (try-out, subscription, riwayat lintas tahun, jenjang SMP) sedang dalam proses penyelarasan dari basis kode saat ini (SD kelas 1–6). Lihat [docs/ui-improvement-plan.md](docs/ui-improvement-plan.md) untuk rencana migrasi UI.
+> **Arah produk (v2):** dokumen acuan terbaru adalah [docs/prd-v2.md](docs/prd-v2.md). README ini mendeskripsikan visi target v2. **Progress penyelarasan** ada di [docs/implementation-progress.md](docs/implementation-progress.md): fondasi akademik (`academic`: Grade/AcademicYear/Enrollment, jenjang SD+SMP) & unit `Family` sudah ada; modul try-out, subscription, dan riwayat lintas tahun masih dalam pengerjaan. Lihat [docs/ui-improvement-plan.md](docs/ui-improvement-plan.md) untuk rencana migrasi UI.
 
 ## ✨ Fitur Utama
 
@@ -67,63 +67,57 @@ Selain homeschooling, platform menargetkan pasar **persiapan Tes Kemampuan Akade
 
 ## 🚀 Quick Start
 
-### Prerequisites
-- Python 3.11+
-- Node.js 18+ (untuk Tailwind CSS)
-- PostgreSQL 15+ (optional, untuk production)
+> **⚙️ Proyek ini berbasis Docker.** Semua perintah aplikasi (manage.py, pytest, migrate, seed) dijalankan **di dalam container**, bukan di host. **Jangan** membuat virtualenv (`venv/`, `.venv`) di repo ini. Pola perintah: `docker compose exec web <perintah>`.
 
-### Installation
+### Prerequisites
+- **Docker & Docker Compose**
+- Node.js 18+ — hanya untuk build Tailwind CSS (tooling host, opsional)
+
+### Menjalankan (Docker)
 
 1. **Clone repository**
    ```bash
    git clone <repository-url>
-   cd bank_soal_project
+   cd student-space
    ```
 
-2. **Create virtual environment**
+2. **Siapkan environment**
    ```bash
-   python3.11 -m venv venv
-   source venv/bin/activate  # Linux/Mac
-   # venv\Scripts\activate   # Windows
+   cp .env.docker.example .env.docker
+   # Edit .env.docker jika perlu (SECRET_KEY, DB credentials, dll)
    ```
 
-3. **Install dependencies**
+3. **Jalankan stack**
    ```bash
-   pip install -r requirements/development.txt
+   docker compose --env-file .env.docker up --build -d
    ```
+   Container `web` (Apache+Passenger) + `db` (PostgreSQL) akan berjalan.
 
-4. **Configure environment** (optional)
+4. **Migrasi & seed data awal** (di dalam container)
    ```bash
-   cp .env.example .env
-   # Edit jika perlu custom settings
-   # Default: SQLite database (no setup needed)
+   docker compose exec web python manage.py migrate
+   docker compose exec web python manage.py seed_initial_data   # groups+perms & academic reference
    ```
 
-5. **Run migrations**
+5. **Buat superuser**
    ```bash
-   python manage.py migrate
+   docker compose exec web python manage.py createsuperuser
    ```
 
-6. **Create superuser**
-   ```bash
-   python manage.py createsuperuser
-   ```
-
-7. **Build Tailwind CSS**
+6. **Build Tailwind CSS** (tooling Node, di host)
    ```bash
    npm install
    npm run build
    ```
 
-8. **Run development server**
-   ```bash
-   python manage.py runserver
+7. **Akses aplikasi**
+   ```
+   Web:     http://localhost:8080
+   Admin:   http://localhost:8080/admin
+   pgAdmin: http://localhost:8081
    ```
 
-9. **Open browser**
-   ```
-   http://localhost:8000
-   ```
+> Source di-mount sebagai volume — edit file di host langsung ter-reflect di container. Untuk perintah lain (shell, dll): `docker compose exec web bash`.
 
 ---
 
@@ -132,13 +126,14 @@ Selain homeschooling, platform menargetkan pasar **persiapan Tes Kemampuan Akade
 ```
 student-space/
 ├── apps/                    # Django applications
-│   ├── accounts/           # User & authentication
-│   ├── students/           # Student management
+│   ├── accounts/           # User+role(admin/parent/student/tutor), Family, profiles, ParentStudent
+│   ├── academic/           # EducationLevel, Grade, AcademicYear, GradeSubject, Enrollment
+│   ├── students/           # DEPRECATED (student = User(role=student) + ParentStudent)
 │   ├── subjects/           # Subjects & topics
 │   ├── questions/          # Question bank
 │   ├── quizzes/            # Quiz engine
 │   ├── analytics/          # Progress tracking
-│   └── core/               # Shared utilities
+│   └── core/               # Shared utilities, seed_initial_data
 ├── config/                 # Django project settings
 │   └── settings/
 │       ├── base.py
@@ -223,6 +218,8 @@ docker compose down -v   # termasuk hapus volumes
 ### Deploy ke Domainesia cPanel (Passenger)
 
 Domainesia menggunakan **cPanel → Setup Python App** yang menjalankan Passenger secara otomatis.
+
+> Catatan: virtualenv di bawah ini **khusus environment cPanel Domainesia** (dikelola cPanel). Untuk **dev lokal jangan bikin venv** — pakai Docker (lihat [Quick Start](#-quick-start)).
 
 #### A. Buat aplikasi Python di cPanel
 
@@ -389,36 +386,32 @@ bash scripts/deploy_domainesia.sh
 
 ## 🧪 Testing
 
-### E2E Testing (Playwright)
-```bash
-# Setup test data
-python manage.py setup_test_data
-
-# Run all E2E tests
-pytest tests/e2e/ -v
-
-# Run specific test category
-pytest tests/e2e/ -m student -v    # Student flow tests
-pytest tests/e2e/ -m parent -v     # Parent flow tests
-pytest tests/e2e/ -m quiz -v       # Quiz-related tests
-
-# Run with visible browser (for debugging)
-pytest tests/e2e/ --headed -v
-
-# Run specific test
-pytest tests/e2e/test_student_flow.py::test_student_can_see_quiz_options -v
-```
+> Semua test dijalankan **di dalam container**: `docker compose exec web <perintah>`. Image harus berisi `requirements/development.txt` (pytest, pytest-django) agar test bisa jalan.
 
 ### Unit Testing
 ```bash
 # Run all tests
-pytest
+docker compose exec web pytest
 
 # Run with coverage
-pytest --cov=apps
+docker compose exec web pytest --cov=apps
 
 # Run specific app tests
-pytest apps/questions/tests/
+docker compose exec web pytest apps/questions/tests/
+```
+
+### E2E Testing (Playwright)
+```bash
+# Setup test data
+docker compose exec web python manage.py setup_test_data
+
+# Run all E2E tests
+docker compose exec web pytest tests/e2e/ -v
+
+# Run specific test category
+docker compose exec web pytest tests/e2e/ -m student -v   # Student flow
+docker compose exec web pytest tests/e2e/ -m parent -v    # Parent flow
+docker compose exec web pytest tests/e2e/ -m quiz -v      # Quiz-related
 ```
 
 ### Testing Guidelines
@@ -445,7 +438,7 @@ See [Testing Guidelines](.agent/TESTING_GUIDELINES.md) for detailed testing stra
 Bulk import soal menggunakan format JSON:
 
 ```bash
-python manage.py import_questions data/matematika-kelas6.json
+docker compose exec web python manage.py import_questions data/matematika-kelas6.json
 ```
 
 Contoh format JSON:

@@ -2,6 +2,8 @@
 
 > **Acuan produk:** [docs/prd-v2.md](docs/prd-v2.md) adalah PRD terbaru dan menjadi sumber kebenaran arah produk. Dokumen ini (AGENTS.md) menjelaskan konvensi kerja & kondisi codebase saat ini. Untuk rencana penyelarasan UI lihat [docs/ui-improvement-plan.md](docs/ui-improvement-plan.md).
 
+> **⚙️ Proyek berbasis Docker.** Semua perintah (manage.py, pytest, migrate, seed, shell) dijalankan **di dalam container** via `docker compose exec web <perintah>`. **Jangan** membuat virtualenv (`venv/`, `.venv`) di repo ini atau pip install ke host. Lihat [§Common Tasks](#common-tasks).
+
 ## Project Overview
 
 Ruang Belajar (codebase: `student-space`) adalah platform homeschooling & persiapan ujian (TKA) berbasis Django untuk jenjang **SD–SMP**. Menyediakan bank soal terstruktur, kuis & try-out simulasi, pelacakan progress lintas tahun ajaran, dan analitik mendalam.
@@ -227,37 +229,33 @@ Mapping ke kurikulum nasional untuk tracking coverage.
 
 ## Common Tasks
 
-### Running Development Server
-```bash
-python manage.py runserver
-```
+> **Semua perintah Python/Django dijalankan di dalam container** (`web` service), pola: `docker compose exec web <perintah>`. Mulai stack: `docker compose --env-file .env.docker up -d` (lihat README). Jangan bikin venv di host.
+
+### Development Server
+Container menjalankan Apache+Passenger otomatis → akses `http://localhost:8080`. Tidak ada `runserver` manual di host.
 
 ### Running Tests
 ```bash
-pytest
-pytest --cov=apps  # with coverage
+docker compose exec web pytest
+docker compose exec web pytest --cov=apps   # with coverage
 ```
+> Image test harus berisi `requirements/development.txt` (pytest, pytest-django) agar test jalan di container.
 
-> Catatan env: `python3` sistem belum tentu punya pytest-django/debug_toolbar. Untuk `manage.py check`/`migrate` pakai `DJANGO_SETTINGS_MODULE=config.settings.base` (paling clean). Untuk pytest, gunakan venv yang berisi `requirements/development.txt`.
-
-### Running Migrations
+### Running Migrations & Seed
 ```bash
-python manage.py makemigrations
-python manage.py migrate
-python manage.py seed_initial_data   # seed groups+perms & academic reference (idempotent)
+docker compose exec web python manage.py makemigrations
+docker compose exec web python manage.py migrate
+docker compose exec web python manage.py seed_initial_data   # groups+perms & academic reference (idempotent)
 ```
 
 ### Building Tailwind CSS
-
 ```bash
-npm run build
-# atau untuk watch mode:
-npm run watch
+npm run build   # tooling Node, boleh di host; npm run watch untuk dev
 ```
 
 ### Importing Questions from JSON
 ```bash
-python manage.py import_questions data/matematika-kelas6.json
+docker compose exec web python manage.py import_questions data/matematika-kelas6.json
 ```
 
 ---
@@ -292,7 +290,7 @@ python manage.py import_questions data/matematika-kelas6.json
 
 ### 2. Adding New Django App
 ```bash
-python manage.py startapp <app_name> apps/<app_name>
+docker compose exec web python manage.py startapp <app_name> apps/<app_name>
 ```
 
 Kemudian register di `INSTALLED_APPS` dengan path `apps.<app_name>`.
