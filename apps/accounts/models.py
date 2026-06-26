@@ -72,6 +72,16 @@ class User(AbstractUser):
         return self.role == self.Role.STUDENT
 
     @property
+    def current_enrollment(self):
+        """Active enrollment for the active academic year, or None."""
+        return (
+            self.enrollments
+            .filter(status="active", academic_year__is_active=True)
+            .select_related("grade", "academic_year")
+            .first()
+        )
+
+    @property
     def is_parent_or_admin(self):
         """Check if user is parent or admin (for permission checks)"""
         return self.role in [self.Role.ADMIN, self.Role.PARENT] or self.is_superuser
