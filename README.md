@@ -1,13 +1,13 @@
-# 📚 Student Space
+# 📚 Ruang Belajar
 
 <div align="center">
 
-![Django](https://img.shields.io/badge/Django-5.0-092E20?style=for-the-badge&logo=django&logoColor=white)
+![Django](https://img.shields.io/badge/Django-5.x-092E20?style=for-the-badge&logo=django&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3.12+-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![Flowbite](https://img.shields.io/badge/Flowbite-2.0-1C64F2?style=for-the-badge)
+![HTMX](https://img.shields.io/badge/HTMX-2.x-3366CC?style=for-the-badge)
 
-**Learning Management System untuk membantu orang tua mengajarkan anak SD dengan bank soal terstruktur dan analytics mendalam.**
+**Platform homeschooling & persiapan ujian (TKA) untuk jenjang SD–SMP: bank soal terstruktur, try-out simulasi, pelacakan lintas tahun ajaran, dan analitik mendalam.**
 
 </div>
 
@@ -15,40 +15,53 @@
 
 ## 🌟 Overview
 
-Student Space adalah aplikasi berbasis web yang dirancang khusus untuk membantu orang tua dalam homeschooling anak SD (kelas 1-6). Aplikasi ini menyediakan bank soal terstruktur, sistem quiz dengan timer, progress tracking detail, dan analytics untuk mengidentifikasi kekuatan dan kelemahan pembelajaran anak.
+Ruang Belajar (codebase: `student-space`) adalah platform pembelajaran berbasis web untuk membantu orang tua homeschooling mengelola pendidikan anak dari **SD hingga SMP**. Platform menyediakan bank soal terstruktur, kuis & try-out simulasi, pelacakan perkembangan **lintas tahun ajaran**, dan analitik mendalam — sehingga orang tua punya visibilitas penuh atas kekuatan dan kelemahan belajar anak.
+
+Selain homeschooling, platform menargetkan pasar **persiapan Tes Kemampuan Akademik (TKA)** untuk masuk SD/SMP/program unggulan: try-out berbasis blueprint, readiness score, dan rencana belajar otomatis.
+
+> **Arah produk (v2):** dokumen acuan terbaru adalah [docs/prd-v2.md](docs/prd-v2.md). README ini mendeskripsikan visi target v2; sebagian fitur (try-out, subscription, riwayat lintas tahun, jenjang SMP) sedang dalam proses penyelarasan dari basis kode saat ini (SD kelas 1–6). Lihat [docs/ui-improvement-plan.md](docs/ui-improvement-plan.md) untuk rencana migrasi UI.
 
 ## ✨ Fitur Utama
 
 ### 📝 Manajemen Bank Soal
-- **Multi-tipe soal:** Pilihan ganda, Essay, dan Isian
-- **Kategori bertingkat:** Subject → Topic → Question
-- **Tagging system:** Skill-based, topic-based, difficulty-based
-- **Kompetensi Dasar:** Mapping ke kurikulum nasional
-- **Bulk import:** Import soal via JSON
+- **Multi-tipe soal:** Pilihan ganda, Essay, Isian, Benar/Salah
+- **Kategori bertingkat:** Jenjang → Kelas → Mata Pelajaran → Topik → Soal
+- **Tagging system:** Cross-cutting (numerasi, literasi, HOTS, problem-solving, dll.)
+- **Kompetensi Dasar (KD):** Mapping ke kurikulum nasional
+- **Bulk import:** Import soal via JSON dengan audit trail & rollback
 - **LaTeX support:** Render rumus matematika dengan KaTeX
 
-### 🎯 Quiz Engine
+### 🎯 Quiz & Try-out Engine
 - **Practice Mode:** Tanpa timer, feedback langsung setelah jawab
-- **Timed Quiz:** Dengan countdown timer
-- **Custom Quiz:** Buat quiz spesifik untuk latihan terfokus
-- **Randomisasi:** Acak urutan soal dan opsi jawaban
+- **Timed Quiz:** Dengan countdown timer & auto-submit
+- **Custom Quiz:** Konfigurasi quiz spesifik (filter topik/tag/kesulitan)
+- **Try-out berbasis Blueprint:** Cetak biru ujian (TKA SD/SMP) dengan seksi & bobot *(target v2)*
+- **Readiness Score & Countdown:** Prediksi kesiapan ujian dari tren try-out *(target v2)*
+- **Study Plan otomatis:** Rekomendasi area lemah dari hasil try-out *(target v2)*
 
 ### 📊 Progress Tracking & Analytics
-- **Per-topic tracking:** Lihat progress di setiap topik
-- **Skill heatmap:** Visualisasi kekuatan & kelemahan per skill
-- **KD coverage:** Track coverage kurikulum
+- **Per-topic/tag tracking:** Progress di setiap topik & skill
+- **Skill heatmap & mastery matrix:** Visualisasi kekuatan & kelemahan
+- **KD coverage:** Track cakupan kurikulum
 - **Trend analysis:** Grafik perkembangan dari waktu ke waktu
-- **Smart recommendations:** Identifikasi fokus area untuk improvement
+- **Riwayat lintas tahun ajaran:** Timeline perkembangan antar kelas *(target v2)*
+- **Laporan PDF:** Generate & share laporan progress/try-out *(target v2)*
 
 ### 👥 Multi-Role Access
-- **Admin (Orang Tua):** Full control atas semua data
-- **Pengajar (Tutor):** Manage assigned students
-- **Student (Anak):** Akses quiz dan lihat progress sendiri
+- **Admin:** Pengelola platform via **Django Admin** (konten, user, konfigurasi)
+- **Orang Tua:** Custom UI — kelola anak, pantau progress, kelola langganan
+- **Pengajar (opsional):** Django Admin terbatas untuk siswa yang di-assign
+- **Siswa:** Custom UI — mengerjakan kuis/try-out & melihat progress sendiri
+
+### 💳 Monetisasi *(target v2)*
+- **Freemium:** Tier Free / Basic / Pro dengan feature gating berbasis langganan
+- **Payment gateway:** Midtrans / Xendit
+- **Subscription per Family** dengan grace period
 
 ### 📱 Modern UI/UX
-- **Responsive design:** Optimized untuk desktop, tablet, dan mobile
+- **Mobile-first:** Dioptimalkan untuk smartphone (mayoritas pengguna)
 - **HTMX-powered:** Interaksi dinamis tanpa full page reload
-- **Clean interface:** Fokus pada pembelajaran
+- **Clean interface:** Custom UI hanya untuk Orang Tua & Siswa; admin via Django Admin
 
 ---
 
@@ -335,8 +348,11 @@ bash scripts/deploy_domainesia.sh
 
 | Document | Description |
 |----------|-------------|
-| [Technical Spec](docs/spec.md) | Detailed technical specification |
-| [Product Requirements](docs/prd.md) | Product requirements document |
+| [Product Requirements v2](docs/prd-v2.md) | **PRD terbaru (acuan utama)** — homeschooling SD–SMP + TKA prep |
+| [v2 Upgrade Plan](docs/v2-upgrade-plan.md) | Rencana upgrade backend/data model + master sequence (UI+backend) |
+| [UI Improvement Plan](docs/ui-improvement-plan.md) | Rencana redesign UI ortu/siswa + migrasi admin ke Django Admin |
+| [Technical Spec](docs/spec.md) | Detailed technical specification (v1) |
+| [Product Requirements v1](docs/prd.md) | PRD lama (SD only) — historis |
 | [Todo List](docs/todo.md) | Development checklist |
 | [Deployment Guide](docs/deployment-domainesia-passenger.md) | Panduan deploy Passenger (Docker & cPanel) |
 | [AGENTS.md](AGENTS.md) | AI agent working guidelines |
@@ -349,16 +365,17 @@ bash scripts/deploy_domainesia.sh
 ## 🛠️ Tech Stack
 
 ### Backend
-- **Framework:** Django 5.0
-- **Database:** SQLite (dev) / PostgreSQL 15+ (production)
+- **Framework:** Django 5.x, Python 3.12+
+- **Database:** SQLite (dev) / PostgreSQL 16 (production)
 - **ORM:** Django ORM
-- **Task Queue:** Celery (optional)
-- **Cache:** Redis (optional)
+- **Admin:** Django Admin (built-in) untuk semua fungsi administratif
+- **Task Queue:** Celery + Redis (report generation, notifikasi, kalkulasi analitik) *(target v2)*
+- **Payment:** Midtrans / Xendit *(target v2)*
 
 ### Frontend
 - **Template Engine:** Django Templates
 - **CSS:** Tailwind CSS 3.4 + Flowbite
-- **Interactivity:** HTMX 1.9
+- **Interactivity:** HTMX 2.x
 - **Charts:** Chart.js 4.x
 - **Math Rendering:** KaTeX 0.16
 
