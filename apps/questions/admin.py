@@ -32,9 +32,7 @@ class QuestionAdmin(admin.ModelAdmin):
     autocomplete_fields = ['topic']
     readonly_fields = ('created_by', 'created_at', 'updated_at', 'question_preview')
     list_per_page = 25
-    
-    change_list_template = 'admin/questions/question_changelist.html'
-    
+
     fieldsets = (
         ('Content', {
             'fields': ('topic', 'question_text', 'question_type', 'difficulty', 'points')

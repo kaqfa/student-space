@@ -10,6 +10,9 @@ class HomeView(TemplateView):
     template_name = "core/home.html"
 
 
+# NOTE: There is no custom admin dashboard anymore (U0). Admins use Django Admin.
+
+
 class DashboardView(LoginRequiredMixin, View):
     """
     Main dashboard router that redirects to role-specific dashboards.
@@ -25,14 +28,5 @@ class DashboardView(LoginRequiredMixin, View):
         if user.role == User.Role.PARENT:
             return redirect('students:parent_dashboard')
         
-        # Admin -> Django Admin (all admin features are in Django admin)
-        if user.role == User.Role.ADMIN or user.is_superuser:
-            return redirect('/admin/')
-        
-        # Fallback to analytics dashboard
-        return redirect('analytics:dashboard')
-
-
-class AdminDashboardView(LoginRequiredMixin, TemplateView):
-    """Admin/Pengajar dashboard with overview stats."""
-    template_name = "core/dashboard.html"
+        # Admin / any other role -> Django Admin (all admin features live there)
+        return redirect('/admin/')

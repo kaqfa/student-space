@@ -12,124 +12,15 @@ from apps.analytics.models import Attempt
 from apps.accounts.mixins import ParentOrAdminMixin, StudentRequiredMixin, ParentRequiredMixin
 from apps.accounts.models import ParentStudent
 from .models import Quiz, QuizSession
-from .forms import QuizForm, SubjectQuizForm
+from .forms import SubjectQuizForm
 from apps.questions.models import Question
 
 User = get_user_model()
 
-
-# ============================================================
-# ADMIN/PARENT VIEWS (Quiz Management)
-# ============================================================
-
-class QuizListView(ParentOrAdminMixin, ListView):
-    """List all quizzes for admin/parent."""
-    model = Quiz
-    template_name = "quizzes/list.html"
-    context_object_name = "quizzes"
-    paginate_by = 20
-
-    def get_queryset(self):
-        queryset = Quiz.objects.select_related('subject', 'created_by')
-        return queryset.order_by('-created_at')
-
-
-class QuizCreateView(ParentOrAdminMixin, CreateView):
-    """Create a new quiz."""
-    model = Quiz
-    form_class = QuizForm
-    template_name = "quizzes/form.html"
-    
-    def form_valid(self, form):
-        form.instance.created_by = self.request.user
-        messages.success(self.request, "Kuis berhasil dibuat. Silakan tambahkan soal.")
-        return super().form_valid(form)
-
-    def get_success_url(self):
-        return reverse_lazy('quizzes:detail', kwargs={'pk': self.object.pk})
-
-
-class QuizUpdateView(ParentOrAdminMixin, UpdateView):
-    """Update quiz details."""
-    model = Quiz
-    form_class = QuizForm
-    template_name = "quizzes/form.html"
-    
-    def get_success_url(self):
-        return reverse_lazy('quizzes:detail', kwargs={'pk': self.object.pk})
-        
-    def form_valid(self, form):
-        messages.success(self.request, "Detail kuis diperbarui.")
-        return super().form_valid(form)
-
-
-class QuizDetailView(ParentOrAdminMixin, DetailView):
-    """View quiz details and questions."""
-    model = Quiz
-    template_name = "quizzes/detail.html"
-    context_object_name = "quiz"
-
-
-class QuizDeleteView(ParentOrAdminMixin, DeleteView):
-    """Delete a quiz."""
-    model = Quiz
-    template_name = "quizzes/confirm_delete.html"
-    success_url = reverse_lazy('quizzes:list')
-    
-    def delete(self, request, *args, **kwargs):
-        messages.success(self.request, "Kuis berhasil dihapus.")
-        return super().delete(request, *args, **kwargs)
-
-
-class QuizQuestionAddView(ParentOrAdminMixin, ListView):
-    """Add questions to a quiz."""
-    model = Question
-    template_name = "quizzes/add_questions.html"
-    context_object_name = "questions"
-    paginate_by = 50
-    
-    def get_queryset(self):
-        self.quiz = get_object_or_404(Quiz, pk=self.kwargs['pk'])
-        queryset = Question.objects.filter(
-            topic__subject=self.quiz.subject
-        ).exclude(quizzes=self.quiz)
-        
-        topic_id = self.request.GET.get('topic')
-        if topic_id:
-            queryset = queryset.filter(topic_id=topic_id)
-
-        search = self.request.GET.get('search')
-        if search:
-            queryset = queryset.filter(question_text__icontains=search)
-            
-        return queryset
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['quiz'] = self.quiz
-        return context
-    
-    def post(self, request, *args, **kwargs):
-        self.quiz = get_object_or_404(Quiz, pk=self.kwargs['pk'])
-        question_ids = request.POST.getlist('question_ids')
-        if question_ids:
-            questions = Question.objects.filter(id__in=question_ids)
-            self.quiz.questions.add(*questions)
-            messages.success(request, f"{len(questions)} soal ditambahkan ke kuis.")
-        else:
-            messages.warning(request, "Tidak ada soal yang dipilih.")
-            
-        return redirect('quizzes:detail', pk=self.quiz.pk)
-
-
-class QuizQuestionRemoveView(ParentOrAdminMixin, View):
-    """Remove a question from a quiz."""
-    def post(self, request, pk, question_id):
-        quiz = get_object_or_404(Quiz, pk=pk)
-        question = get_object_or_404(Question, pk=question_id)
-        quiz.questions.remove(question)
-        messages.success(request, "Soal dihapus dari kuis.")
-        return redirect('quizzes:detail', pk=pk)
+# NOTE: Admin/parent quiz *management* views (list/create/detail/update/delete,
+# add/remove question one-by-one) were removed in U0. Quiz catalog management is
+# now served via Django Admin (/admin/). Parents still create quizzes via the
+# dedicated Subject/Custom quiz creation views below.
 
 
 # ============================================================

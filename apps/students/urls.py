@@ -17,9 +17,6 @@ from .views import (
     ParentStudentDetailView,
     SelectStudentForQuizView,
     StudentProfileUpdateView,
-    
-    # Deprecated
-    StudentListView,
 )
 
 app_name = "students"
@@ -49,10 +46,4 @@ urlpatterns = [
     path("my-students/<int:pk>/", ParentStudentDetailView.as_view(), name="parent_student_detail"),
     path("my-students/<int:pk>/edit/", StudentProfileUpdateView.as_view(), name="parent_student_edit"),
     path("my-students/select-for-quiz/", SelectStudentForQuizView.as_view(), name="select_for_quiz"),
-    
-    # ============================================================
-    # DEPRECATED ROUTES (using old Student model)
-    # These routes are kept for backward compatibility
-    # ============================================================
-    path("list/", StudentListView.as_view(), name="list"),
 ]

@@ -144,34 +144,6 @@ class TestProxyModeQuiz:
         assert response.status_code == 200
 
 
-@pytest.mark.django_db
-class TestQuizCRUDViews:
-    """Test quiz CRUD operations for admin/parent"""
-    
-    def test_admin_can_create_quiz(self, client, admin_user):
-        """Test admin can create quiz"""
-        client.force_login(admin_user)
-        url = reverse('quizzes:create')
-        response = client.get(url)
-        assert response.status_code == 200
-    
-    def test_student_cannot_create_quiz(self, client, student_user):
-        """Test student cannot create quiz"""
-        client.force_login(student_user)
-        url = reverse('quizzes:create')
-        response = client.get(url)
-        assert response.status_code in [302, 403]
-    
-    def test_admin_can_update_quiz(self, client, admin_user, quiz):
-        """Test admin can update quiz"""
-        client.force_login(admin_user)
-        url = reverse('quizzes:update', args=[quiz.pk])
-        response = client.get(url)
-        assert response.status_code == 200
-    
-    def test_admin_can_delete_quiz(self, client, admin_user, quiz):
-        """Test admin can delete quiz"""
-        client.force_login(admin_user)
-        url = reverse('quizzes:delete', args=[quiz.pk])
-        response = client.post(url)
-        assert response.status_code == 302
+# NOTE: Admin/parent quiz CRUD management views (list/create/update/delete,
+# add/remove question) were removed in U0; quiz catalog management is now in
+# Django Admin. Their tests were removed.

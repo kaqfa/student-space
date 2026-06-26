@@ -12,8 +12,8 @@ UI mengikuti: U0/U1 independen → U2 (setelah B1+B2) → U3 → U4 (setelah B5+
 | Fase | Lingkup | Status | Catatan |
 |------|---------|--------|---------|
 | **B0** | Celery+Redis prep, seed stub, baseline tests | ✅ Done | Celery feature-flagged via REDIS_URL; 0 unit tests (baseline); Django check clean |
-| **U0** | Hapus custom UI admin, bersihkan nav, branding → "Ruang Belajar" | 🔄 In Progress | Agent berjalan |
-| **U1** | Django Admin: ModelAdmin/inline/actions/permission groups | 🔄 In Progress | Agent berjalan |
+| **U0** | Hapus custom UI admin, bersihkan nav, branding → "Ruang Belajar" | ✅ Done | Lihat detail di bawah |
+| **U1** | Django Admin: ModelAdmin/inline/actions/permission groups | ⏳ Pending | Independen, bisa dikerjakan kapan saja |
 | **B1** | App `academic`: EducationLevel, Grade, AcademicYear, GradeSubject; refactor grade:int→FK; KD→Topic; Enrollment | ⏳ Pending | Tunggu U0+U1 selesai; refactor 🔴 terbesar |
 | **B2** | Family, ParentProfile, TutorProfile, role tutor; tautkan ParentStudent→Family | ⏳ Pending | Tunggu B1 |
 | **U2** | Ganti user.grade→Enrollment di UI; year switcher; Family di dashboard | ⏳ Pending | Tunggu B1+B2 |
@@ -41,6 +41,35 @@ UI mengikuti: U0/U1 independen → U2 (setelah B1+B2) → U3 → U4 (setelah B5+
 - `docs/test-baseline-b0.md` — baseline snapshot
 
 **Temuan:** Django check bersih. Tidak ada unit tests (hanya Playwright E2E, tidak installed). Baseline: 0 unit tests.
+
+---
+
+## Detail U0 (✅ Done)
+
+Menghapus seluruh custom UI admin; fungsi admin sekarang hanya via Django Admin (`/admin/`). Tidak menyentuh model/migrasi.
+
+**URL/View dihapus:**
+- `questions`: `urls.py` & `views.py` dikosongkan (list/create/detail/update/delete, import, tag-* CRUD, kd-* CRUD).
+- `quizzes`: dihapus `QuizListView/CreateView/UpdateView/DetailView/DeleteView/QuizQuestionAddView/QuizQuestionRemoveView` + URL `list/create/detail/update/delete/question-add/question-remove`. **Tetap**: `student-list`, `take_quiz`, `save_answer`, `result`, `proxy_select`, `create_subject_quiz`, `create_custom_quiz`.
+- `analytics`: dihapus `AdminAnalyticsDashboardView`, `StudentAttemptHistoryView`, `TagAnalyticsView`, `KDCoverageView`, `ExportStudentReportView`, `ExportClassSummaryView` + URL terkait. **Tetap**: `progress`, `api-accuracy-trend`.
+- `students`: dihapus `StudentListView` deprecated (model `Student` lama) + URL `list/`.
+- `core`: dihapus `AdminDashboardView` (tidak ter-route); fallback redirect `DashboardView` diubah dari `analytics:dashboard` → `/admin/`.
+
+**Template dihapus (25 file):** `questions/{list,form,detail,confirm_delete,import,tag_list,tag_form,tag_confirm_delete,kd_list,kd_form,kd_confirm_delete}.html`, `quizzes/{list,form,detail,confirm_delete,add_questions}.html`, `analytics/{admin_dashboard,tag_heatmap,kd_coverage,attempt_history}.html`, `students/{list,form,confirm_delete,detail}.html`, `admin/questions/question_changelist.html`, `core/dashboard.html`.
+
+**Admin:** `QuestionAdmin.change_list_template` (override untuk tombol import custom) dihapus. `quiz_changelist.html` **dipertahankan** karena hanya menaut ke view parent yang tetap ada (`create_subject_quiz`/`create_custom_quiz`); penataan ulang penuh Django Admin masuk U1.
+
+**Navigasi:**
+- `navbar.html`: link admin (Bank Soal/Tags/KD/Kuis/Siswa/Analytics) diganti satu link **"Admin Panel" → /admin/** (kondisi `is_admin or is_superuser`). Berhenti memakai `is_pengajar_or_admin`.
+- `sidebar.html`: seluruh blok `{% if user.is_admin %}` (Materi & Soal, Aktivitas) dihapus; menu parent kini di bawah `{% if user.is_parent %}`. Sidebar hanya melayani Orang Tua & Siswa.
+
+**Branding:** seluruh "Bank Soal SD" → "Ruang Belajar" (24 file). Grep `Bank Soal` di `templates/` = 0.
+
+**Tests:** kelas test yang menargetkan view yang dihapus dibuang (`questions/tests/test_views.py` dikosongkan; admin/export/student-history di `analytics`; `TestQuizCRUDViews` di `quizzes`).
+
+**Verifikasi:** `manage.py check` (settings `config.settings.base`) bersih, 0 issues. Semua URL yang dipertahankan reverse OK; URL yang dihapus tidak lagi resolve (tidak ada `NoReverseMatch` dangling). `navbar.html` & `sidebar.html` render tanpa error.
+
+> Catatan env: settings default `config.settings.development` butuh `debug_toolbar` (belum terpasang di venv ini) — gunakan `DJANGO_SETTINGS_MODULE=config.settings.base` untuk `check`.
 
 ---
 

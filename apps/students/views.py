@@ -15,9 +15,8 @@ from .forms import (
 )
 from apps.accounts.models import ParentStudent
 from apps.accounts.mixins import (
-    StudentRequiredMixin, 
-    ParentRequiredMixin, 
-    ParentOrAdminMixin,
+    StudentRequiredMixin,
+    ParentRequiredMixin,
 )
 
 User = get_user_model()
@@ -367,39 +366,3 @@ class StudentProfileUpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         messages.success(self.request, "Profil berhasil diperbarui.")
         return super().form_valid(form)
-
-
-# ============================================================
-# DEPRECATED VIEWS (Using old Student model)
-# Kept for backward compatibility
-# ============================================================
-
-def _get_deprecated_student_list_view():
-    """Factory function for deprecated StudentListView."""
-    from .models import Student
-    
-    class StudentListView(ParentOrAdminMixin, ListView):
-        """DEPRECATED: Use MyStudentsListView instead."""
-        model = Student
-        template_name = "students/list.html"
-        context_object_name = "students"
-        paginate_by = 20
-
-        def get_queryset(self):
-            queryset = Student.objects.select_related('parent')
-            
-            grade = self.request.GET.get('grade')
-            if grade:
-                queryset = queryset.filter(grade=grade)
-                
-            search = self.request.GET.get('search')
-            if search:
-                queryset = queryset.filter(name__icontains=search)
-                
-            return queryset.order_by('grade', 'name')
-    
-    return StudentListView
-
-
-# Create deprecated views
-StudentListView = _get_deprecated_student_list_view()

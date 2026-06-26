@@ -12,13 +12,12 @@
             </a>
          </li>
          
-         {% if user.is_parent_or_admin %}
-         <!-- ======================= -->
-         <!-- PARENT / ADMIN MENU -->
-         <!-- ======================= -->
-         
-         <!-- Kelola Siswa Section (Parent Only) -->
          {% if user.is_parent %}
+         <!-- ======================= -->
+         <!-- PARENT MENU -->
+         <!-- ======================= -->
+
+         <!-- Kelola Anak Section -->
          <li>
             <div class="flex items-center p-2 mt-4 text-gray-500 rounded-lg dark:text-gray-400">
                 <span class="text-xs uppercase font-semibold tracking-wider">Kelola Anak</span>
@@ -41,65 +40,6 @@
                <span class="flex-1 ms-3 whitespace-nowrap">Dampingi Kuis</span>
             </a>
          </li>
-         {% endif %}
-
-         <!-- Bank Soal Group (Admin Only or Parent with Permission) -->
-         {% if user.is_admin %}
-         <li>
-            <div class="flex items-center p-2 mt-4 text-gray-500 rounded-lg dark:text-gray-400">
-                <span class="text-xs uppercase font-semibold tracking-wider">Materi & Soal</span>
-            </div>
-         </li>
-         <li>
-            <a href="{% url 'questions:list' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-green-50 dark:hover:bg-green-900/20 group {% if request.resolver_match.app_name == 'questions' and 'tag' not in request.resolver_match.url_name and 'kd' not in request.resolver_match.url_name %}bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300{% endif %}">
-               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-               </svg>
-               <span class="flex-1 ms-3 whitespace-nowrap">Bank Soal</span>
-            </a>
-         </li>
-         <li>
-            <a href="{% url 'questions:tag-list' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-green-50 dark:hover:bg-green-900/20 group {% if 'tag' in request.resolver_match.url_name %}bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300{% endif %}">
-               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-               </svg>
-               <span class="flex-1 ms-3 whitespace-nowrap">Tags</span>
-            </a>
-         </li>
-         <li>
-            <a href="{% url 'questions:kd-list' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-green-50 dark:hover:bg-green-900/20 group {% if 'kd' in request.resolver_match.url_name %}bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300{% endif %}">
-               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-               </svg>
-               <span class="flex-1 ms-3 whitespace-nowrap">Kompetensi Dasar</span>
-            </a>
-         </li>
-         {% endif %}
-
-         <!-- Activities Group (Admin) -->
-         {% if user.is_admin %}
-         <li>
-            <div class="flex items-center p-2 mt-4 text-gray-500 rounded-lg dark:text-gray-400">
-                <span class="text-xs uppercase font-semibold tracking-wider">Aktivitas</span>
-            </div>
-         </li>
-         <li>
-            <a href="{% url 'quizzes:list' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-green-50 dark:hover:bg-green-900/20 group {% if request.resolver_match.app_name == 'quizzes' and 'student' not in request.resolver_match.url_name %}bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300{% endif %}">
-               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-               </svg>
-               <span class="flex-1 ms-3 whitespace-nowrap">Kuis</span>
-            </a>
-         </li>
-         <li>
-            <a href="{% url 'analytics:dashboard' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-green-50 dark:hover:bg-green-900/20 group {% if request.resolver_match.app_name == 'analytics' %}bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300{% endif %}">
-               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-               </svg>
-               <span class="flex-1 ms-3 whitespace-nowrap">Analytics</span>
-            </a>
-         </li>
-         {% endif %}
 
          {% elif user.is_student %}
          <!-- ======================= -->
