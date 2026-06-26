@@ -34,6 +34,11 @@ class User(AbstractUser):
         blank=True,
         help_text=_("Only for students: Grade level (1-6)")
     )
+    grade_ref = models.ForeignKey(
+        "academic.Grade", null=True, blank=True,
+        on_delete=models.SET_NULL, related_name="+",
+        help_text=_("New grade reference (replaces integer grade)."),
+    )
     date_of_birth = models.DateField(
         _("Date of Birth"),
         null=True,
