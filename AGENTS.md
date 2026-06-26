@@ -1,16 +1,21 @@
-# AGENTS.md - Bank Soal SD
+# AGENTS.md - Ruang Belajar
+
+> **Acuan produk:** [docs/prd-v2.md](docs/prd-v2.md) adalah PRD terbaru dan menjadi sumber kebenaran arah produk. Dokumen ini (AGENTS.md) menjelaskan konvensi kerja & kondisi codebase saat ini. Untuk rencana penyelarasan UI lihat [docs/ui-improvement-plan.md](docs/ui-improvement-plan.md).
 
 ## Project Overview
 
-Bank Soal SD adalah aplikasi learning management system berbasis Django untuk membantu orang tua mengajarkan anak SD (kelas 1-6) dengan bank soal terstruktur, progress tracking detail, dan analytics mendalam untuk mengidentifikasi kekuatan dan kelemahan pembelajaran.
+Ruang Belajar (codebase: `student-space`) adalah platform homeschooling & persiapan ujian (TKA) berbasis Django untuk jenjang **SD–SMP**. Menyediakan bank soal terstruktur, kuis & try-out simulasi, pelacakan progress lintas tahun ajaran, dan analitik mendalam.
+
+> **Catatan kondisi saat ini vs target v2:** basis kode sekarang masih SD (kelas 1–6), `grade` sebagai integer, role `pengajar` digabung ke `parent`, dan belum ada modul `academic`/`tryouts`/`subscriptions`. PRD v2 menargetkan: `Family` sebagai unit, `Grade`/`AcademicYear`/`Enrollment` sebagai tabel, jenjang SMP, serta modul try-out & subscription. Saat menambah fitur, ikuti arah v2.
 
 ### Core Value Proposition
 
 - Progress tracking detail per kompetensi dan tag
-- Advanced analytics untuk identifikasi learning gaps
-- Quiz mode dengan timer untuk latihan terfokus
-- Multi-role access (admin/pengajar/anak)
+- Try-out simulasi (TKA) + readiness score + study plan otomatis *(target v2)*
+- Advanced analytics untuk identifikasi learning gaps, termasuk lintas tahun ajaran
+- Multi-role: **Admin & Pengajar via Django Admin**, **Orang Tua & Siswa via custom UI**
 - Bulk import soal via JSON untuk efisiensi content creation
+- Monetisasi freemium (Free/Basic/Pro) dengan feature gating *(target v2)*
 
 ---
 
@@ -18,16 +23,19 @@ Bank Soal SD adalah aplikasi learning management system berbasis Django untuk me
 
 ### Backend
 
-- **Framework:** Django 5.0.x
-- **Language:** Python 3.11+
-- **Database:** SQLite (development) / PostgreSQL 15+ (production)
+- **Framework:** Django 5.x
+- **Language:** Python 3.12+
+- **Database:** SQLite (development) / PostgreSQL 16 (production)
 - **ORM:** Django ORM
+- **Admin:** Django Admin (built-in) — satu-satunya interface untuk Admin & Pengajar
+- **Task Queue:** Celery + Redis *(target v2)*
+- **Payment:** Midtrans / Xendit *(target v2)*
 
 ### Frontend
 
 - **Template Engine:** Django Templates
 - **CSS Framework:** Tailwind CSS 3.4.x + Flowbite (components)
-- **JavaScript:** HTMX 1.9.x (dynamic interactions)
+- **JavaScript:** HTMX 2.x (dynamic interactions)
 - **Charts:** Chart.js 4.x
 - **Math Rendering:** KaTeX 0.16.x
 
@@ -60,13 +68,17 @@ bank_soal_project/
 │   ├── urls.py
 │   └── wsgi.py
 ├── apps/
-│   ├── accounts/        # User management, authentication
-│   ├── students/        # Student management
-│   ├── subjects/        # Subjects & Topics
+│   ├── accounts/        # User, auth, role; (target v2: Family, ParentProfile, TutorProfile)
+│   ├── students/        # DEPRECATED — student kini = User(role=student) + ParentStudent
+│   ├── subjects/        # Subjects & Topics (target v2: pindah ke app `academic`)
 │   ├── questions/       # Questions, Tags, KD
-│   ├── quizzes/         # Quiz sessions & logic
-│   ├── analytics/       # Progress tracking & reporting
+│   ├── quizzes/         # Quiz config & sessions
+│   ├── analytics/       # Attempt, progress tracking & reporting
 │   └── core/            # Shared utilities
+│   # Target v2 (belum ada):
+│   # ├── academic/      # EducationLevel, Grade, AcademicYear, Enrollment, GradeSubject
+│   # ├── tryouts/       # ExamBlueprint, ExamSection, TryoutSession, StudyPlan, ExamTarget
+│   # └── subscriptions/ # Plan, PlanFeature, Subscription, Invoice, PaymentTransaction
 ├── templates/
 ├── static/
 ├── media/
@@ -176,13 +188,16 @@ Menggunakan HTMX untuk dynamic interactions daripada React/Vue karena:
 - SEO-friendly
 - Perfect for this use case
 
-### 2. Role-based Access Control
+### 2. Role-based Access Control & Pembagian Interface
 
-Tiga role utama:
+Empat role (PRD v2 §3.1, §8.1):
 
-- **Admin (Orang Tua):** Full access
-- **Pengajar (Tutor):** Read/write assigned students
-- **Student (Anak):** Own data only
+- **Admin:** Pengelola platform — **hanya via Django Admin** (konten, user, konfigurasi). Tidak ada custom UI admin.
+- **Orang Tua:** **Custom UI** — kelola anak, pantau progress, kelola langganan.
+- **Pengajar (opsional):** **Django Admin terbatas** (permission group) — siswa yang di-assign + buat kuis.
+- **Siswa:** **Custom UI** — mengerjakan kuis/try-out & lihat progress sendiri.
+
+**Aturan penting:** Custom UI (Django Templates + HTMX) dibangun **hanya** untuk Orang Tua & Siswa. Semua fungsi admin/pengajar dilayani Django Admin dengan kustomisasi `ModelAdmin`/inline/actions. Custom UI admin yang masih ada (bank soal CRUD, dll.) sedang dipindahkan ke Django Admin — lihat [docs/ui-improvement-plan.md](docs/ui-improvement-plan.md).
 
 ### 3. Tagging System
 
@@ -235,13 +250,15 @@ npm run watch
 
 ## Important Files
 
-| File                      | Description                     |
-| ------------------------- | ------------------------------- |
-| `docs/spec.md`            | Technical specification lengkap |
-| `docs/prd.md`             | Product requirements document   |
-| `docs/todo.md`            | Development todo/checklist      |
-| `config/settings/base.py` | Base Django settings            |
-| `requirements/base.txt`   | Python dependencies             |
+| File                            | Description                                  |
+| ------------------------------- | -------------------------------------------- |
+| `docs/prd-v2.md`                | **PRD terbaru (acuan utama)**                |
+| `docs/ui-improvement-plan.md`   | Rencana redesign UI + migrasi ke Django Admin |
+| `docs/spec.md`                  | Technical specification lengkap (v1)         |
+| `docs/prd.md`                   | PRD lama (SD only) — historis                |
+| `docs/todo.md`                  | Development todo/checklist                   |
+| `config/settings/base.py`       | Base Django settings                         |
+| `requirements/base.txt`         | Python dependencies                          |
 
 ---
 
@@ -319,9 +336,10 @@ Scope: accounts, students, questions, quizzes, analytics, core
 
 Target deployment:
 
-- VPS (Domainesia/DigitalOcean)
-- Gunicorn + Nginx
-- PostgreSQL
+- VPS / shared hosting (Domainesia cPanel)
+- **Apache + Phusion Passenger** (bukan Gunicorn/Nginx) agar kompatibel dengan stack DomaiNesia
+- Docker untuk simulasi lokal & production (app + db + redis + worker)
+- PostgreSQL 16
 - Let's Encrypt SSL
 
-Lihat `docs/spec.md` Section 5 untuk detail deployment.
+Lihat `docs/deployment-domainesia-passenger.md` dan `README.md` untuk detail deployment.
