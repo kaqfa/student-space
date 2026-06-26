@@ -7,6 +7,7 @@ Panduan kerja untuk Claude Code di repo **Ruang Belajar** (`student-space`).
 ## Acuan dokumen
 
 - **[docs/prd-v2.md](docs/prd-v2.md)** — PRD terbaru, sumber kebenaran arah produk (homeschooling SD–SMP + persiapan TKA).
+- **[docs/v2-upgrade-plan.md](docs/v2-upgrade-plan.md)** — rencana upgrade backend/data model + **master sequence** (urutan kerja gabungan UI & backend).
 - **[docs/ui-improvement-plan.md](docs/ui-improvement-plan.md)** — rencana redesign UI Orang Tua/Siswa + pemindahan fungsi admin ke Django Admin.
 - `docs/prd.md`, `docs/spec.md` — dokumen v1 (SD only), historis.
 

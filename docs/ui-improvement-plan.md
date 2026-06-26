@@ -4,6 +4,8 @@
 **Tanggal:** 26 Juni 2026
 **Konteks:** Penyelarasan UI custom (Orang Tua & Siswa) dengan [PRD v2](prd-v2.md), serta pemindahan seluruh fungsi administratif ke Django Admin.
 
+> **Urutan kerja gabungan (UI + backend)** dikonsolidasikan di [v2-upgrade-plan.md §6 Master Sequence](v2-upgrade-plan.md#6-master-sequence-konsolidasi-backend-b--ui-u). Fase UI (U0–U5) di §7 dokumen ini adalah komponen UI dari sequence tersebut.
+
 ---
 
 ## 1. Ringkasan & Prinsip

@@ -253,6 +253,7 @@ npm run watch
 | File                            | Description                                  |
 | ------------------------------- | -------------------------------------------- |
 | `docs/prd-v2.md`                | **PRD terbaru (acuan utama)**                |
+| `docs/v2-upgrade-plan.md`       | Rencana upgrade backend + master sequence    |
 | `docs/ui-improvement-plan.md`   | Rencana redesign UI + migrasi ke Django Admin |
 | `docs/spec.md`                  | Technical specification lengkap (v1)         |
 | `docs/prd.md`                   | PRD lama (SD only) — historis                |

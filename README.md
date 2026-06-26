@@ -349,6 +349,7 @@ bash scripts/deploy_domainesia.sh
 | Document | Description |
 |----------|-------------|
 | [Product Requirements v2](docs/prd-v2.md) | **PRD terbaru (acuan utama)** — homeschooling SD–SMP + TKA prep |
+| [v2 Upgrade Plan](docs/v2-upgrade-plan.md) | Rencana upgrade backend/data model + master sequence (UI+backend) |
 | [UI Improvement Plan](docs/ui-improvement-plan.md) | Rencana redesign UI ortu/siswa + migrasi admin ke Django Admin |
 | [Technical Spec](docs/spec.md) | Detailed technical specification (v1) |
 | [Product Requirements v1](docs/prd.md) | PRD lama (SD only) — historis |
