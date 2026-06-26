@@ -13,8 +13,8 @@ UI mengikuti: U0/U1 independen → U2 (setelah B1+B2) → U3 → U4 (setelah B5+
 |------|---------|--------|---------|
 | **B0** | Celery+Redis prep, seed stub, baseline tests | ✅ Done | Celery feature-flagged via REDIS_URL; 0 unit tests (baseline); Django check clean |
 | **U0** | Hapus custom UI admin, bersihkan nav, branding → "Ruang Belajar" | ✅ Done | Lihat detail di bawah |
-| **U1** | Django Admin: ModelAdmin/inline/actions/permission groups | ⏳ Pending | Independen, bisa dikerjakan kapan saja |
-| **B1** | App `academic`: EducationLevel, Grade, AcademicYear, GradeSubject; refactor grade:int→FK; KD→Topic; Enrollment | ⏳ Pending | Tunggu U0+U1 selesai; refactor 🔴 terbesar |
+| **U1** | Django Admin: ModelAdmin/inline/actions/permission groups | ✅ Done | Import JSON action + permission groups; lihat detail di bawah |
+| **B1** | App `academic`: EducationLevel, Grade, AcademicYear, GradeSubject; refactor grade:int→FK; KD→Topic; Enrollment | ✅ Done | Expand+migrate (contract ditunda B8); lihat detail di bawah |
 | **B2** | Family, ParentProfile, TutorProfile, role tutor; tautkan ParentStudent→Family | ⏳ Pending | Tunggu B1 |
 | **U2** | Ganti user.grade→Enrollment di UI; year switcher; Family di dashboard | ⏳ Pending | Tunggu B1+B2 |
 | **B3** | Question status (draft/published/archived), tipe benar/salah, QuestionSet, ImportBatch | ⏳ Pending | Bisa paralel dengan B4 setelah B1 |
@@ -72,6 +72,35 @@ Menghapus seluruh custom UI admin; fungsi admin sekarang hanya via Django Admin 
 > Catatan env: settings default `config.settings.development` butuh `debug_toolbar` (belum terpasang di venv ini) — gunakan `DJANGO_SETTINGS_MODULE=config.settings.base` untuk `check`.
 
 ---
+
+## Detail U1 (✅ Done)
+
+Django Admin sudah substansial sejak v1 (ModelAdmin/filter/search/inline/actions untuk User, ParentStudent, Attempt, Tag, KD, Question, Quiz, Subject, Topic). U1 menutup gap yang tersisa dari ui-improvement-plan §5.4:
+
+- **Import JSON (F-08):** `QuestionAdmin` dapat tombol **"Import JSON"** di changelist (`templates/admin/questions/question_changelist.html`) → view `import_json_view` via `get_urls()` (`apps/questions/admin.py`). Reuse service `import_questions_from_json` (sudah ada), reuse `QuestionImportForm` (field `file`). Template form: `templates/admin/questions/question_import.html`.
+- **Permission groups (F-23):** `seed_initial_data` kini assign permission ke 3 group (idempotent, defensif terhadap model yang belum ada):
+  - `content_manager`: add/change/view Question, Tag, KD, Subject, Topic, Quiz + academic content (30 perms)
+  - `user_manager`: User, ParentStudent, Enrollment (9 perms)
+  - `finance`: stub kosong (diisi B7)
+- **Out of scope (sengaja):** bulk publish/archive butuh Question.status → B3.
+
+## Detail B1 (✅ Done — expand + migrate)
+
+App baru `apps/academic`. Strategi expand+migrate; kolom `grade:int` lama **tetap** (contract = B8). UI rewire `user.grade`→Enrollment **tidak** dilakukan di sini (= U2).
+
+**Models** (`apps/academic/models.py`): `EducationLevel` (SD/SMP), `Grade` (FK level, number 1–9, unique (level,number)), `AcademicYear` (unique name, single-active enforced di `save()`), `GradeSubject` (M2M Grade×Subject, unique), `Enrollment` (student×grade×year, unique (student,year), status active/completed).
+
+**Expand** (`grade_ref = FK(academic.Grade, null=True, SET_NULL)` ditambahkan ke): `accounts.User`, `subjects.Subject`, `questions.KompetensiDasar`, `quizzes.Quiz`, `quizzes.QuizSession`. Plus `questions.KompetensiDasar.topic = FK(subjects.Topic, null=True)` (KD→Topic, §3.3 — backfill ditunda, admin reassign).
+
+**Migrate** (`apps/academic/migrations/0002_backfill.py`, reversible): seed EducationLevel+Grade (SD 1–6, SMP 7–9) + default AcademicYear "2025/2026" (active), backfill `grade_ref` dari `grade:int` di 5 model, backfill `Enrollment` untuk tiap `User(role=student)` dengan grade. Seed logic di `apps/academic/seed.py` (dipakai migration + `seed_initial_data`, idempotent).
+
+**Helper:** `User.current_enrollment` property → active Enrollment untuk active year (atau None).
+
+**Admin** (`apps/academic/admin.py`): 5 model + GradeSubject inline di Grade, GradeInline di EducationLevel, autocomplete_fields.
+
+**Verifikasi:** `manage.py check` bersih; `makemigrations --check` = "No changes detected"; migrate dari DB kosong OK + seed benar (2 level, 9 grade, 1 active year); backfill migration reversible (unapply/reapply OK). **120 tests pass** (suite lama + baru, tanpa regresi) — dijalankan via venv `.venv-test` (Django 5.0.14 + pytest-django, settings `config.settings.development`).
+
+> Catatan env: `python3` sistem = Django 6.0.5 tanpa pytest-django/debug_toolbar → untuk manage.py pakai `DJANGO_SETTINGS_MODULE=config.settings.base`. Untuk pytest dibuat venv `.venv-test` (gitignored) dari `requirements/development.txt` + `playwright` (dibutuhkan `tests/conftest.py`).
 
 ## Konteks Teknis Penting
 
