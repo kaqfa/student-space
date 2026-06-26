@@ -90,4 +90,4 @@ static/css/output.css
 # Docker
 .env.docker.local
 docker-compose.override.yml
-passenger_error.log
+passenger_error.log.venv-test/
