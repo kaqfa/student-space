@@ -23,3 +23,8 @@ django-import-export>=3.3.0
 
 # Utilities
 python-dateutil>=2.8.2
+
+# Background Tasks (Celery + Redis)
+celery>=5.3
+redis>=5.0
+django-celery-results>=2.5

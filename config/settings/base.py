@@ -142,6 +142,17 @@ LOGIN_URL = "login" # Changed from "account_login" to standard name usually, but
 # I didn't set app_name in accounts/urls.py!
 # Let's check accounts/urls.py again.
 
-LOGIN_URL = "login" 
+LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "core:dashboard"
 LOGOUT_REDIRECT_URL = "core:home"
+
+
+# Celery Configuration (Background Tasks)
+# Only active when REDIS_URL is set in environment
+CELERY_BROKER_URL = os.environ.get('REDIS_URL', 'redis://localhost:6379/1')
+CELERY_RESULT_BACKEND = os.environ.get('REDIS_URL', 'redis://localhost:6379/1')
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Jakarta'
+CELERY_BEAT_SCHEDULE = {}  # Will be populated by analytics/subscriptions apps
