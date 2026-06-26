@@ -18,6 +18,8 @@ GROUP_PERMS = {
     ],
     "user_manager": [
         ("accounts", "user"), ("accounts", "parentstudent"), ("academic", "enrollment"),
+        ("accounts", "family"), ("accounts", "familymembership"),
+        ("accounts", "parentprofile"), ("accounts", "tutorprofile"),
     ],
     "finance": [],  # populated in B7 (subscriptions)
 }
