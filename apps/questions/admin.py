@@ -1,6 +1,13 @@
-from django.contrib import admin
+import json
+
+from django.contrib import admin, messages
+from django.shortcuts import redirect, render
+from django.urls import path
 from django.utils.html import format_html
+
+from .forms import QuestionImportForm
 from .models import Question, Tag, KompetensiDasar
+from .services import import_questions_from_json
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
@@ -32,6 +39,45 @@ class QuestionAdmin(admin.ModelAdmin):
     autocomplete_fields = ['topic']
     readonly_fields = ('created_by', 'created_at', 'updated_at', 'question_preview')
     list_per_page = 25
+    change_list_template = "admin/questions/question_changelist.html"
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom = [
+            path(
+                "import-json/",
+                self.admin_site.admin_view(self.import_json_view),
+                name="questions_question_import_json",
+            ),
+        ]
+        return custom + urls
+
+    def import_json_view(self, request):
+        if request.method == "POST":
+            form = QuestionImportForm(request.POST, request.FILES)
+            if form.is_valid():
+                try:
+                    data = json.load(request.FILES["file"])
+                except json.JSONDecodeError:
+                    messages.error(request, "File is not valid JSON.")
+                    return redirect("admin:questions_question_changelist")
+                count, errors = import_questions_from_json(data, user=request.user)
+                if count:
+                    messages.success(request, f"Imported {count} questions.")
+                for err in errors[:20]:
+                    messages.warning(request, err)
+                if not count and not errors:
+                    messages.warning(request, "No questions imported.")
+                return redirect("admin:questions_question_changelist")
+        else:
+            form = QuestionImportForm()
+        context = {
+            **self.admin_site.each_context(request),
+            "form": form,
+            "title": "Import Questions (JSON)",
+            "opts": self.model._meta,
+        }
+        return render(request, "admin/questions/question_import.html", context)
 
     fieldsets = (
         ('Content', {

@@ -39,6 +39,7 @@ LOCAL_APPS = [
     "apps.accounts",
     "apps.students",
     "apps.subjects",
+    "apps.academic",
     "apps.questions",
     "apps.quizzes",
     "apps.analytics",

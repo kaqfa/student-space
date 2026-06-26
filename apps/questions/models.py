@@ -16,6 +16,14 @@ class KompetensiDasar(models.Model):
     subject = models.ForeignKey(
         Subject, on_delete=models.CASCADE, related_name="kompetensi"
     )
+    grade_ref = models.ForeignKey(
+        "academic.Grade", null=True, blank=True,
+        on_delete=models.SET_NULL, related_name="+",
+    )
+    topic = models.ForeignKey(
+        "subjects.Topic", null=True, blank=True,
+        on_delete=models.SET_NULL, related_name="kompetensi_dasar",
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

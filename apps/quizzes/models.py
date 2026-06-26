@@ -20,7 +20,11 @@ class Quiz(models.Model):
         validators=[MinValueValidator(1), MaxValueValidator(6)],
         help_text=_("Kelas (1-6)")
     )
-    
+    grade_ref = models.ForeignKey(
+        "academic.Grade", null=True, blank=True,
+        on_delete=models.SET_NULL, related_name="+",
+    )
+
     quiz_type = models.CharField(
         max_length=20,
         choices=QuizType.choices,
@@ -149,7 +153,11 @@ class QuizSession(models.Model):
         validators=[MinValueValidator(1), MaxValueValidator(6)],
         help_text=_("Kelas untuk filter mata pelajaran")
     )
-    
+    grade_ref = models.ForeignKey(
+        "academic.Grade", null=True, blank=True,
+        on_delete=models.SET_NULL, related_name="+",
+    )
+
     # Scoring
     score = models.FloatField(default=0)
     passed = models.BooleanField(default=False)

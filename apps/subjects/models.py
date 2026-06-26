@@ -8,6 +8,10 @@ class Subject(models.Model):
     grade = models.IntegerField(
         _("Grade"), validators=[MinValueValidator(1), MaxValueValidator(6)]
     )
+    grade_ref = models.ForeignKey(
+        "academic.Grade", null=True, blank=True,
+        on_delete=models.SET_NULL, related_name="+",
+    )
     order = models.IntegerField(default=0)
     icon = models.CharField(max_length=50, blank=True, help_text="Heroicons name")
     color = models.CharField(max_length=7, default="#3B82F6", help_text="Hex color")

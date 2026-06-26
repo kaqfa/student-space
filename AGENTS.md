@@ -2,11 +2,18 @@
 
 > **Acuan produk:** [docs/prd-v2.md](docs/prd-v2.md) adalah PRD terbaru dan menjadi sumber kebenaran arah produk. Dokumen ini (AGENTS.md) menjelaskan konvensi kerja & kondisi codebase saat ini. Untuk rencana penyelarasan UI lihat [docs/ui-improvement-plan.md](docs/ui-improvement-plan.md).
 
+> **⚙️ Proyek berbasis Docker.** Semua perintah (manage.py, pytest, migrate, seed, shell) dijalankan **di dalam container** via `docker compose exec web <perintah>`. **Jangan** membuat virtualenv (`venv/`, `.venv`) di repo ini atau pip install ke host. Lihat [§Common Tasks](#common-tasks).
+
 ## Project Overview
 
 Ruang Belajar (codebase: `student-space`) adalah platform homeschooling & persiapan ujian (TKA) berbasis Django untuk jenjang **SD–SMP**. Menyediakan bank soal terstruktur, kuis & try-out simulasi, pelacakan progress lintas tahun ajaran, dan analitik mendalam.
 
-> **Catatan kondisi saat ini vs target v2:** basis kode sekarang masih SD (kelas 1–6), `grade` sebagai integer, role `pengajar` digabung ke `parent`, dan belum ada modul `academic`/`tryouts`/`subscriptions`. PRD v2 menargetkan: `Family` sebagai unit, `Grade`/`AcademicYear`/`Enrollment` sebagai tabel, jenjang SMP, serta modul try-out & subscription. Saat menambah fitur, ikuti arah v2.
+> **Catatan kondisi saat ini vs target v2 (progress di [docs/implementation-progress.md](docs/implementation-progress.md)):**
+> - **Sudah jalan (B0–B2, U0):** app `academic` (`EducationLevel`/`Grade`/`AcademicYear`/`GradeSubject`/`Enrollment`); `Family` + `FamilyMembership` (M2M), `ParentProfile`/`TutorProfile`, role `tutor`; `grade_ref` FK nullable sudah di-backfill di User/Subject/KD/Quiz/QuizSession (KD→Topic); custom UI admin sudah dihapus (admin via Django Admin).
+> - **Masih transisi:** kolom `grade` integer 1–6 **masih ada** berdampingan dengan `grade_ref` (contract/drop ditunda ke fase B8); UI ortu/siswa masih baca `user.grade` (rewire ke `Enrollment` = fase U2).
+> - **Belum ada:** modul `tryouts`/`subscriptions`, analytics lanjutan (B3+).
+>
+> Saat menambah fitur: pakai `grade_ref`/`Enrollment`, bukan `grade` integer; jangan tambah dependensi baru ke `grade:int` atau model `Student` deprecated.
 
 ### Core Value Proposition
 
@@ -68,15 +75,15 @@ bank_soal_project/
 │   ├── urls.py
 │   └── wsgi.py
 ├── apps/
-│   ├── accounts/        # User, auth, role; (target v2: Family, ParentProfile, TutorProfile)
+│   ├── accounts/        # User+role(admin/parent/student/tutor), ParentStudent, Family, FamilyMembership, ParentProfile, TutorProfile
+│   ├── academic/        # EducationLevel, Grade, AcademicYear, GradeSubject, Enrollment
 │   ├── students/        # DEPRECATED — student kini = User(role=student) + ParentStudent
-│   ├── subjects/        # Subjects & Topics (target v2: pindah ke app `academic`)
-│   ├── questions/       # Questions, Tags, KD
-│   ├── quizzes/         # Quiz config & sessions
+│   ├── subjects/        # Subjects & Topics (punya grade_ref FK ke academic.Grade)
+│   ├── questions/       # Questions, Tags, KD (KD→Topic + grade_ref)
+│   ├── quizzes/         # Quiz config & sessions (grade_ref)
 │   ├── analytics/       # Attempt, progress tracking & reporting
-│   └── core/            # Shared utilities
+│   └── core/            # Shared utilities, seed_initial_data command
 │   # Target v2 (belum ada):
-│   # ├── academic/      # EducationLevel, Grade, AcademicYear, Enrollment, GradeSubject
 │   # ├── tryouts/       # ExamBlueprint, ExamSection, TryoutSession, StudyPlan, ExamTarget
 │   # └── subscriptions/ # Plan, PlanFeature, Subscription, Invoice, PaymentTransaction
 ├── templates/
@@ -92,43 +99,49 @@ bank_soal_project/
 ### 1. accounts
 
 - Custom User model (extends AbstractUser)
-- Role-based permissions: `admin`, `pengajar`, `student`
-- Login/logout views
-- Profile management
+- Role-based permissions: `admin`, `parent`, `student`, `tutor` (alias lama `is_pengajar_or_admin` masih ada, deprecated)
+- `Family` + `FamilyMembership` (M2M, unit/tenancy root), `ParentProfile`/`TutorProfile` (thin)
+- `ParentStudent` link + workflow verifikasi (tertaut ke `Family`)
+- Login/logout views, profile management
 
-### 2. students
+### 2. academic
 
-- Student CRUD
-- Student-pengajar assignment
-- Student profile page
+- `EducationLevel` (SD/SMP), `Grade` (kelas 1–9), `AcademicYear`, `GradeSubject` (M2M), `Enrollment` (Student×Grade×Year)
+- Sumber "kelas saat ini" via `User.current_enrollment` (gantikan `user.grade` integer)
+- Seed reference data idempotent: `python manage.py seed_initial_data`
 
-### 3. subjects
+### 3. students
 
-- Subject & Topic CRUD
+- (DEPRECATED) Model `Student` lama — tidak dipakai; student = `User(role=student)` + `ParentStudent`
+- Dihapus penuh di fase B8
+
+### 4. subjects
+
+- Subject & Topic CRUD (Subject punya `grade_ref` FK ke `academic.Grade`)
 - Hierarchical display
 
-### 4. questions
+### 5. questions
 
-- Question CRUD dengan support untuk: `pilgan`, `essay`, `isian`
+- Question CRUD dengan support untuk: `pilgan`, `essay`, `isian` (target v2: tambah `benar/salah` + field `status`)
 - Tag management (skill, topic, difficulty, custom)
-- Kompetensi Dasar (KD) management
-- Bulk import via JSON
+- Kompetensi Dasar (KD) management (KD→Topic via FK)
+- Bulk import via JSON (CLI `import_questions` + admin action "Import JSON" di `QuestionAdmin`)
 
-### 5. quizzes
+### 6. quizzes
 
 - Quiz creation & configuration
 - Quiz types: `practice`, `timed`, `custom`
 - Quiz-taking interface (HTMX-powered)
 - Timer logic
 
-### 6. analytics
+### 7. analytics
 
 - Attempt recording
 - Metrics calculation
 - Progress dashboard
 - Report generation (PDF/CSV)
 
-### 7. core
+### 8. core
 
 - Shared utilities
 - Mixins & decorators
@@ -216,35 +229,40 @@ Mapping ke kurikulum nasional untuk tracking coverage.
 
 ## Common Tasks
 
-### Running Development Server
-```bash
-./venv/bin/python manage.py runserver
-```
+> **Semua perintah Python/Django dijalankan di dalam container** (`web` service), pola: `docker compose exec web <perintah>`. Mulai stack: `docker compose --env-file .env.docker up -d` (lihat README). Jangan bikin venv di host.
+
+### Development Server
+Container menjalankan Apache+Passenger otomatis → akses `http://localhost:8080`. Tidak ada `runserver` manual di host.
 
 ### Running Tests
 ```bash
-./venv/bin/pytest
-./venv/bin/pytest --cov=apps  # with coverage
+docker compose exec web pytest
+docker compose exec web pytest --cov=apps   # with coverage
 ```
+> Image test harus berisi `requirements/development.txt` (pytest, pytest-django) agar test jalan di container.
 
-### Running Migrations
+### Running Migrations & Seed
 ```bash
-./venv/bin/python manage.py makemigrations
-./venv/bin/python manage.py migrate
+docker compose exec web python manage.py makemigrations
+docker compose exec web python manage.py migrate
+docker compose exec web python manage.py seed_initial_data   # groups+perms & academic reference (idempotent)
 ```
 
 ### Building Tailwind CSS
-
 ```bash
-npm run build
-# atau untuk watch mode:
-npm run watch
+npm run build   # tooling Node, boleh di host; npm run watch untuk dev
 ```
 
 ### Importing Questions from JSON
 ```bash
-./venv/bin/python manage.py import_questions data/matematika-kelas6.json
+docker compose exec web python manage.py import_questions data/matematika-kelas6.json
 ```
+
+### Adding a New Django App
+```bash
+docker compose exec web python manage.py startapp <app_name> apps/<app_name>
+```
+Lalu register di `INSTALLED_APPS` dengan path `apps.<app_name>`.
 
 ---
 
@@ -255,41 +273,24 @@ npm run watch
 | `docs/prd-v2.md`                | **PRD terbaru (acuan utama)**                |
 | `docs/v2-upgrade-plan.md`       | Rencana upgrade backend + master sequence    |
 | `docs/ui-improvement-plan.md`   | Rencana redesign UI + migrasi ke Django Admin |
+| `docs/implementation-progress.md` | **Status fase B0–B8 / U0–U5 terkini**      |
 | `docs/spec.md`                  | Technical specification lengkap (v1)         |
 | `docs/prd.md`                   | PRD lama (SD only) — historis                |
-| `docs/todo.md`                  | Development todo/checklist                   |
 | `config/settings/base.py`       | Base Django settings                         |
 | `requirements/base.txt`         | Python dependencies                          |
 
 ---
 
-## Development Workflow
-
-### 1. Creating New Feature
-
-1. Check `docs/todo.md` untuk task yang akan dikerjakan
-2. Create/update models jika diperlukan
-3. Create/update migrations
-4. Create views, forms, templates
-5. Add URL patterns
-6. Write tests
-7. Update documentation
-
-### 2. Adding New Django App
-```bash
-./venv/bin/python manage.py startapp <app_name> apps/<app_name>
-```
-
-Kemudian register di `INSTALLED_APPS` dengan path `apps.<app_name>`.
-
-### 3. Commit Convention
+## Commit Convention
 
 ```
 <type>(<scope>): <subject>
 
 Types: feat, fix, docs, style, refactor, test, chore
-Scope: accounts, students, questions, quizzes, analytics, core
+Scope: accounts, academic, subjects, questions, quizzes, analytics, core
 ```
+
+> Catatan: detail alur kerja pengembangan (langkah brainstorm → spec → plan → eksekusi) akan dijelaskan di skill terpisah, bukan di dokumen ini.
 
 ---
 

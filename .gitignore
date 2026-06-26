@@ -26,6 +26,7 @@ wheels/
 venv/
 ENV/
 env/
+venv-test/
 
 # Environment Variables
 .env
@@ -86,6 +87,11 @@ logs/
 
 # Compiled CSS (can be rebuilt)
 static/css/output.css
+
+# Virtualenvs (project is Docker-based — no venv in repo)
+venv/
+.venv/
+.venv-test/
 
 # Docker
 .env.docker.local
