@@ -19,6 +19,7 @@ class User(AbstractUser):
         ADMIN = "admin", _("Administrator")
         PARENT = "parent", _("Parent")  # Changed from pengajar
         STUDENT = "student", _("Student")
+        TUTOR = "tutor", _("Tutor")
 
     role = models.CharField(
         _("Role"), max_length=20, choices=Role.choices, default=Role.STUDENT
@@ -70,6 +71,16 @@ class User(AbstractUser):
     @property
     def is_student(self):
         return self.role == self.Role.STUDENT
+
+    @property
+    def is_tutor(self):
+        return self.role == self.Role.TUTOR
+
+    @property
+    def family(self):
+        """First family this user belongs to (via membership), or None."""
+        membership = self.family_memberships.select_related("family").first()
+        return membership.family if membership else None
 
     @property
     def current_enrollment(self):
@@ -158,6 +169,10 @@ class ParentStudent(models.Model):
         blank=True,
         help_text=_("Parent's notes about this student")
     )
+    family = models.ForeignKey(
+        "accounts.Family", null=True, blank=True,
+        on_delete=models.SET_NULL, related_name="parent_student_links",
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     verified_at = models.DateTimeField(
         _("Verified At"),
@@ -212,3 +227,89 @@ class ParentStudent(models.Model):
             created_by_parent=False,
             notes=notes
         )
+
+
+class Family(models.Model):
+    """Household unit grouping parents, students, and tutors (tenancy root)."""
+
+    name = models.CharField(_("Family Name"), max_length=150)
+    owner = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="owned_families",
+        verbose_name=_("Owner"),
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "families"
+        verbose_name = _("Family")
+        verbose_name_plural = _("Families")
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+
+
+class FamilyMembership(models.Model):
+    """Membership linking a User to a Family (M2M through)."""
+
+    class RoleInFamily(models.TextChoices):
+        PARENT = "parent", _("Parent")
+        STUDENT = "student", _("Student")
+        TUTOR = "tutor", _("Tutor")
+
+    family = models.ForeignKey(
+        Family, on_delete=models.CASCADE, related_name="memberships"
+    )
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="family_memberships"
+    )
+    role_in_family = models.CharField(
+        _("Role in Family"), max_length=20, choices=RoleInFamily.choices
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "family_memberships"
+        verbose_name = _("Family Membership")
+        verbose_name_plural = _("Family Memberships")
+        unique_together = ["family", "user"]
+        ordering = ["family", "role_in_family"]
+
+    def __str__(self):
+        return f"{self.user} @ {self.family} ({self.get_role_in_family_display()})"
+
+
+class ParentProfile(models.Model):
+    """Thin profile holding parent preferences."""
+
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name="parent_profile"
+    )
+    notification_prefs = models.JSONField(default=dict, blank=True)
+    phone = models.CharField(_("Phone (secondary)"), max_length=20, blank=True)
+
+    class Meta:
+        db_table = "parent_profiles"
+        verbose_name = _("Parent Profile")
+        verbose_name_plural = _("Parent Profiles")
+
+    def __str__(self):
+        return f"ParentProfile({self.user})"
+
+
+class TutorProfile(models.Model):
+    """Thin profile for tutors."""
+
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name="tutor_profile"
+    )
+    bio = models.TextField(blank=True)
+    specialization = models.CharField(max_length=150, blank=True)
+
+    class Meta:
+        db_table = "tutor_profiles"
+        verbose_name = _("Tutor Profile")
+        verbose_name_plural = _("Tutor Profiles")
+
+    def __str__(self):
+        return f"TutorProfile({self.user})"
